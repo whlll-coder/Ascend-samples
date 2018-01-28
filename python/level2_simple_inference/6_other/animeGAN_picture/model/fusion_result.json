@@ -1,0 +1,55 @@
+{
+    "graph_fusion": {
+        "AConv2dMulFusion": {
+            "effect_times": "0",
+            "match_times": "32"
+        },
+        "AReduceMeanFusionPass": {
+            "effect_times": "0",
+            "match_times": "80"
+        },
+        "ConstToAttrPass": {
+            "effect_times": "84",
+            "match_times": "84"
+        },
+        "ConvToFullyConnectionFusionPass": {
+            "effect_times": "0",
+            "match_times": "33"
+        },
+        "ConvWeightCompressFusionPass": {
+            "effect_times": "0",
+            "match_times": "33"
+        },
+        "DepthwiseInsertTransDataFusionPass": {
+            "effect_times": "0",
+            "match_times": "16"
+        },
+        "MulAddFusionPass": {
+            "effect_times": "0",
+            "match_times": "40"
+        },
+        "TransdataCastFusionPass": {
+            "effect_times": "0",
+            "match_times": "217"
+        }
+    },
+    "session_and_graph_id": "0_0",
+    "ub_fusion": {
+        "AutomaticUbFusion": {
+            "effect_times": "8",
+            "match_times": "8"
+        },
+        "TbeEltwiseFusionPass": {
+            "effect_times": "32",
+            "match_times": "32"
+        },
+        "TbeMultiOutputFusionPass": {
+            "effect_times": "40",
+            "match_times": "40"
+        },
+        "TbeReduceElemwiseFusionPass": {
+            "effect_times": "40",
+            "match_times": "40"
+        }
+    }
+}
