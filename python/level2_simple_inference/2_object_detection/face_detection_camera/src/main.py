@@ -115,20 +115,30 @@ def main():
 
         similarity= 0.5*cos+0.5
 
-        if similarity.all()>0.99 and flag == 0:
-            box_info_register = result_register[1][0]
-            score_register = box_info_register[0, 2]
-            box_info = result[1][0]
-            score = box_info[0, 2]
-            if score < 0.90 and score_register > 0.90:
-                print("你躲哪去了 快出来")
-            else:
-                print("Hi 你好呀 "+name)
-            print("cos: "+str(cos)+"\n"+"similarity: "+str(similarity))
+        box_info_register = result_register[1][0]
+        score_register = box_info_register[0, 2]
+        box_info = result[1][0]
+        score = box_info[0, 2]
+
+        similarity_1 = similarity[~np.isnan(similarity)]
+
+        if np.all(similarity_1>=0.65) and flag == 0:
+            print("Hi 你好呀 "+name)
+            print(np.all(similarity_1>0.68))
+            k=0
+            for i in np.nditer(similarity_1, order='C'):
+                if i<0.99:
+                    k = k + 1
+                    print(k)
+            print("cos:\n"+str(cos)+"\n"+"similarity:\n"+str(similarity))
             print(type(box_info_register))
             print("result_register: "+str(box_info_register)+"\n"+"result: "+str(box_info))
             print("score_register: "+str(score_register)+"\n"+"score: "+str(score))
-            
+        if np.all(similarity_1<0.65) and flag == 0:
+            print("未注册人脸信息 你好 陌生人")
+            print(np.all(similarity_1<0.68))
+            print(type(similarity))
+            print("cos:\n"+str(cos)+"\n"+"similarity_1:\n"+str(similarity_1))
         flag = 1
 
 
