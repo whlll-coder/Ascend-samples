@@ -70,7 +70,8 @@ def main():
             print("参数提取成功 识别率: " + str(score_register))
             name = input("请输入您的名字: ")
         else:
-            print("参数提取失败 识别率: " + str(score_register) + "请重新匹配哦")
+            print("参数提取失败 识别率: " + str(score_register) + "正在进行重新匹配...")
+            continue
 
         if name == "":
             print("请告诉我你的名字哦 ~\n\n")
@@ -80,6 +81,9 @@ def main():
             break
     #flag是一个小标记 用来控制 while 循环
     flag = 0
+    #注册人脸的模型输出结果以及识别率
+    box_info_register = result_register[1][0]
+    score_register = box_info_register[0, 2]
     # 5 秒后开始进行人脸检测
     print("\n5s 后开始进行人脸检测\n")
     print("======================================")
@@ -108,37 +112,40 @@ def main():
         chan.send_detection_data(CAMERA_FRAME_WIDTH, CAMERA_FRAME_HEIGHT, 
                                  jpeg_image, detection_list)
         #余弦距离可适应用于人脸识别，将待识别人脸的图像提取特征，与人脸注册库的所有图像的特征矩阵求距离，然后找到最相似的
-        norm1 = norm(result[1][0],axis=-1).reshape(result[1][0].shape[0],1)
-        norm2 = norm(result_register[1][0],axis=-1).reshape(1,result_register[1][0].shape[0])
+        box_info = result[1][0]
+        score = box_info[0, 2]
+        box_info_register = box_info_register[~np.isnan(box_info_register)]
+        box_info = box_info[~np.isnan(box_info)]
+
+        norm1 = norm(box_info,axis=-1)
+        norm2 = norm(box_info_register,axis=-1)
         end_norm = np.dot(norm1,norm2)
-        cos = np.dot(result[1][0], result_register[1][0].T)/end_norm
+        cos = np.dot(box_info, box_info_register.T)/end_norm
 
         similarity= 0.5*cos+0.5
 
-        box_info_register = result_register[1][0]
-        score_register = box_info_register[0, 2]
-        box_info = result[1][0]
-        score = box_info[0, 2]
+        similarity = similarity[~np.isnan(similarity)]
 
-        similarity_1 = similarity[~np.isnan(similarity)]
-
-        if np.all(similarity_1>=0.65) and flag == 0:
+        if similarity > 0.93 and score > 0.90 and flag == 0:
+            print(cos.shape)
             print("Hi 你好呀 "+name)
-            print(np.all(similarity_1>0.68))
+            print(np.all(similarity>0.75))
             k=0
-            for i in np.nditer(similarity_1, order='C'):
-                if i<0.99:
-                    k = k + 1
-                    print(k)
+            for i in np.nditer(similarity, order='C'):
+                k = k + 1
+                print(k)
             print("cos:\n"+str(cos)+"\n"+"similarity:\n"+str(similarity))
             print(type(box_info_register))
-            print("result_register: "+str(box_info_register)+"\n"+"result: "+str(box_info))
+            print("box_info_register:\n"+str(box_info_register)+"\n"+"box_info:\n"+str(box_info))
             print("score_register: "+str(score_register)+"\n"+"score: "+str(score))
-        if np.all(similarity_1<0.65) and flag == 0:
+        if similarity < 0.93 and score > 0.90 and flag == 0:
             print("未注册人脸信息 你好 陌生人")
-            print(np.all(similarity_1<0.68))
+            print(np.all(similarity<0.68))
             print(type(similarity))
-            print("cos:\n"+str(cos)+"\n"+"similarity_1:\n"+str(similarity_1))
+            print("cos:\n"+str(cos)+"\n"+"similarity:\n"+str(similarity))
+        if score < 0.90:
+            print("未能成功检测人脸 识别率: "+str(score))
+            continue
         flag = 1
 
 
