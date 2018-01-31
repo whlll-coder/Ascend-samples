@@ -16,7 +16,7 @@ function downloadDataWithVerifySource()
     fi
   fi
 
-  if [[ ${verify_image}"x" != "x" ]];then
+  if [[ ${verify_source}"x" != "x" ]];then
     mkdir -p ${project_path}/verify_image/
     if [[ $(find ${project_path}/verify_image -name ${verify_name})"x" = "x" ]];then
       wget -O ${project_path}/verify_image/${verify_name} ${verify_source}${verify_name} --no-check-certificate
@@ -146,7 +146,7 @@ function run_picture()
     # 重新配置程序运行所需的环境变量
     export LD_LIBRARY_PATH=
     export LD_LIBRARY_PATH=/home/HwHiAiUser/Ascend/acllib/lib64:/home/HwHiAiUser/ascend_ddk/${TargetKernel}/lib:${DDK_PATH}/acllib/lib64:${LD_LIBRARY_PATH}
-    if [[ ${version}"x" != "c75x" ]] && [[ ${version}"x" != "C75x" ]];then
+    if [[ ${version}"x" != "c75" ]] && [[ ${version}"x" != "C75" ]];then
       export LD_LIBRARY_PATH=/home/HwHiAiUser/Ascend/ascend-toolkit/latest/atc/lib64:${LD_LIBRARY_PATH}
     fi
 
@@ -184,7 +184,7 @@ function run_presenter()
   # 重新配置程序运行所需的环境变量
     export LD_LIBRARY_PATH=
     export LD_LIBRARY_PATH=/home/HwHiAiUser/Ascend/acllib/lib64:/home/HwHiAiUser/ascend_ddk/${TargetKernel}/lib:${DDK_PATH}/acllib/lib64:${LD_LIBRARY_PATH}
-    if [[ ${version}"x" != "c75x" ]] && [[ ${version}"x" != "C75x" ]];then
+    if [[ ${version}"x" != "c75" ]] && [[ ${version}"x" != "C75" ]];then
       export LD_LIBRARY_PATH=/home/HwHiAiUser/Ascend/ascend-toolkit/latest/atc/lib64:${LD_LIBRARY_PATH}
     fi
 
@@ -232,3 +232,41 @@ function run_presenter()
     return ${success}  
 
 }
+function run_h264()
+{
+    # 重新配置程序运行所需的环境变量
+    export LD_LIBRARY_PATH=
+    export LD_LIBRARY_PATH=/home/HwHiAiUser/Ascend/acllib/lib64:/home/HwHiAiUser/ascend_ddk/${TargetKernel}/lib:${DDK_PATH}/acllib/lib64:${LD_LIBRARY_PATH}
+    if [[ ${version}"x" != "c75" ]] && [[ ${version}"x" != "C75" ]];then
+      export LD_LIBRARY_PATH=/home/HwHiAiUser/Ascend/ascend-toolkit/latest/atc/lib64:${LD_LIBRARY_PATH}
+    fi
+
+    mkdir -p ${project_path}/out/output
+    # 运行程序
+    cd ${project_path}/out
+    ${run_command}
+    #if [ $? -ne 0 ];then
+    #    echo "ERROR: run failed. please check your project"
+    #    return ${inferenceError}
+    #fi
+    sleep 1
+
+    output_result=$(ls ${project_path}/out/output/${verify_name} 2>/dev/null)
+    verify_result=$(ls ${project_path}/verify_image/${verify_name} 2>/dev/null)
+    if [[ ${output_result}"x" = "x" ]] || [[ ${verify_result}"x" = "x" ]];then
+        echo "ERROR: verify failed. please check your project"
+        return ${verifyResError}
+    fi
+
+    result_md5=`md5sum ${project_path}/out/output/${verify_name} | cut -d " " -f1`
+    verify_md5=`md5sum ${project_path}/verify_image/${verify_name} | cut -d " " -f1`
+    if [[ ${result_md5} != ${verify_md5} ]];then
+      echo "ERROR: verify failed. please check your project"
+      return ${verifyResError}
+    fi
+
+    echo "run success"
+
+    return ${success}
+}
+
