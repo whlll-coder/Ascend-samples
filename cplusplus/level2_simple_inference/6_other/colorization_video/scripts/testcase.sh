@@ -29,10 +29,11 @@ function main() {
         return ${inferenceError}
     fi
 
+    # 转模型
     modelconvert
     if [ $? -ne 0 ];then
         return ${inferenceError}
-    fi
+    fi   
 
     buildproject
     if [ $? -ne 0 ];then
@@ -43,9 +44,10 @@ function main() {
     if [ $? -eq ${inferenceError} ];then
         return ${inferenceError}
     elif [ $? -eq ${verifyResError} ];then
-        return ${verifyResError}
+	return ${verifyResError}
     fi
 
     return ${success}
 }
 main
+
