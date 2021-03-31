@@ -33,10 +33,10 @@
 using namespace std;
 int gSuccessNum = -4;
 namespace {
-uint32_t OpenPoseModelWidth = 128;
-uint32_t OpenPoseModelHeight = 128;
-const char* OpenPoseModelPath = "../model/pose_deploy.om";
-const char* GestureModelPath = "../model/stgcn_fps30_sta_ho_ki4.om";
+const uint32_t kOpenPoseModelWidth = 128;
+const uint32_t kOpenPoseModelHeight = 128;
+const char* kOpenPoseModelPath = "../model/pose_deploy.om";
+const char* kGestureModelPath = "../model/stgcn_fps30_sta_ho_ki4.om";
 }
 
 std::shared_ptr<EngineTransNewT> gMotionDataNew = std::make_shared<EngineTransNewT>();
@@ -95,7 +95,8 @@ int main(int argc, char *argv[]) {
         return ATLAS_ERROR;
     }  
     
-    GestureDetect detect(OpenPoseModelPath, GestureModelPath, OpenPoseModelWidth, OpenPoseModelHeight);
+    GestureDetect detect(kOpenPoseModelPath, kGestureModelPath, 
+                         kOpenPoseModelWidth, kOpenPoseModelHeight);
     ret = detect.Init();
     if (ret != ATLAS_OK) {
         ATLAS_LOG_ERROR("Classification Init resource failed");

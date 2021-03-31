@@ -39,11 +39,10 @@ using namespace std;
 using namespace cv;
 
 int gLastGes = -1;
-float gTempKeyPoints[2][14] = {0};
-Eigen::MatrixXf gLeftMatrix(16, 16);
-Eigen::MatrixXf gRightMatrix(16, 16);
-Eigen::MatrixXf gTopMatrix(16, 16);
-Eigen::MatrixXf gBottomMatrix(16, 16);
+//Eigen::MatrixXf gLeftMatrix(16, 16);
+//Eigen::MatrixXf gRightMatrix(16, 16);
+//Eigen::MatrixXf gTopMatrix(16, 16);
+//Eigen::MatrixXf gBottomMatrix(16, 16);
 
 int gLimbSeq[13][2] = {{2,3}, {2,6}, {3,4}, {4, 5}, {6, 7}, {7, 8}, {2, 9}, {9, 10}, {10, 11}, {2, 12},
 {12, 13}, {13, 14}, {2, 1}};
@@ -226,6 +225,12 @@ AtlasError GestureDetect::Postprocess(ImageData& image, vector<InferenceOutput>&
     Eigen::MatrixXd::Index maxRowF, maxColF;
     Eigen::MatrixXd::Index maxRowNew, maxColNew;
     Eigen::MatrixXd::Index tempMaxRow, tempMaxCol;
+
+    Eigen::MatrixXf gLeftMatrix(16, 16);
+    Eigen::MatrixXf gRightMatrix(16, 16);
+    Eigen::MatrixXf gTopMatrix(16, 16);
+    Eigen::MatrixXf gBottomMatrix(16, 16);
+
     vector <keyPointsT> onePicKeyPoints;
     vector <vector<keyPointsT>> allKeyPoints;
     vector <float> onePicPeaks;
