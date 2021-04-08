@@ -30,7 +30,7 @@ import amct_tensorflow as amct # pylint: disable=E0401
 amct.set_logging_level(print_level='info', save_level='info')
 
 
-PATH, _ = os.path.split(os.path.realpath(__file__))
+PATH, _ = os.path.realpath('./')
 OUTPUTS = os.path.join(PATH, 'outputs')
 SIDE = 224
 INPUT_NAME = 'input'
@@ -61,7 +61,7 @@ def main(): # pylint: disable=too-many-locals, not-context-manager
 
     # Step one, inference the original model to obtain the original
     # precision before quantization.
-    model_path = os.path.realpath('./mobilenetv2_tf.pb')
+    model_path = os.path.realpath('./model/mobilenetv2_tf.pb')
 
     with tf.io.gfile.GFile(model_path, mode='rb') as model:
         graph_def = tf.compat.v1.GraphDef()
@@ -72,7 +72,7 @@ def main(): # pylint: disable=too-many-locals, not-context-manager
     input_tensor = graph.get_tensor_by_name(INPUT_NAME + ':0')
     output_tensor = graph.get_tensor_by_name(OUTPUT_NAME + ':0')
 
-    image_path = os.path.join(PATH, 'classification.jpg')
+    image_path = os.path.realpath('./data/classification.jpg')
     image_test = Image.open(image_path).resize([SIDE, SIDE])
     image_test = np.array(image_test).astype(np.float32) / 128 - 1
     image_test = image_test.reshape([1, SIDE, SIDE, 3])
@@ -86,13 +86,13 @@ def main(): # pylint: disable=too-many-locals, not-context-manager
     # is saved as JSON format, and you can edit the file to configurate
     # your quantization parameters of each layers(support FC, CONV and
     # DW) easily.
-    config_path = os.path.join(PATH, 'config.json')
+    config_path = os.path.join(OUTPUTS, 'config.json')
     amct.create_quant_config(config_file=config_path, graph=graph, skip_layers=[], batch_num=1)
 
     # Step three, quantize the model.
     # The function 'quantize_model' will quantize your model in graph
     # according to config file.
-    record_path = os.path.join(PATH, 'record.txt')
+    record_path = os.path.join(OUTPUTS, 'record.txt')
     amct.quantize_model(graph=graph, config_file=config_path, record_file=record_path)
 
     # Step four, calibrate and save the quantized model.
@@ -106,7 +106,7 @@ def main(): # pylint: disable=too-many-locals, not-context-manager
     # used for simulating test on CPU/GPU and evaluate the accuracy of
     # quantized model, and it can also be used for ATC to generate the
     # model running on Ascend AI Processor.
-    calibration_path = os.path.join(PATH, 'calibration')
+    calibration_path = os.path.realpath('./data/calibration')
     batch = load_image(calibration_path)
 
     with tf.compat.v1.Session() as session:
