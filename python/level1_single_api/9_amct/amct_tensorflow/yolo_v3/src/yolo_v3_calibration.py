@@ -31,7 +31,7 @@ import amct_tensorflow as amct # pylint: disable=E0401
 amct.set_logging_level(print_level='info', save_level='info')
 
 
-PATH, _ = os.path.split(os.path.realpath(__file__))
+PATH, _ = os.path.realpath('./')
 OUTPUTS = os.path.join(PATH, 'outputs')
 SIDE = 416
 INPUT_NAME = 'input'
@@ -208,7 +208,7 @@ def main(): # pylint: disable=too-many-statements, too-many-locals, not-context-
     # This sample will use YOLOv3 which is trained with COCO dataset
     # and save as 'yolov3_tensorflow_1.5.pb'. Therefore, loading COCO
     # labels and test image to do inference.
-    model_path = os.path.join(PATH, 'yolov3_tensorflow_1.5.pb')
+    model_path = os.path.join(PATH, 'model/yolov3_tensorflow_1.5.pb')
     with tf.io.gfile.GFile(model_path, mode='rb') as model:
         graph_def = tf.compat.v1.GraphDef()
         graph_def.ParseFromString(model.read())
@@ -221,12 +221,12 @@ def main(): # pylint: disable=too-many-statements, too-many-locals, not-context-
     probability_tensor = graph.get_tensor_by_name(PROB_NAME + ':0')
 
     labels = []
-    label_path = os.path.join(PATH, 'COCO_labels.txt')
+    label_path = os.path.join(PATH, 'data/COCO_labels.txt')
     with open(label_path) as label_file:
         for line in label_file:
             labels.append(line[: -1])
 
-    image_path = os.path.join(PATH, 'detection.jpg')
+    image_path = os.path.join(PATH, 'data/detection.jpg')
     image_input = preprocessing(image_path)
     image_input = image_input.reshape([1, SIDE, SIDE, 3])
 
@@ -245,14 +245,14 @@ def main(): # pylint: disable=too-many-statements, too-many-locals, not-context-
     # is saved as JSON format, and you can edit the file to configurate
     # your quantization parameters of each layers(support FC, CONV and
     # DW) easily.
-    config_path = os.path.join(PATH, 'config.json')
-    cfg_define = os.path.join(PATH, 'yolo_quant.cfg')
+    config_path = os.path.join(OUTPUTS, 'config.json')
+    cfg_define = os.path.join(PATH, 'src/yolo_quant.cfg')
     amct.create_quant_config(config_file=config_path, graph=graph, config_defination=cfg_define)
 
     # Step three, quantize the model.
     # The function 'quantize_model' will quantize your model in graph
     # according to config file.
-    record_path = os.path.join(PATH, 'record.txt')
+    record_path = os.path.join(OUTPUTS, 'record.txt')
     amct.quantize_model(graph=graph, config_file=config_path, record_file=record_path)
 
     # Step four, calibrate and save the quantized model.
@@ -266,7 +266,7 @@ def main(): # pylint: disable=too-many-statements, too-many-locals, not-context-
     # simulating test on CPU/GPU and evaluate the accuracy of quantized
     # model. and it can also be used for ATC to generate the model
     # running on Ascend AI Processor.
-    calibration_path = os.path.join(PATH, 'calibration.jpg')
+    calibration_path = os.path.join(PATH, 'data/calibration.jpg')
     image_calibration = preprocessing(calibration_path)
     image_calibration = image_calibration.reshape([1, SIDE, SIDE, 3])
 

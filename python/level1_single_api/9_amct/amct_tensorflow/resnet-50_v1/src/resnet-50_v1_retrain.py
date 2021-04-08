@@ -172,7 +172,7 @@ class TFRecordDataset(object): # pylint: disable=R0902, R0903
             plt.title(str(labels[i]) + ': ' + text)
 
 
-PATH, _ = os.path.split(os.path.realpath(__file__))
+PATH, _ = os.path.realpath('./')
 TMP = os.path.join(PATH, 'tmp')
 OUTPUTS = os.path.join(PATH, 'outputs')
 TRAIN_SIZE = 1281167
@@ -219,15 +219,15 @@ def parse_args():
         help='The number of samples in each batch.')
     parser.add_argument(
         '--train_model', dest='train_model', type=str,
-        default='./pre_model/resnet_v1_50_train.meta',
+        default='../model/resnet_v1_50_train.meta',
         help='The path of file containing a "MetaGraphDef" of ResNet V1 50 for training.')
     parser.add_argument(
         '--eval_model', dest='eval_model', type=str,
-        default='./pre_model/resnet_v1_50_eval.meta',
+        default='../model/resnet_v1_50_eval.meta',
         help='The path of file containing a "MetaGraphDef" of ResNet V1 50 for evaluation.')
     parser.add_argument(
         '--ckpt', dest='ckpt_path', type=str,
-        default='./pre_model/resnet_v1_50',
+        default='../model/resnet_v1_50',
         help='The path of ResNet V1 50 checkpoint.')
     parser.add_argument(
         '--learning_rate', dest='learning_rate', default=1e-6, type=float,
