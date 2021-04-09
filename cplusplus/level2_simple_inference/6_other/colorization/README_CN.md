@@ -56,7 +56,6 @@
     ```atc --input_shape="data_l:1,1,224,224" --weight="./colorization.caffemodel" --input_format=NCHW --output="colorization" --soc_version=Ascend310 --framework=0 --model="./colorization.prototxt"```
 
     ![](https://images.gitee.com/uploads/images/2020/1106/160652_6146f6a4_5395865.gif "icon-note.gif") **说明：**  
-    > - modelzoo中提供了转换好的om模型，但此模型不匹配当前样例，所以需要下载原始模型和权重文件后重新进行模型转换。
     > - 模型转换时，如果报错找不到atc，请按照[环境准备和依赖安装](../../../environment)设置模型转换所需的相关环境变量！
 
 ### 样例部署
