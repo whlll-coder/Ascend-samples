@@ -43,31 +43,21 @@
             **unzip ascend-samples-master.zip**
 
 2. 在modelzoo中获取此应用中所需要的原始网络模型。
+
+    **注：请确认环境变量已经在[环境准备和依赖安装](../../../environment)中配置完成**    
     |  **模型名称**  |  **模型说明**  |  **模型下载路径**  |
     |---|---|---|
     |  colorization| 黑白图像上色推理模型。  |  请参考[modelzoo仓ATC_colorization_caffe_AE](https://gitee.com/ascend/modelzoo/tree/master/contrib/TensorFlow/Research/cv/colorization/ATC_colorization_caffe_AE)目录中README.md下载原始模型章节下载模型和权重文件。 |
 
-    为了方便下载，在这里直接给出原始模型下载命令,可以直接拷贝执行。也可以参照上表在modelzoo中下载并手工转换，以了解更多细节。
-    
+    为了方便下载，在这里直接给出原始模型下载及模型转换命令,可以直接拷贝执行。也可以参照上表在modelzoo中下载并手工转换，以了解更多细节。     
     **cd $HOME/samples/cplusplus/level2_simple_inference/6_other/colorization/model**     
     **wget https://modelzoo-train-atc.obs.cn-north-4.myhuaweicloud.com/003_Atc_Models/AE/ATC%20Model/colorization/colorization.prototxt**    
     **wget https://modelzoo-train-atc.obs.cn-north-4.myhuaweicloud.com/003_Atc_Models/AE/ATC%20Model/colorization/colorization.caffemodel**    
-    
+    **atc --input_shape="data_l:1,1,224,224" --weight="./colorization.caffemodel" --input_format=NCHW --output="colorization" --soc_version=Ascend310 --framework=0 --model="./colorization.prototxt"**
+
     ![](https://images.gitee.com/uploads/images/2020/1106/160652_6146f6a4_5395865.gif "icon-note.gif") **说明：**  
     > - modelzoo中提供了转换好的om模型，但此模型不匹配当前样例，所以需要下载原始模型和权重文件后重新进行模型转换。
-
-3. 将原始模型转换为Davinci模型。
-    
-    **注：请确认环境变量已经在[环境准备和依赖安装](../../../environment)中配置完成**
-
-    1. 设置LD_LIBRARY_PATH环境变量。    
-        由于LD_LIBRARY_PATH环境变量在转使用atc工具和运行样例时会产生冲突，所以需要在命令行单独设置此环境变量，方便修改。    
-        **export install_path=$HOME/Ascend/ascend-toolkit/latest**    
-        **export LD_LIBRARY_PATH=\\${install_path}/atc/lib64**      
-
-    2. 执行以下命令使用atc命令进行模型转换。       
-        **atc --input_shape="data_l:1,1,224,224" --weight="./colorization.caffemodel" --input_format=NCHW --output="colorization" --soc_version=Ascend310 --framework=0 --model="./colorization.prototxt"**
-
+    > - 模型转换时，如果报错找不到atc，请按照[环境准备和依赖安装](../../../environment)设置模型转换所需的相关环境变量！
 
 ### 样例部署
 
