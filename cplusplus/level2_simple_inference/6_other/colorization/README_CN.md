@@ -90,6 +90,7 @@
       **cd $HOME/samples/cplusplus/level2_simple_inference/6_other/colorization/scripts**    
     - 如果是开发环境与运行环境分离部署，执行以下命令切换目录。     
       **cd $HOME/colorization/scripts**     
+    
     切换目录后，执行以下命令运行样例。      
     **bash sample_run.sh**      
 
