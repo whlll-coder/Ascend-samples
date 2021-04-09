@@ -55,8 +55,8 @@
     
     |  **模型名称**  |  **模型说明**  |  **模型下载路径**  |
     |---|---|---|
-    |  openpose| 人体骨骼关键点检测模型。  |  https://modelzoo-train-atc.obs.cn-north-4.myhuaweicloud.com/003_Atc_Models/AE/ATC%20Model/gesturedetection/pose_iter_440000.caffemodel，https://modelzoo-train-atc.obs.cn-north-4.myhuaweicloud.com/003_Atc_Models/AE/ATC%20Model/gesturedetection/pose_deploy.prototxt，https://modelzoo-train-atc.obs.cn-north-4.myhuaweicloud.com/003_Atc_Models/AE/ATC%20Model/gesturedetection/insert_op.cfg。 |
-    |  STGCN| 人体动作识别模型。  |  https://modelzoo-train-atc.obs.cn-north-4.myhuaweicloud.com/003_Atc_Models/AE/ATC%20Model/gesturedetection/stgcn_fps30_sta_ho_ki4.pb |
+    |  openpose| 人体骨骼关键点检测模型。  |  https://gitee.com/ascend/modelzoo/blob/9bf8402aca694dd602be536b5d7ff782c5e8c4e4/contrib/TensorFlow/Research/cv/%20gesturedetection/ATC_OpenPose_caffe_AE |
+    |  STGCN| 人体动作识别模型。  |  https://gitee.com/ascend/modelzoo/tree/9bf8402aca694dd602be536b5d7ff782c5e8c4e4/contrib/TensorFlow/Research/cv/%20gesturedetection/ATC_STGCN_tf_AE |
 
     ![](https://images.gitee.com/uploads/images/2020/1106/160652_6146f6a4_5395865.gif "icon-note.gif") **说明：**  
     > - modelzoo中提供了转换好的om模型，但此模型不匹配当前样例，所以需要下载原始模型重新进行模型转换。
@@ -148,9 +148,7 @@
 
 ### 样例运行
 
-**注：开发环境与运行环境合一部署，请跳过步骤1，直接执行[步骤2](#step_2)即可。**   
-
-1. 执行以下命令,将开发环境的 **gesturedetection** 目录上传到运行环境中，例如 **/home/HwHiAiUser**，并以HwHiAiUser（运行用户）登录运行环境（Host）。
+1. 如果是开发环境与运行环境分离部署，执行以下命令，将开发环境的 **gesturedetection** 目录上传到运行环境中，例如 **/home/HwHiAiUser**，并以HwHiAiUser（运行用户）登录运行环境（Host）。
 
     **scp -r \$HOME/samples/cplusplus/contrib/gesturedetection/ HwHiAiUser@xxx.xxx.xxx.xxx:/home/HwHiAiUser**
 
@@ -159,23 +157,21 @@
     ![](https://images.gitee.com/uploads/images/2020/1106/160652_6146f6a4_5395865.gif "icon-note.gif") **说明：**  
     > - **xxx.xxx.xxx.xxx**为运行环境ip，200DK在USB连接时一般为192.168.1.2，300（ai1s）为对应的公网ip。
 
-2. <a name="step_2"></a>运行可执行文件。
+    切换目录并运行样例。
 
-    - 如果是开发环境与运行环境合一部署，执行以下命令，设置运行环境变量，并切换目录。
+    **cd \$HOME/gesturedetection/out**
 
-      **export LD_LIBRARY_PATH=**
+    **./main**
 
-      **source ~/.bashrc**
-        
-      **cd \$HOME/samples/cplusplus/contrib/gesturedetection/out**
+2. 如果是开发环境与运行环境合一部署，执行以下命令，设置运行环境变量，并切换目录运行样例。
 
-    - 如果是开发环境与运行环境分离部署，执行以下命令切换目录。
-    
-      **cd \$HOME/gesturedetection/out**
+    **export LD_LIBRARY_PATH=**
 
-    切换目录后，执行以下命令运行样例。
+    **source ~/.bashrc**
 
-    **./main **
+    **cd \$HOME/samples/cplusplus/contrib/gesturedetection/out**
+
+    **./main**
 
 ### 查看结果
 
