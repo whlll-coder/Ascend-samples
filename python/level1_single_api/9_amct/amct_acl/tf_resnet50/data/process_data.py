@@ -16,12 +16,14 @@ http://www.apache.org/licenses/LICENSE-2.0
 data process script.
 
 """
+import os
 import glob
 import numpy as np
 import cv2 # pylint: disable=E0401
 
-IMAGE_PATH = './image/*.jpg'
-BIN_FILE = './image/calibration.bin'
+PATH = os.path.split(os.path.realpath(__file__))[0]
+IMAGE_PATH = os.path.join(PATH, './calibration/*.jpg')
+BIN_FILE = os.path.join(PATH, './calibration/calibration.bin')
 CHANNEL_MEANS = [123.68, 116.78, 103.94]  # (R, G, B)
 INPUT_SHAPE = (224, 224, 3)  # (height, width, channel)
 CALIBRATION_SIZE = 16
