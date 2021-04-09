@@ -33,14 +33,14 @@
    可以使用以下两种方式下载，请选择其中一种进行源码准备。   
     - 命令行方式下载（下载时间较长，但步骤简单）。    
        开发环境，非root用户命令行中执行以下命令下载源码仓。    
-       **cd $HOME**     
-       **git clone https://gitee.com/ascend/samples.git**    
+       ```cd $HOME```     
+       ```git clone https://gitee.com/ascend/samples.git```   
     - 压缩包方式下载（下载时间较短，但步骤稍微复杂）。    
         1. samples仓右上角选择 **克隆/下载** 下拉框并选择 **下载ZIP**。    
         2. 将ZIP包上传到开发环境中的普通用户家目录中，例如 **$HOME/ascend-samples-master.zip**。     
         3. 开发环境中，执行以下命令，解压zip包。     
-            **cd $HOME**    
-            **unzip ascend-samples-master.zip**
+            ```cd $HOME```    
+            ```unzip ascend-samples-master.zip```
 
 2. 模型转换。
 
@@ -50,10 +50,10 @@
     |  colorization| 黑白图像上色推理模型。  |  请参考[modelzoo仓ATC_colorization_caffe_AE](https://gitee.com/ascend/modelzoo/tree/master/contrib/TensorFlow/Research/cv/colorization/ATC_colorization_caffe_AE)目录中README.md下载原始模型章节下载模型和权重文件。 |
 
     为了方便下载，在这里直接给出原始模型下载及模型转换命令,可以直接拷贝执行。也可以参照上表在modelzoo中下载并手工转换，以了解更多细节。     
-    **cd $HOME/samples/cplusplus/level2_simple_inference/6_other/colorization/model**     
-    **wget https://modelzoo-train-atc.obs.cn-north-4.myhuaweicloud.com/003_Atc_Models/AE/ATC%20Model/colorization/colorization.prototxt**    
-    **wget https://modelzoo-train-atc.obs.cn-north-4.myhuaweicloud.com/003_Atc_Models/AE/ATC%20Model/colorization/colorization.caffemodel**    
-    **atc --input_shape="data_l:1,1,224,224" --weight="./colorization.caffemodel" --input_format=NCHW --output="colorization" --soc_version=Ascend310 --framework=0 --model="./colorization.prototxt"**
+    ```cd $HOME/samples/cplusplus/level2_simple_inference/6_other/colorization/model```     
+    ```wget https://modelzoo-train-atc.obs.cn-north-4.myhuaweicloud.com/003_Atc_Models/AE/ATC%20Model/colorization/colorization.prototxt```    
+    ```wget https://modelzoo-train-atc.obs.cn-north-4.myhuaweicloud.com/003_Atc_Models/AE/ATC%20Model/colorization/colorization.caffemodel```    
+    ```atc --input_shape="data_l:1,1,224,224" --weight="./colorization.caffemodel" --input_format=NCHW --output="colorization" --soc_version=Ascend310 --framework=0 --model="./colorization.prototxt"```
 
     ![](https://images.gitee.com/uploads/images/2020/1106/160652_6146f6a4_5395865.gif "icon-note.gif") **说明：**  
     > - modelzoo中提供了转换好的om模型，但此模型不匹配当前样例，所以需要下载原始模型和权重文件后重新进行模型转换。
@@ -62,27 +62,27 @@
 ### 样例部署
 
 执行以下命令，执行编译脚本，开始样例编译。   
-**cd $HOME/samples/cplusplus/level2_simple_inference/6_other/colorization/scripts**    
-**bash sample_build.sh**
+```cd $HOME/samples/cplusplus/level2_simple_inference/6_other/colorization/scripts```    
+```bash sample_build.sh```
 
 ### 样例运行
 
 **注：开发环境与运行环境合一部署，请跳过步骤1，直接执行[步骤2](#step_2)即可。**   
 
 1. 执行以下命令,将开发环境的 **colorization** 目录上传到运行环境中，例如 **/home/HwHiAiUser**，并以HwHiAiUser（运行用户）登录运行环境（Host）。    
-    **scp -r $HOME/samples/cplusplus/level2_simple_inference/6_other/colorization HwHiAiUser@xxx.xxx.xxx.xxx:/home/HwHiAiUser**    
-    **ssh HwHiAiUser@xxx.xxx.xxx.xxx**     
+    ```scp -r $HOME/samples/cplusplus/level2_simple_inference/6_other/colorization HwHiAiUser@xxx.xxx.xxx.xxx:/home/HwHiAiUser```    
+    ```ssh HwHiAiUser@xxx.xxx.xxx.xxx```     
     ![](https://images.gitee.com/uploads/images/2020/1106/160652_6146f6a4_5395865.gif "icon-note.gif") **说明：**  
     > - **xxx.xxx.xxx.xxx**为运行环境ip，200DK在USB连接时一般为192.168.1.2，300（ai1s）为对应的公网ip。
 
 2. <a name="step_2"></a>执行运行脚本，卡时样例运行。    
     - 如果是开发环境与运行环境合一部署，执行以下命令切换目录。    
-      **cd $HOME/samples/cplusplus/level2_simple_inference/6_other/colorization/scripts**    
+      ```cd $HOME/samples/cplusplus/level2_simple_inference/6_other/colorization/scripts```    
     - 如果是开发环境与运行环境分离部署，执行以下命令切换目录。     
-      **cd $HOME/colorization/scripts**     
+      ```cd $HOME/colorization/scripts```     
     
     切换目录后，执行以下命令运行样例。      
-    **bash sample_run.sh**      
+    ```bash sample_run.sh```      
 
 ### 查看结果
 
