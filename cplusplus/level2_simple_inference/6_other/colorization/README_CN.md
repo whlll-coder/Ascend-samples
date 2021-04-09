@@ -72,7 +72,7 @@
 1. 执行以下命令,将开发环境的 **colorization** 目录上传到运行环境中，例如 **/home/HwHiAiUser**，并以HwHiAiUser（运行用户）登录运行环境（Host）。    
     ```scp -r $HOME/samples/cplusplus/level2_simple_inference/6_other/colorization HwHiAiUser@xxx.xxx.xxx.xxx:/home/HwHiAiUser```    
     ```ssh HwHiAiUser@xxx.xxx.xxx.xxx```     
-    ```cd $HOME/colorization/scripts```
+    ```cd $HOME/colorization/scripts```    
     ![](https://images.gitee.com/uploads/images/2020/1106/160652_6146f6a4_5395865.gif "icon-note.gif") **说明：**  
     > - **xxx.xxx.xxx.xxx**为运行环境ip，200DK在USB连接时一般为192.168.1.2，300（ai1s）为对应的公网ip。
 
