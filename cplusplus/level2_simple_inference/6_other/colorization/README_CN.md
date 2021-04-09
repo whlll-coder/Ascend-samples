@@ -43,9 +43,6 @@
             **unzip ascend-samples-master.zip**
 
 2. 在modelzoo中获取此应用中所需要的原始网络模型。
-
-    参考下表获取此应用中所用到的原始网络模型及其对应的权重文件，并将其存放到开发环境普通用户下该样例的model文件夹中，本例为：$HOME/samples/cplusplus/level2_simple_inference/6_other/colorization/model。
-    
     |  **模型名称**  |  **模型说明**  |  **模型下载路径**  |
     |---|---|---|
     |  colorization| 黑白图像上色推理模型。  |  请参考[modelzoo仓ATC_colorization_caffe_AE](https://gitee.com/ascend/modelzoo/tree/master/contrib/TensorFlow/Research/cv/colorization/ATC_colorization_caffe_AE)目录中README.md下载原始模型章节下载模型和权重文件。 |
