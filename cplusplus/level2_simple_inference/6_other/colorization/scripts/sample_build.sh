@@ -37,6 +37,7 @@ TargetKernel=$1
 
 function ModelConvert()
 {
+    wget -O ${ModelPath}/../data/dog.png https://c7xcode.obs.cn-north-4.myhuaweicloud.com/models/colorization/dog.png --no-check-certificate
     # Determine whether there is a better om model
     ret=`find ${ModelPath} -maxdepth 1 -name "colorization.om" 2> /dev/null`
     if [[ ${ret} ]];then
@@ -46,27 +47,6 @@ function ModelConvert()
         echo "[ERROR] colorization.om does not exist, please follow the readme to convert the model and place it in the correct position!"
 	return 1
     fi
-    
-    # Download the original model file and test data
-    #wget -O ${ModelPath}/colorization.prototxt https://modelzoo-train-atc.obs.cn-north-4.myhuaweicloud.com/003_Atc_Models/AE/ATC%20Model/colorization/colorization.prototxt --no-check-certificate
-    #wget -O ${ModelPath}/colorization.caffemodel https://modelzoo-train-atc.obs.cn-north-4.myhuaweicloud.com/003_Atc_Models/AE/ATC%20Model/colorization/colorization.caffemodel --no-check-certificate
-    #wget -O ${ModelPath}/../data/dog.png https://c7xcode.obs.cn-north-4.myhuaweicloud.com/models/colorization/dog.png --no-check-certificate
-
-    # Set environment variables and perform model conversion
-    #export LD_LIBRARY_PATH=${install_path}/atc/lib64
-    #atc --input_shape="data_l:1,1,224,224" --weight="${ModelPath}/colorization.caffemodel" --input_format=NCHW --output="${ModelPath}/colorization" --soc_version=Ascend310 --framework=0 --model="${ModelPath}/colorization.prototxt"
-    #if [ $? -ne 0 ];then
-    #    echo "[ERROR] convert model failed, Please check your environment!"
-    #    return 1
-    #else
-    #    echo "[INFO] Model convert success!"
-    #fi
-    
-    # Delete process file
-    #rm ${ModelPath}/*.caffemodel
-    #rm ${ModelPath}/*.prototxt
-    #rm -rf ${ModelPath}/kernel_meta
-    #return 0
 }
 
 function BuildSample()
