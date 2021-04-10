@@ -15,6 +15,7 @@ CROP_SIZE = 112
 CHANNEL_NUM = 3
 CLIP_LENGTH = 16
 
+
 def file_names():
 """
  read file names
