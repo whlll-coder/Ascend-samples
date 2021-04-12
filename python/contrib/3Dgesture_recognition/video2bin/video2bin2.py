@@ -20,9 +20,9 @@ def file_names():
     """
     F = []
     for root, dirs, files in os.walk(FILEPATH):
-        for file in files:  
-            if os.path.splitext(file)[1] == '.jpg':
-                F.append(root + file) 
+        for filename in files:  
+            if os.path.splitext(filename)[1] == '.jpg':
+                F.append(root + filename) 
     return F
 
 
@@ -30,16 +30,16 @@ def read_images(imglist):
     """
     read_images
     """
-    imgArray = np.empty([1, CLIP_LENGTH, CROP_SIZE, CROP_SIZE, CHANNEL_NUM], dtype = np.float32)
+    imgContent = np.empty([1, CLIP_LENGTH, CROP_SIZE, CROP_SIZE, CHANNEL_NUM], dtype = np.float32)
     i = 0
     for img in imglist:
         image = cv2.imread(img)
         image = cv2.resize(image, (CROP_SIZE, CROP_SIZE))
-        imgArray[0][i] = image 
+        imgContent[0][i] = image 
         i = i + 1
-        print(imgArray[0][i - 1])
+        print(imgContent[0][i - 1])
 
-    return imgArray
+    return imgContent
 
 
 imageNames = file_names()
