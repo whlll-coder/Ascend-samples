@@ -37,7 +37,7 @@ public:
                        void* input2, uint32_t input2size);
     AtlasError CreateInput(std::vector<DataInfo>& inputData);
     AtlasError Execute(std::vector<InferenceOutput>& inferOutputs);
-    size_t GetModelSize(int index);
+    size_t GetModelInputSize(int index);
     void DestroyInput();
 
 private:
