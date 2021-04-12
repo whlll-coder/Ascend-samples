@@ -15,6 +15,9 @@ CLIP_LENGTH = 16
 
 
 def file_names():
+    """
+    file_names
+    """
     F = []
     for root, dirs, files in os.walk(FILEPATH):
         for file in files:  
@@ -24,6 +27,9 @@ def file_names():
 
 
 def read_images(imglist):
+    """
+    read_images
+    """
     imgArray = np.empty([1, CLIP_LENGTH, CROP_SIZE, CROP_SIZE, CHANNEL_NUM], dtype = np.float32)
     i = 0
     for img in imglist:
@@ -31,7 +37,7 @@ def read_images(imglist):
         image = cv2.resize(image, (CROP_SIZE, CROP_SIZE))
         imgArray[0][i] = image 
         i = i + 1
-        print(imgArray[0][i-1])
+        print(imgArray[0][i - 1])
 
     return imgArray
 
