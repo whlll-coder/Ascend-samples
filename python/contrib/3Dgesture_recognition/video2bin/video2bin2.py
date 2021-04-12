@@ -1,12 +1,10 @@
 """
- Video to bin new 
+ Video to bin  
 """
 
 import cv2
 import numpy as np
 import os
-
-
 
 FILEPATH = './test_actiontype7/'
 OUTFILE = './Output/float/test_float32_actiontype7.bin'
@@ -17,9 +15,6 @@ CLIP_LENGTH = 16
 
 
 def file_names():
-"""
-read file names
-"""
     F = []
     for root, dirs, files in os.walk(FILEPATH):
         for file in files:  
