@@ -10,7 +10,7 @@ English|[中文](README_CN.md)
 
 Function: classifies action by using the 3DCNN model.
 
-Input: video data to be inferred
+Input: convert video to inferred data  with video2bin 
 
 Output: 10 action confidence after inference
 

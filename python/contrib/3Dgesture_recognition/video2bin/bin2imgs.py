@@ -17,7 +17,6 @@ imgArray = np.fromfile(BINPATH, dtype=np.float32)
 
 imgArray.shape=1, CLIP_LENGTH, CROP_SIZE, CROP_SIZE, CHANNEL_NUM
 
-#print(imgArray)
 
 for i in range(CLIP_LENGTH):
     img = imgArray[0][i]
