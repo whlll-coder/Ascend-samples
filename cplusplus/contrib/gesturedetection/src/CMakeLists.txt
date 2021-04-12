@@ -37,10 +37,8 @@ if (${CMAKE_CXX_COMPILER} MATCHES "aarch")
     set(ARCH "arm")
     list(APPEND COMMON_DEPEND_LIB media_mini c_sec slog )
     add_definitions(-DENABLE_BOARD_CAMARE)
-#    set(INC_PATH "$ENV{HOME}/Ascend/ascend-toolkit/3.1.0.rc1/arm64-linux")
 else ()
     set(ARCH "x86")
-#    set(INC_PATH "$ENV{HOME}/Ascend/ascend-toolkit/3.1.0.rc1/x86_64-linux")
 endif()
 
 # Header path
