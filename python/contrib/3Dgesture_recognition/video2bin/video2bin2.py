@@ -24,9 +24,6 @@ def file_names():
 
 
 def read_images(imglist):
-"""
-read images
-"""
     imgArray = np.empty([1, CLIP_LENGTH, CROP_SIZE, CROP_SIZE, CHANNEL_NUM], dtype = np.float32)
     i = 0
     for img in imglist:
