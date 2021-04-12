@@ -100,7 +100,7 @@ AtlasError ColorizeProcess::init() {
         return ATLAS_ERROR;
     }
 
-    inputDataSize_ = model_.GetModelSize();
+    inputDataSize_ = model_.GetModelSize(0);
 
     ret = create_input(inputDataSize_);
     if (ret != ATLAS_OK) {
