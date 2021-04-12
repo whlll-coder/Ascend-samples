@@ -320,8 +320,8 @@ void AtlasModel::DestroyInput()
     input_ = nullptr;
 }
 
-size_t AtlasModel::get_model_size(){
-    size_t modelInputSize = aclmdlGetInputSizeByIndex(modelDesc_, 0);
+size_t AtlasModel::GetModelInputSize(int index){
+    size_t modelInputSize = aclmdlGetInputSizeByIndex(modelDesc_, index);
     return modelInputSize;
 }
 

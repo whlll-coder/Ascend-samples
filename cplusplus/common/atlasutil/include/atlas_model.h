@@ -39,9 +39,7 @@ public:
     AtlasError Execute(std::vector<InferenceOutput>& inferOutputs, 
                        void *data, uint32_t size);
     AtlasError Execute(std::vector<InferenceOutput>& inferOutputs);
-    /***/
-    size_t get_model_size();
-    /***/
+    size_t GetModelInputSize(int index);
     void DestroyInput();
 
 private:
