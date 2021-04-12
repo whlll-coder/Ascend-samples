@@ -48,6 +48,6 @@ amct_acl generate deploy air success.
 量化成功后，会在scripts目录生成以下文件：
 
 + amct_log/amct_acl.log：量化日志文件，记录晟腾模型压缩工具量化过程的日志信息。
-+ result/resnet_v1_50.air：量化后的模型文件。
++ results/resnet_v1_50.air：量化后的模型文件。
 + kernel_meta：算子编译生成的文件目录。
 + （可选）dump/record.txt：量化因子文件，如果执行量化时设置了生成量化因子的环境变量，则量化后会生成该目录。关于环境变量的设置和量化因子的详细说明，请参考《晟腾模型压缩工具使用指南（ACL方式）》。

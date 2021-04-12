@@ -24,5 +24,5 @@ out_nodes="Gemm_353:0"
 python3.7 ../data/process_data.py
 
 $acl_app --framework=5 --model=$model --calibration_data=$calibration_data \
---calibration_shape=$input_shape --out_nodes=$out_nodes\
+--calibration_shape=$input_shape --out_nodes=$out_nodes \
 --output=./results/$model_name --soc_version=Ascend910A --log=info
