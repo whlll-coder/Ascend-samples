@@ -27,7 +27,6 @@
 #include <memory>
 #include "ascenddk/presenter/agent/presenter_channel.h"
 
-using namespace ascend::presenter;
 /**
 * ColorizeProcess
 */
@@ -65,9 +64,9 @@ private:
     void*    inputBuf_;
     aclrtRunMode runMode_;
 
-    Channel* channel_;
+    ascend::presenter::Channel* channel_;
     bool isInited_;
-    std::shared_ptr<Channel> chan_;
+    std::shared_ptr<ascend::presenter::Channel> chan_;
 
 };
 

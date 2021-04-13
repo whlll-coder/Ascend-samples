@@ -112,7 +112,7 @@ AtlasError ColorizeProcess::CreateInput() {
     AtlasError ret = model_.CreateInput(inputBuf_, inputDataSize_);
     if (ret != ATLAS_OK) {
         ATLAS_LOG_ERROR("Create model input failed");
-   	return ATLAS_ERROR;
+        return ATLAS_ERROR;
     }
 
     return ATLAS_OK;
