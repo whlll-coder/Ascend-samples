@@ -147,10 +147,10 @@ cd $project_path/build_out
 rm -rf *.run
 log "[INFO] Cmake begin."
 CMAKE_ARGS="-DMINRC=TRUE"
-if [ -f /usr/bin/aarch64-linux-gnu-g++ ]
-   cmake $CMAKE_ARGS ..
+if [ ! -d $ASCEND_AICPU_PATH/Ascend310RC/aicpu ];then
+  cmake ..
 else
-   cmake ..
+  cmake $CMAKE_ARGS ..
 fi
 if [ $? -ne 0 ]; then
   log "[ERROR] Please check cmake result."
