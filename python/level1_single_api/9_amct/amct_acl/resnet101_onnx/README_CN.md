@@ -8,7 +8,7 @@
 
 ## 模型准备
 
-请至链接下载ResNet101模型文件。下载后将resnet101_v11.onnx放到当前目录的model子目录中。处理后的model目录结构如下：
+请下载[ResNet101模型文件](https://c7xcode.obs.cn-north-4.myhuaweicloud.com/models/amct_acl/resnet101_v11.onnx)。下载后将resnet101_v11.onnx放到当前目录的model子目录中。处理后的model目录结构如下：
 
 ```shell
 └─model

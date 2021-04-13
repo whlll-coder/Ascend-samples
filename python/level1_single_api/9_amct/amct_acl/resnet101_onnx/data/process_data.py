@@ -72,9 +72,7 @@ def prepare_image_input(images, height=256, width=256, crop_size=224):
 
 
 def process_data():
-    '''
-    process data
-    '''
+    """process data"""
     # prepare cur batch data
     image_names, labels = get_labels_from_txt(
         os.path.join(IMAGE_PATH, 'image_label.txt'))
@@ -92,9 +90,7 @@ def process_data():
 
 
 def main():
-    '''
-    process image and save it to bin
-    '''
+    """process image and save it to bin"""
     input_array = process_data()
     input_array.tofile(BIN_FILE)
 
