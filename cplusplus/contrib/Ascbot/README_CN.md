@@ -37,23 +37,23 @@ AscendBot是一款面向人工智能及机器人爱好者的开源智能机器�
 
        **cd $HOME**
 
-       **git clone https://gitee.com/ascend-incubator/car.git**
+       **git clone https://gitee.com/ascend/samples.git**
 
     - 压缩包方式下载（下载时间较短，但步骤稍微复杂）。
 
         1. samples仓右上角选择 **克隆/下载** 下拉框并选择 **下载ZIP**。
 
-        2. 将ZIP包上传到开发环境中的普通用户家目录中，例如 **$HOME/ascend-incubator-car-master.zip**。
+        2. 将ZIP包上传到开发环境中的普通用户家目录中，例如 **$HOME/ascend-samples-master.zip**。
 
         3. 开发环境中，执行以下命令，解压zip包。
 
             **cd $HOME**
 
-            **unzip ascend-incubator-car-master.zip**
+            **unzip ascend-samples-master.zip**
 
 2. 获取此应用中所需要的原始网络模型。
 
-    参考下表获取此应用中所用到的原始网络模型及其对应的权重文件，并将其存放到开发环境普通用户下的任意目录，例如：$HOME/models/ascbot。
+    参考下表获取此应用中所用到的原始网络模型及其对应的权重文件，并将其存放到开发环境普通用户下目录：$HOME/samples/cplusplus/contrib/Ascbot。
     
     |  **模型名称**  |  **模型说明**  |  **模型下载路径**  |
     |---|---|---|
@@ -78,8 +78,6 @@ AscendBot是一款面向人工智能及机器人爱好者的开源智能机器�
 
     2. 执行以下命令下载aipp配置文件并使用atc命令进行模型转换。
 
-        **cd $HOME/models/ascbot**  
-
         **wget https://modelzoo-train-atc.obs.cn-north-4.myhuaweicloud.com/003_Atc_Models/AE/ATC%20Model/car/collision/insert_op_collision_avoidance.cfg**
 
         **atc --model="collision_avoidance_model.prototxt" --weight="collision_avoidance_model.caffemodel" --soc_version=Ascend310 --framework=0 --output="collision_avoidance_model" --insert_op_conf=insert_op_collision_avoidance.cfg**
@@ -93,20 +91,9 @@ AscendBot是一款面向人工智能及机器人爱好者的开源智能机器�
         **atc --model="road_object_detection_deploy.prototxt" --weight="road_object_detection_deploy.caffemodel" --soc_version=Ascend310 --framework=0 --output="road_object_detection_deploy" --insert_op_conf=insert_op_road_object_detection_deploy.cfg**
 
 
-    3. 执行以下命令将转换好的模型复制到样例中model文件夹中。
-
-        **cp ./collision_avoidance_model.om $HOME/car/ascbot_c75/model/**
-    
-        **cp ./road_following_model.om $HOME/car/ascbot_c75/model/**
-
-        **cp ./road_object_detection_deploy.om $HOME/car/ascbot_c75/model/**
-
-
 ### 样例部署
  
 1. 开发环境命令行中设置编译依赖的环境变量。
-
-
 
      **export DDK_PATH=$HOME/Ascend/ascend-toolkit/latest/arm64-linux**
 
@@ -118,7 +105,7 @@ AscendBot是一款面向人工智能及机器人爱好者的开源智能机器�
 
 2. 切换到ascbot_c75目录，创建目录用于存放编译文件，例如，本文中，创建的目录为 **build/intermediates/host**。
 
-    **cd $HOME/car/ascbot_c75**
+    **cd $HOME/samples/cplusplus/contrib/Ascbot**
 
     **mkdir -p build/intermediates/host**
 
@@ -137,7 +124,7 @@ AscendBot是一款面向人工智能及机器人爱好者的开源智能机器�
 
 1. 执行以下命令,将开发环境的 **ascend_bot** 目录上传到运行环境中，例如 **/home/HwHiAiUser**，并以HwHiAiUser（运行用户）登录运行环境（Host）。
 
-    **scp -r $HOME/car/ascbot_c75 HwHiAiUser@xxx.xxx.xxx.xxx:/home/HwHiAiUser**
+    **scp -r $HOME/samples/cplusplus/contrib/Ascbot HwHiAiUser@xxx.xxx.xxx.xxx:/home/HwHiAiUser**
 
     **ssh HwHiAiUser@xxx.xxx.xxx.xxx**    
 
@@ -153,8 +140,6 @@ AscendBot是一款面向人工智能及机器人爱好者的开源智能机器�
 
     添加以下指令
     
-"""
-
     echo 504 >/sys/class/gpio/export
 
     echo 444 >/sys/class/gpio/export
@@ -179,13 +164,12 @@ AscendBot是一款面向人工智能及机器人爱好者的开源智能机器�
 
     usermod -aG HwHiAiUser HwHiAiUser
     
-"""
 
 3. <a name="step_2"></a>运行可执行文件。
 
     - 如果是开发环境与运行环境分离部署，执行以下命令切换目录。
     
-      **cd $HOME/ascbot_c75/out**
+      **cd $HOME/samples/cplusplus/contrib/Ascbot/out**
 
     切换目录后，执行以下命令运行样例。
 
