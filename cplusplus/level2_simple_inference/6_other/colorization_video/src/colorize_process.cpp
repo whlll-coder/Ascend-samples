@@ -22,6 +22,7 @@
 #include "colorize_process.h"
 
 using namespace std;
+using namespace ascend::presenter;
 
 namespace {
     const uint32_t kTopNConfidenceLevels = 5;

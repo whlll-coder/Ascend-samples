@@ -45,7 +45,7 @@ private:
     AtlasError CreateInput();
     AtlasError OpenPresenterChannel();
 
-    void ConstructClassifyResult(std::vector<DetectionResult>& result,
+    void ConstructClassifyResult(std::vector<ascend::presenter::DetectionResult>& result,
                                  int classIdx, float score);
     void EncodeImage(std::vector<uint8_t>& encodeImg, cv::Mat& origImg);
     AtlasError SendImage(cv::Mat& image);
