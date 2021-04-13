@@ -57,7 +57,7 @@
     
     |  **模型名称**  |  **模型说明**  |  **模型下载路径**  |
     |---|---|---|
-    |  InceptionV2| 图片分类推理模型。是tensorflow框架模型。  |  请从此链接[https://modelzoo-train-atc.obs.cn-north-4.myhuaweicloud.com/003_Atc_Models/AE/ATC%20Model/InceptionV2/frozen_graph.pb](https://modelzoo-train-atc.obs.cn-north-4.myhuaweicloud.com/003_Atc_Models/AE/ATC%20Model/InceptionV2/frozen_graph.pb)下载原始模型。 |
+    |  InceptionV2| 图片分类推理模型。是tensorflow框架模型。  |  请从此链接https://gitee.com/ascend/modelzoo/tree/master/contrib/TensorFlow/Research/cv/inceptionv2/ATC_inceptionV2_tf_AE下载原始模型。 |
 
 3. 将原始模型转换为Davinci模型。
     
