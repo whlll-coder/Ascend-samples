@@ -225,7 +225,8 @@ function main() {
 
     ./${project_name} &
 
-    sleep 8
+    sleep 2
+
     project_pid=`ps -ef | grep "${project_name}" | awk -F ' ' '{print $2}'`
     if [[ ${project_pid}"X" != "X" ]];then
         echo -e "\033[33m kill existing project process: kill -9 ${project_pid}.\033[0m"
@@ -244,10 +245,10 @@ function main() {
                 #return ${inferenceError}
             #fi
         fi
-    else 
-        echo "ERROR: run failed. please check your project"
-        return ${inferenceError}
-    fi
+    #else 
+        #echo "ERROR: run failed. please check your project"
+        #return ${inferenceError}
+    #fi
 
     echo "run success"
 
