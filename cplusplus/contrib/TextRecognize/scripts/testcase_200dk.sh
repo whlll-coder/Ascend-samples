@@ -248,7 +248,7 @@ function main() {
     #else 
         #echo "ERROR: run failed. please check your project"
         #return ${inferenceError}
-    #fi
+    fi
 
     echo "run success"
 
