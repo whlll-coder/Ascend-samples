@@ -221,9 +221,9 @@ function main() {
     sleep 2
     # run program
     cd ${project_path}/out
-    mv ${project_path}/out/main ${project_path}/out/${project_name}
+    mv ${project_path}/out/main ${project_path}/out/textrecognize
 
-    ./${project_name} &
+    ./textrecognize &
 
     sleep 2
 
