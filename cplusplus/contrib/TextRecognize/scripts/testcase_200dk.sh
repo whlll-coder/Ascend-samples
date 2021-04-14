@@ -231,7 +231,6 @@ function main() {
     if [[ ${project_pid}"X" != "X" ]];then
         echo -e "\033[33m kill existing project process: kill -9 ${project_pid}.\033[0m"
         sudo kill -9 ${project_pid}
-        echo "run success"
         return ${success}
         #if [ $? -ne 0 ];then
             #echo "ERROR: kill project process failed."
@@ -242,7 +241,6 @@ function main() {
         if [[ ${presenter_server_pid}"X" != "X" ]];then
             echo -e "\033[33mNow do presenter server configuration, kill existing presenter process: kill -9 ${presenter_server_pid}.\033[0m"
             sudo kill -9 ${presenter_server_pid}
-            echo "run success"
             return ${success}
             #if [ $? -ne 0 ];then
                 #echo "ERROR: kill presenter server process failed."
