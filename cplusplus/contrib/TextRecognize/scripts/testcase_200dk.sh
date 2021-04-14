@@ -210,8 +210,9 @@ function main() {
     export LD_LIBRARY_PATH=/home/HwHiAiUser/Ascend/acllib/lib64:/home/HwHiAiUser/ascend_ddk/arm/lib:${LD_LIBRARY_PATH}
 
     # presenter server
+    cd ${project_path}/../../../common/
+    bash run_presenter_server.sh ${script_path}/param.conf
 
-    bash ${script_path}/run_presenter_server.sh ${script_path}/param.conf 
     if [ $? -ne 0 ];then
         echo "ERROR: run presenter server failed. please check your project"
         return ${inferenceError}
