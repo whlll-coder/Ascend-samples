@@ -146,7 +146,12 @@ fi  # endif compile caffe proto
 cd $project_path/build_out
 rm -rf *.run
 log "[INFO] Cmake begin."
-cmake ..
+CMAKE_ARGS="-DMINRC=TRUE"
+if [ ! -d $ASCEND_AICPU_PATH/Ascend310RC/aicpu ];then
+  cmake ..
+else
+  cmake $CMAKE_ARGS ..
+fi
 if [ $? -ne 0 ]; then
   log "[ERROR] Please check cmake result."
   exit 1
