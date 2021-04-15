@@ -33,7 +33,6 @@
 # ************************Variable*********************************************
 ScriptPath="$( cd "$(dirname "$BASH_SOURCE")" ; pwd -P )"
 ModelPath="${ScriptPath}/../model"
-runningLog="/home/HwHiAiUser/tmpinfo.txt"
 
 function running()
 {
