@@ -22,14 +22,14 @@ import atlas_utils.presenteragent.presenter_message as pm
 class PresenterChannel(object):
     """Communication channel between presenter agent and server"""
     def __init__(self, server_ip, port, name='video',
-                 content_type=const.CONTENT_TYPE_VIDEO):
+                 content_type=dtype.CONTENT_TYPE_VIDEO):
         """Create instance"""
         self._server_ip = server_ip
         self._port = port
         self._type = content_type
         self._name = name
         self.agent_msg_queue = Queue()
-        self.open_status = Manager().Value('i', const.STATUS_DISCONNECT)
+        self.open_status = Manager().Value('i', dtype.STATUS_DISCONNECT)
         self.data_respone_counter = Manager().Value('i', 0)
         self._send_counter = 0
 
@@ -50,15 +50,15 @@ class PresenterChannel(object):
         agent_process.start()
         time.sleep(0.5)
         self._send_open_channel_request(self._name, self._type)
-        return self._wait_open_status(const.STATUS_OPENED)
+        return self._wait_open_status(dtype.STATUS_OPENED)
 
     def _wait_open_status(self, listen_status):
-        ret = const.STATUS_ERROR
+        ret = dtype.STATUS_ERROR
         for i in range(0, 100):
             time.sleep(0.001)
             if self.open_status.value == listen_status:
                 log_info("Open status is %d now" % (listen_status))
-                ret = const.STATUS_OK
+                ret = dtype.STATUS_OK
                 break
         return ret
 
@@ -102,7 +102,7 @@ class PresenterChannel(object):
 
     def close(self):
         """Close channel"""
-        if self.open_status == const.STATUS_EXITTED:
+        if self.open_status == dtype.STATUS_EXITTED:
             return
 
         log_info("Presenter channel close...")
@@ -110,7 +110,7 @@ class PresenterChannel(object):
         self.send_message(eos)
         while self.agent_msg_queue.qsize() > 0:
             time.sleep(0.001)
-        self.open_status = const.STATUS_EXITTED
+        self.open_status = dtype.STATUS_EXITTED
 
     def __del__(self):
         self.close()
