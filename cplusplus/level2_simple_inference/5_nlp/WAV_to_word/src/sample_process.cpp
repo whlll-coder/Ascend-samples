@@ -154,10 +154,10 @@ AtlasError SampleProcess::Process()
                 return ATLAS_ERROR;
             }
         } else {
-	    aclError ret = aclrtMemcpy(inputBuf_, devBufferSize,
+        aclError ret = aclrtMemcpy(inputBuf_, devBufferSize,
                                        picDevBuffer, devBufferSize,
                                        ACL_MEMCPY_DEVICE_TO_DEVICE);
-	    if (ret != ACL_ERROR_NONE) {
+        if (ret != ACL_ERROR_NONE) {
                 ATLAS_LOG_ERROR("Copy resized image data to device failed.");
                 return ATLAS_ERROR;
             }
