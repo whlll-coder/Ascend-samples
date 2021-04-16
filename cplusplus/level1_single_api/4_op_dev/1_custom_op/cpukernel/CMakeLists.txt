@@ -3,20 +3,25 @@ cmake_minimum_required(VERSION 3.5)
 project(kernel)
 add_definitions(-D_GLIBCXX_USE_CXX11_ABI=1)
 set(TOOLCHAIN_DIR $ENV{TOOLCHAIN_DIR})
-if (NOT "x${TOOLCHAIN_DIR}" STREQUAL "x")
-    if (NOT IS_DIRECTORY ${TOOLCHAIN_DIR})
-        message(FATAL_ERROR "specify cross compile toolchain directory(${TOOLCHAIN_DIR}) is not exist")
-    endif()
-endif()
-message(STATUS "TOOLCHAIN_DIR=${TOOLCHAIN_DIR}")
 
 #Specify cross compiler
-if (MINRC)
-    set(CMAKE_C_COMPILER ${TOOLCHAIN_DIR}/bin/aarch64-linux-gnu-gcc)
-    set(CMAKE_CXX_COMPILER ${TOOLCHAIN_DIR}/bin/aarch64-linux-gnu-g++)
+if (NUF)
+        set(CMAKE_CXX_COMPILER ${TOOLCHAIN_DIR}-g++)
+        set(CMAKE_C_COMPILER   ${TOOLCHAIN_DIR}-gcc)
 else()
-    set(CMAKE_CXX_COMPILER ${TOOLCHAIN_DIR}/bin/aarch64-target-linux-gnu-g++)
-    set(CMAKE_C_COMPILER   ${TOOLCHAIN_DIR}/bin/aarch64-target-linux-gnu-gcc)
+    if (NOT "x${TOOLCHAIN_DIR}" STREQUAL "x")
+        if (NOT IS_DIRECTORY ${TOOLCHAIN_DIR})
+            message(FATAL_ERROR "specify cross compile toolchain directory(${TOOLCHAIN_DIR}) is not exist")
+        endif()
+    endif()
+    message(STATUS "TOOLCHAIN_DIR=${TOOLCHAIN_DIR}")
+    if (MINRC)
+        set(CMAKE_C_COMPILER ${TOOLCHAIN_DIR}/bin/aarch64-linux-gnu-gcc)
+        set(CMAKE_CXX_COMPILER ${TOOLCHAIN_DIR}/bin/aarch64-linux-gnu-g++)
+    else()
+        set(CMAKE_CXX_COMPILER ${TOOLCHAIN_DIR}/bin/aarch64-target-linux-gnu-g++)
+        set(CMAKE_C_COMPILER   ${TOOLCHAIN_DIR}/bin/aarch64-target-linux-gnu-gcc)
+    endif()
 endif()
 # =========================config json compile============================
 macro(GEN_OPS_INFO_FILE op_type output_dir output_file_name_prefix)
@@ -121,26 +126,32 @@ add_library(${AICPU_KERNEL_TARGET} SHARED ${KERNELS_SRCS})
 
 set(AICPU_SOC_VERSION $ENV{AICPU_SOC_VERSION})
 message(STATUS "AICPU_SOC_VERSION=${AICPU_SOC_VERSION}")
-
-if(EXISTS "${ASCEND_AICPU_PATH}/opp/op_impl/built-in/aicpu/aicpu_kernel/lib/${AICPU_SOC_VERSION}/libcpu_kernels_context.a")
+if (LHISI)
     target_link_libraries(${AICPU_KERNEL_TARGET} PRIVATE
-        -Wl,--whole-archive
-        ${ASCEND_AICPU_PATH}/opp/op_impl/built-in/aicpu/aicpu_kernel/lib/${AICPU_SOC_VERSION}/libcpu_kernels_context.a
-        -Wl,--no-whole-archive
-    )
+            -Wl,--whole-archive
+            ${ASCEND_AICPU_PATH}/opp/op_impl/built-in/aicpu/aicpu_kernel/lib/LHISI/libcpu_kernels_context.a
+            -Wl,--no-whole-archive
+        )
 else()
-    if(EXISTS "${ASCEND_AICPU_PATH}/opp/op_impl/built-in/aicpu/aicpu_kernel/lib/libcpu_kernels_context.a")
+    if(EXISTS "${ASCEND_AICPU_PATH}/opp/op_impl/built-in/aicpu/aicpu_kernel/lib/${AICPU_SOC_VERSION}/libcpu_kernels_context.a")
         target_link_libraries(${AICPU_KERNEL_TARGET} PRIVATE
             -Wl,--whole-archive
-            ${ASCEND_AICPU_PATH}/opp/op_impl/built-in/aicpu/aicpu_kernel/lib/libcpu_kernels_context.a
+            ${ASCEND_AICPU_PATH}/opp/op_impl/built-in/aicpu/aicpu_kernel/lib/${AICPU_SOC_VERSION}/libcpu_kernels_context.a
             -Wl,--no-whole-archive
         )
-    elseif(EXISTS "${ASCEND_OPP_PATH}/op_impl/built-in/aicpu/aicpu_kernel/lib/device/libcpu_kernels_context.so")
-        target_link_libraries(${AICPU_KERNEL_TARGET} PRIVATE
-            -Wl,--whole-archive
-            ${ASCEND_OPP_PATH}/op_impl/built-in/aicpu/aicpu_kernel/lib/device/libcpu_kernels_context.so
-            -Wl,--no-whole-archive
-        )
+    else()
+        if(EXISTS "${ASCEND_AICPU_PATH}/opp/op_impl/built-in/aicpu/aicpu_kernel/lib/libcpu_kernels_context.a")
+            target_link_libraries(${AICPU_KERNEL_TARGET} PRIVATE
+                -Wl,--whole-archive
+                ${ASCEND_AICPU_PATH}/opp/op_impl/built-in/aicpu/aicpu_kernel/lib/libcpu_kernels_context.a
+                -Wl,--no-whole-archive
+            )
+        elseif(EXISTS "${ASCEND_OPP_PATH}/op_impl/built-in/aicpu/aicpu_kernel/lib/device/libcpu_kernels_context.so")
+            target_link_libraries(${AICPU_KERNEL_TARGET} PRIVATE
+                -Wl,--whole-archive
+                ${ASCEND_OPP_PATH}/op_impl/built-in/aicpu/aicpu_kernel/lib/device/libcpu_kernels_context.so
+                -Wl,--no-whole-archive
+            )
+        endif()
     endif()
 endif()
-

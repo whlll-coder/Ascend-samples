@@ -104,13 +104,14 @@ if [[ ! -z "$TOOLCHAIN_DIR" ]] && [[ ! -d "$TOOLCHAIN_DIR" ]];then
     log "[ERROR] Specified cross compile toolchain directory is not exist"
     exit 1
 fi
-
+if [ ! "x$AICPU_SOC_VERSION" = "xLhisi" ];then
 # set aicpu kernel implement compiler target, default to be custom_cpu_kernels
-if [[ -z "${aicpu_target_name}" ]] && [[ -z "${AICPU_KERNEL_TARGET}" ]]; then
-    log "[INFO] no so_name is specified, use default compile target: libcust_aicpu_kernels.so!"
-    aicpu_target_name="cust_aicpu_kernels"
-    export AICPU_KERNEL_TARGET=$aicpu_target_name
-    #exit 1
+  if [[ -z "${aicpu_target_name}" ]] && [[ -z "${AICPU_KERNEL_TARGET}" ]]; then
+      log "[INFO] no so_name is specified, use default compile target: libcust_aicpu_kernels.so!"
+      aicpu_target_name="cust_aicpu_kernels"
+      export AICPU_KERNEL_TARGET=$aicpu_target_name
+      #exit 1
+  fi
 fi
 
 chmod -R 755 $project_path/cmake/util/
@@ -146,11 +147,17 @@ fi  # endif compile caffe proto
 cd $project_path/build_out
 rm -rf *.run
 log "[INFO] Cmake begin."
-CMAKE_ARGS="-DMINRC=TRUE"
-if [ ! -d $ASCEND_AICPU_PATH/Ascend310RC/aicpu ];then
-  cmake ..
+
+if [ "x$AICPU_SOC_VERSION" = "xLhisi" ];then
+     CMAKE_ARGS="-DLHISI=TRUE"
+     cmake $CMAKE_ARGS ..
 else
-  cmake $CMAKE_ARGS ..
+  if [ -d $ASCEND_AICPU_PATH/opp/Ascend310RC/aicpu ];then
+    CMAKE_ARGS="-DMINRC=TRUE"
+    cmake $CMAKE_ARGS ..
+  else 
+    cmake ..
+  fi
 fi
 if [ $? -ne 0 ]; then
   log "[ERROR] Please check cmake result."
