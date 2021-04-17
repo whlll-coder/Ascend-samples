@@ -99,19 +99,20 @@ if [ "x$clean" == "xy" ] 2>/dev/null; then
   exit 0
 fi
 
-# if specified cross compile toolchain directory is not exist, log error and exit
-if [[ ! -z "$TOOLCHAIN_DIR" ]] && [[ ! -d "$TOOLCHAIN_DIR" ]];then
-    log "[ERROR] Specified cross compile toolchain directory is not exist"
-    exit 1
-fi
 if [ ! "x$AICPU_SOC_VERSION" = "xLhisi" ];then
-# set aicpu kernel implement compiler target, default to be custom_cpu_kernels
-  if [[ -z "${aicpu_target_name}" ]] && [[ -z "${AICPU_KERNEL_TARGET}" ]]; then
-      log "[INFO] no so_name is specified, use default compile target: libcust_aicpu_kernels.so!"
-      aicpu_target_name="cust_aicpu_kernels"
-      export AICPU_KERNEL_TARGET=$aicpu_target_name
-      #exit 1
+  # if specified cross compile toolchain directory is not exist, log error and exit
+  if [[ ! -z "$TOOLCHAIN_DIR" ]] && [[ ! -d "$TOOLCHAIN_DIR" ]];then
+      log "[ERROR] Specified cross compile toolchain directory is not exist"
+      exit 1
   fi
+fi
+
+# set aicpu kernel implement compiler target, default to be custom_cpu_kernels
+if [[ -z "${aicpu_target_name}" ]] && [[ -z "${AICPU_KERNEL_TARGET}" ]]; then
+    log "[INFO] no so_name is specified, use default compile target: libcust_aicpu_kernels.so!"
+    aicpu_target_name="cust_aicpu_kernels"
+    export AICPU_KERNEL_TARGET=$aicpu_target_name
+    #exit 1
 fi
 
 chmod -R 755 $project_path/cmake/util/
