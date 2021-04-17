@@ -90,7 +90,7 @@ This repository provides a wide range of samples developed based on AscendCL API
 
 ## Documentation
 
-Obtain related documentation at [Ascend Documentation] (https://support.huaweicloud.com/intl/en-us/ascenddocument/index.html).
+Obtain related documentation at [Ascend Documentation](https://support.huaweicloud.com/intl/en-us/ascenddocument/index.html).
 
 ## Community
 
