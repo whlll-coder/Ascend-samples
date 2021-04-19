@@ -35,6 +35,7 @@ def conv1x1(in_planes, out_planes, stride=1):
 
 
 class BasicBlock(nn.Module):
+    """BasicBlock"""
     expansion = 1
 
     def __init__(self, inplanes, planes, stride=1, downsample=None, groups=1,
@@ -56,6 +57,7 @@ class BasicBlock(nn.Module):
         self.stride = stride
 
     def forward(self, x):
+        """forward"""
         identity = x
 
         out = self.conv1(x)
@@ -75,11 +77,13 @@ class BasicBlock(nn.Module):
 
 
 class Bottleneck(nn.Module):
-    # Bottleneck in torchvision places the stride for downsampling at 3x3 convolution(self.conv2)
-    # while original implementation places the stride at the first 1x1 convolution(self.conv1)
-    # according to "Deep residual learning for image recognition"https://arxiv.org/abs/1512.03385.
-    # This variant is also known as ResNet V1.5 and improves accuracy according to
-    # https://ngc.nvidia.com/catalog/model-scripts/nvidia:resnet_50_v1_5_for_pytorch.
+    """
+    Bottleneck in torchvision places the stride for downsampling at 3x3 convolution(self.conv2)
+    while original implementation places the stride at the first 1x1 convolution(self.conv1)
+    according to "Deep residual learning for image recognition"https://arxiv.org/abs/1512.03385.
+    This variant is also known as ResNet V1.5 and improves accuracy according to
+    https://ngc.nvidia.com/catalog/model-scripts/nvidia:resnet_50_v1_5_for_pytorch.
+    """
 
     expansion = 4
 
@@ -101,6 +105,7 @@ class Bottleneck(nn.Module):
         self.stride = stride
 
     def forward(self, x):
+        """forward"""
         identity = x
 
         out = self.conv1(x)
@@ -124,7 +129,7 @@ class Bottleneck(nn.Module):
 
 
 class ResNet(nn.Module):
-
+    """ResNet"""
     def __init__(self, block, layers, num_classes=1000, zero_init_residual=False,
                  groups=1, width_per_group=64, replace_stride_with_dilation=None,
                  norm_layer=None):
@@ -219,6 +224,7 @@ class ResNet(nn.Module):
         return x
 
     def forward(self, x):
+        """forward"""
         return self._forward_impl(x)
 
 
