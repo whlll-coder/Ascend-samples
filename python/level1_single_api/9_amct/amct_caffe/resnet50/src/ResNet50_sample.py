@@ -159,7 +159,7 @@ import amct_caffe as amct # pylint: disable=E0401, C0413
 
 
 if QUANT_ARGS.benchmark:
-    from datasets import LMDBData
+    import datasets
 
 
 def mkdir(name):
@@ -265,7 +265,7 @@ def do_benchmark_test(args, model_file, weights_file, iterations=1000):
 
     top1_total = 0
     top5_total = 0
-    lmdb_data = LMDBData(args.dataset)
+    lmdb_data = datasets.LMDBData(args.dataset)
     lmdb_data.set_scale(SCALE)
     lmdb_data.set_crop_size(CROP_SIZE)
     if MEAN_FILE is not None:

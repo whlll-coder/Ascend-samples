@@ -109,11 +109,8 @@ add_path(os.path.join(QUANT_ARGS.caffe_dir, 'python'))
 
 import caffe # pylint: disable=E0401, C0413
 import amct_caffe as amct # pylint: disable=E0401, C0413
-from datasets import LMDBData # pylint: disable=C0413
-from download_and_convert_mnist_dataset import \
-    download_mnist_dataset # pylint: disable=C0413
-from download_and_convert_mnist_dataset import \
-    make_mnist_lmdb_dataset # pylint: disable=C0413
+import datasets # pylint: disable=C0413
+import download_and_convert_mnist_dataset as mnist_data
 
 
 def img_postprocess(probs, labels):
@@ -139,7 +136,7 @@ def do_benchmark_test(model_file, weights_file, iterations=150):
     net = caffe.Net(model_file, weights_file, caffe.TEST)
 
     top1_total = 0
-    lmdb_data = LMDBData(LMDB_DATASET_DIR)
+    lmdb_data = datasets.LMDBData(LMDB_DATASET_DIR)
     lmdb_data.set_scale(SCALE)
     for index in range(iterations):
         data, labels = lmdb_data.get_blobs(BATCH_SIZE)
@@ -217,7 +214,7 @@ def main(args):
 
 if __name__ == '__main__':
     # Init mnist env
-    DATASET_PATH = os.path.join(TMP, 'data/mnist_data')
-    download_mnist_dataset(DATASET_PATH)
-    make_mnist_lmdb_dataset(QUANT_ARGS.caffe_dir, DATASET_PATH, TMP)
+    DATASET_PATH = os.path.join(PATH, 'data/mnist_data')
+    mnist_data.download_mnist_dataset(DATASET_PATH)
+    mnist_data.make_mnist_lmdb_dataset(QUANT_ARGS.caffe_dir, DATASET_PATH, TMP)
     main(QUANT_ARGS)
