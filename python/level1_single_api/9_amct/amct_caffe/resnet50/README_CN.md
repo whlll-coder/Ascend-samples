@@ -48,7 +48,7 @@ tar -xvf imagenet_calibration.tar.gz
 python3.7.5 ./src/ResNet50_sample.py \
 --model_file model/ResNet-50-deploy.prototxt \
 --weights_file model/ResNet-50-model.caffemodel \
---caffe_dir caffe-master \ 
+--caffe_dir caffe-master \
 --gpu 0 \
 --pre_test 
 ```
@@ -217,10 +217,14 @@ python3.7.5 ./src/auto_nuq_resnet50_sample.py \
 或则通过`.scripts/run_resnet50_auto_nuq.sh`执行：
 ```bash
 bash scripts/run_resnet50_auto_nuq.sh \
--c /path/to/caffe_master \ # 必填，caffe_master路径
--g 0 \ # 选填，GPU的设备ID。如果不指定该参数，则默认在CPU上运行
--d #必填，数据集路径
+-c /path/to/caffe_master
+-g 0 \
+-d /path/to/validation/data/set
 ```
+入参说明:
+* `-c`: 必填，caffe_master路径
+* `-g`: 选填，GPU的设备ID。如果不指定该参数，则默认在CPU上运行
+* `-d`: 必填，验证数据集路径
 
 ### 2.6 执行量化感知训练示例
 在该示例根目录下执行：
