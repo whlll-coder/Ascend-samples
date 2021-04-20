@@ -126,32 +126,26 @@ add_library(${AICPU_KERNEL_TARGET} SHARED ${KERNELS_SRCS})
 
 set(AICPU_SOC_VERSION $ENV{AICPU_SOC_VERSION})
 message(STATUS "AICPU_SOC_VERSION=${AICPU_SOC_VERSION}")
-if (LHISI)
+
+if(EXISTS "${ASCEND_AICPU_PATH}/opp/op_impl/built-in/aicpu/aicpu_kernel/lib/${AICPU_SOC_VERSION}/libcpu_kernels_context.a")
     target_link_libraries(${AICPU_KERNEL_TARGET} PRIVATE
-            -Wl,--whole-archive
-            ${ASCEND_AICPU_PATH}/opp/op_impl/built-in/aicpu/aicpu_kernel/lib/LHISI/libcpu_kernels_context.a
-            -Wl,--no-whole-archive
-        )
+        -Wl,--whole-archive
+        ${ASCEND_AICPU_PATH}/opp/op_impl/built-in/aicpu/aicpu_kernel/lib/${AICPU_SOC_VERSION}/libcpu_kernels_context.a
+        -Wl,--no-whole-archive
+    )
 else()
-    if(EXISTS "${ASCEND_AICPU_PATH}/opp/op_impl/built-in/aicpu/aicpu_kernel/lib/${AICPU_SOC_VERSION}/libcpu_kernels_context.a")
+    if(EXISTS "${ASCEND_AICPU_PATH}/opp/op_impl/built-in/aicpu/aicpu_kernel/lib/libcpu_kernels_context.a")
         target_link_libraries(${AICPU_KERNEL_TARGET} PRIVATE
             -Wl,--whole-archive
-            ${ASCEND_AICPU_PATH}/opp/op_impl/built-in/aicpu/aicpu_kernel/lib/${AICPU_SOC_VERSION}/libcpu_kernels_context.a
+            ${ASCEND_AICPU_PATH}/opp/op_impl/built-in/aicpu/aicpu_kernel/lib/libcpu_kernels_context.a
             -Wl,--no-whole-archive
         )
-    else()
-        if(EXISTS "${ASCEND_AICPU_PATH}/opp/op_impl/built-in/aicpu/aicpu_kernel/lib/libcpu_kernels_context.a")
-            target_link_libraries(${AICPU_KERNEL_TARGET} PRIVATE
-                -Wl,--whole-archive
-                ${ASCEND_AICPU_PATH}/opp/op_impl/built-in/aicpu/aicpu_kernel/lib/libcpu_kernels_context.a
-                -Wl,--no-whole-archive
-            )
-        elseif(EXISTS "${ASCEND_OPP_PATH}/op_impl/built-in/aicpu/aicpu_kernel/lib/device/libcpu_kernels_context.so")
-            target_link_libraries(${AICPU_KERNEL_TARGET} PRIVATE
-                -Wl,--whole-archive
-                ${ASCEND_OPP_PATH}/op_impl/built-in/aicpu/aicpu_kernel/lib/device/libcpu_kernels_context.so
-                -Wl,--no-whole-archive
-            )
-        endif()
+    elseif(EXISTS "${ASCEND_OPP_PATH}/op_impl/built-in/aicpu/aicpu_kernel/lib/device/libcpu_kernels_context.so")
+        target_link_libraries(${AICPU_KERNEL_TARGET} PRIVATE
+            -Wl,--whole-archive
+            ${ASCEND_OPP_PATH}/op_impl/built-in/aicpu/aicpu_kernel/lib/device/libcpu_kernels_context.so
+            -Wl,--no-whole-archive
+        )
     endif()
 endif()
+
