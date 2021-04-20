@@ -170,7 +170,7 @@ def mkdir(name):
         os.makedirs(name)
 
 
-def test(model_file: str, weights_file: str, iterations: int):
+def test(model_file, weights_file, iterations):
     """test caffe model"""
     net = caffe.Net(model_file, weights_file, caffe.TEST)
     top_1 = 0
@@ -184,7 +184,7 @@ def test(model_file: str, weights_file: str, iterations: int):
     print('Top 5 accuracy =', top_5 / iterations)
 
 
-def train(args, model_file: str, weights_file: str, solver_file: str):
+def train(args, model_file, weights_file, solver_file):
     """train caffe model"""
     solver_param = caffe.proto.caffe_pb2.SolverParameter()
     solver_param.net = model_file

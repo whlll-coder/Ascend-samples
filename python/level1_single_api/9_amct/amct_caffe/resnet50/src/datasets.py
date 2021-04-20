@@ -23,7 +23,7 @@ import caffe # pylint: disable=E0401
 import lmdb # pylint: disable=E0401
 
 
-class LMDBData():
+class LMDBData(object):
     """lmdb dataset reader"""
     def __init__(self, lmdb_dir):
         """init lmdb dataset reader"""
