@@ -282,7 +282,6 @@ class AutoCalibrationEvaluator(AutoCalibrationEvaluatorBase):
         """
         run_caffe_model(model_file, weights_file, self.batch_num)
 
-
     def evaluate(self, model_file, weights_file):
         """"
         Function:
@@ -295,7 +294,6 @@ class AutoCalibrationEvaluator(AutoCalibrationEvaluatorBase):
         """
         return do_benchmark_test(self.args, model_file, weights_file,
                                  self.args.iterations)
-
 
     def metric_eval(self, original_metric, new_metric):
         """

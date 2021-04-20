@@ -29,7 +29,7 @@ CALIBRATION_SIZE = 32
 
 def image_preprocces(image_path):
     """
-    将jpeg图像，加工为可以进行推理的数据224*224*3。
+    Processing the image to ResNet-50 inference size in 224*224*3.
     """
     fpath = glob.glob(image_path)
     image_list = []
@@ -41,9 +41,9 @@ def image_preprocces(image_path):
         # crop image
         height = img.shape[0]
         width = img.shape[1]
-        h_off = int((height-INPUT_SHAPE[1])/2)
-        w_off = int((width-INPUT_SHAPE[2])/2)
-        crop_img = img[h_off:height-h_off, w_off:width-w_off, :]
+        h_off = int((height - INPUT_SHAPE[1]) / 2)
+        w_off = int((width - INPUT_SHAPE[2]) / 2)
+        crop_img = img[h_off:height - h_off, w_off:width - w_off, :]
         img = crop_img[:, :, ::-1]
 
         # mean_normalize
@@ -65,9 +65,9 @@ def image_preprocces(image_path):
 
 
 def main():
-    '''
-    预处理图片，并将其存为bin文件
-    '''
+    """
+    Images pre-processing and converting to bin file.
+    """
     # preprocess data to np
     images = image_preprocces(IMAGE_PATH)
     # save processed data to bin file

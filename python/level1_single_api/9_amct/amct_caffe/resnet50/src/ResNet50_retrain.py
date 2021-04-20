@@ -149,7 +149,7 @@ def args_check(args):
                 TEST_SIZE))
 
 
-def add_path(path: str):
+def add_path(path):
     """Add path to env"""
     if path not in sys.path:
         sys.path.insert(0, path)

@@ -68,7 +68,7 @@ class LMDBData():
                 mean_blobs.ParseFromString(pbtxt_string)
             except Exception as exception:
                 raise RuntimeError('Read Blobs proto from binary file:{} ' \
-                    'failed, {}'.format(proto_file, exception)) from exception
+                    'failed, {}'.format(proto_file, exception))
         if mean_blobs.channels != self.__channels:
             raise RuntimeError('Channels in mean file {} is not equal to ' \
                 'lmdb data {}'.format(mean_blobs.channels, self.__channels))
