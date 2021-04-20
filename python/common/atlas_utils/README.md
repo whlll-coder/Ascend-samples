@@ -36,97 +36,93 @@ python atlasutil库依赖pyav, numpy和PIL。在运行环境中需要安装这�
 
 2. 安装其他依赖：
 
-   ```
-   apt-get install python3-pip
-   pip3 install --upgrade pip
-   pip3 install Cython
-   apt-get install pkg-config libxcb-shm0-dev libxcb-xfixes0-dev
-   cp /home/HwHiAiUser/ascend_ddk/<arch>/lib/pkgconfig/* /usr/share/pkgconfig/
-   ```
+```
+apt-get install python3-pip
+pip3 install --upgrade pip
+pip3 install Cython
+apt-get install pkg-config libxcb-shm0-dev libxcb-xfixes0-dev
+cp /home/HwHiAiUser/ascend_ddk/<arch>/lib/pkgconfig/* /usr/share/pkgconfig/
+```
 
-   其中arch参数在Atlas200dk上使用arm, 即：
+其中arch参数在Atlas200dk上使用arm, 即：
 
-   `cp /home/HwHiAiUser/ascend_ddk/arm/lib/pkgconfig/* /usr/share/pkgconfig/`
+`cp /home/HwHiAiUser/ascend_ddk/arm/lib/pkgconfig/* /usr/share/pkgconfig/`
 
-   在Atlas300上，根据服务器CPU是arm还是x86_64，分别取arm或者x86
+在Atlas300上，根据服务器CPU是arm还是x86_64，分别取arm或者x86
 
 3. 源码安装pyav
 
-   ```
-   git clone https://gitee.com/mirrors/PyAV.git
-   cd PyAv
-   python3 setup.py build --ffmpeg-dir=/home/HwHiAiUser/ascend_ddk/<arch>
-   python3 setup.py install
-   ```
+```
+git clone https://gitee.com/mirrors/PyAV.git
+cd PyAv
+python3 setup.py build --ffmpeg-dir=/home/HwHiAiUser/ascend_ddk/<arch>
+python3 setup.py install
+```
 
-   arch参数的选择同上
+arch参数的选择同上
 
-   ```
-   安装过程中常见报错：
-   
+```
+安装过程中常见报错：
+
 错误1：apt-get报错Job for nginx.service failed because the control process exited with error code.
-   解决方法：将/etc/nginx/sites-enabled/default中
+解决方法：将/etc/nginx/sites-enabled/default中
    listen       80 default_server;
-      listen       [::]:80 default_server;
+   listen       [::]:80 default_server;
    改为：
-      listen       80;
-      #listen       [::]:80 default_server;
-   
-   错误2：编译PyAv报错
+   listen       80;
+   #listen       [::]:80 default_server;
+
+错误2：编译PyAv报错
    Could not find libavdevice with pkg-config.
    Could not find libavfilter with pkg-config.
-   解决方法：
+解决方法：
    步骤1.确认cp /home/HwHiAiUser/ascend_ddk/<arch>/lib/pkgconfig/* /usr/share/pkgconfig/ 执行成功
-   步骤2.设置环境变量
+   步骤2.设置环境变量:
    export PKG_CONFIG_PATH=/usr/share/pkgconfig/
-   ```
+```
 
-4. 测试pyav安装是否成功
+4. 测试pyav安装是否成功 
 
-   ```
-   cd ..
-   python3
-   import av
-   ```
+```
+cd ..
+python3
+import av
+```
 
-   注意：不要再PyAv目录下测试，否则报错
+ 注意：不要再PyAv目录下测试，否则报错
 
-   ```
-   ModuleNotFoundError: No module named 'av._core'
-   ```
+ ModuleNotFoundError: No module named 'av._core'
 
-   ### 安装numpy和PIL
+###  安装numpy和PIL
 
-   ```
-   pip3 install numpy
-   pip3 install Pillow
-   ```
+```
+pip3 install numpy
+pip3 install Pillow
+```
 
    ### 安装python atlasutil库
 
-   python atlasutil库以源码方式提供，安装时将atlas_utils目录拷贝到运行环境，并将该路径加入PYTHONPATH环境变量即可。例如将整个samples仓拷贝到运行环境$HOME目录下，在~/.bashrc文件中添加：
+python atlasutil库以源码方式提供，安装时将atlas_utils目录拷贝到运行环境，并将该路径加入PYTHONPATH环境变量即可。例如将整个samples仓拷贝到运行环境$HOME目录下，在~/.bashrc文件中添加：
 
-   ```
-   export PYTHONPATH=$HOME/samples/python/common/atlas_utils:$PYTHONPATH
-   ```
+```
+export PYTHONPATH=$HOME/samples/python/common/atlas_utils:$PYTHONPATH
+```
 
-   并保存，然后执行
+并保存，然后执行
 
-   ```
-   source ~/.bashrc
-   ```
+```
+source ~/.bashrc
+```
 
-   或者单独将atlas_utils目录拷贝到运行环境$HOME/ascend_ddk/目录下，在~/.bashrc文件中添加：
+或者单独将atlas_utils目录拷贝到运行环境$HOME/ascend_ddk/目录下，在~/.bashrc文件中添加：
 
-   ```
-   export PYTHONPATH=$HOME/samples/python/common/atlas_utils:$PYTHONPATH
-   ```
+```
+export PYTHONPATH=$HOME/samples/python/common/atlas_utils:$PYTHONPATH
+```
 
-   并保存，然后执行
+并保存，然后执行
 
-   ```
-   source ~/.bashrc
-   ```
-
-   
+```
+source ~/.bashrc
+```
 
