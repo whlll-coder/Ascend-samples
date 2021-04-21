@@ -68,10 +68,9 @@ namespace {
         cv::Scalar(237, 149, 100), cv::Scalar(0, 215, 255), cv::Scalar(50, 205, 50),
         cv::Scalar(139, 85, 26) };
 }
-static int posttest = 0;
-int frame_cnt = 0;
+static int gPostEnd = 0;
 void Preprocess(cv::VideoCapture capture, aclrtContext context, 
-		long totalFrameNumber, BlockingQueue<message_pre>* queue_pre) {
+                long totalFrameNumber, BlockingQueue<message_pre>* queue_pre) {
 
     message_pre premsg;
     aclrtSetCurrentContext(context);
@@ -118,8 +117,8 @@ void Preprocess(cv::VideoCapture capture, aclrtContext context,
 
 void Postprocess(cv::VideoWriter& outputVideo, aclrtContext context, BlockingQueue<message>* queue_post){
     message postmsg;
-    uint32_t* boxNum=nullptr;
-    float* detectData=nullptr;
+    uint32_t* boxNum = nullptr;
+    float* detectData = nullptr;
     aclrtSetCurrentContext(context);
 
     while(1)
@@ -132,7 +131,7 @@ void Postprocess(cv::VideoWriter& outputVideo, aclrtContext context, BlockingQue
 
         if (postmsg.number == -1){
             break;
-	}
+    }
 
         cv::Mat frame = postmsg.frame;
         detectData = (float*)postmsg.detectData.get();
@@ -150,7 +149,7 @@ void Postprocess(cv::VideoWriter& outputVideo, aclrtContext context, BlockingQue
             uint32_t score = uint32_t(detectData[totalBox * SCORE + i] * 100);
             if (score < 90){
                 continue;
-	    }
+            }
             boundBox.rect.ltX = detectData[totalBox * TOPLEFTX + i] * widthScale;
             boundBox.rect.ltY = detectData[totalBox * TOPLEFTY + i] * heightScale;
             boundBox.rect.rbX = detectData[totalBox * BOTTOMRIGHTX + i] * widthScale;
@@ -172,7 +171,7 @@ void Postprocess(cv::VideoWriter& outputVideo, aclrtContext context, BlockingQue
         }
         outputVideo << frame;
     }
-    posttest++;
+    gPostEnd++;
     outputVideo.release();
     ATLAS_LOG_INFO("postprocess end");
 
@@ -391,7 +390,7 @@ int main(int argc, char *argv[]) {
     }
 
     while(1){
-        if (posttest == 2)
+        if (gPostEnd == 2)
         {
             break;
         }
