@@ -70,7 +70,8 @@ namespace {
 }
 static int posttest = 0;
 int frame_cnt = 0;
-void Preprocess(cv::VideoCapture capture, aclrtContext context, long totalFrameNumber, BlockingQueue<message_pre>* queue_pre) {
+void Preprocess(cv::VideoCapture capture, aclrtContext context, 
+		long totalFrameNumber, BlockingQueue<message_pre>* queue_pre) {
 
     message_pre premsg;
     aclrtSetCurrentContext(context);
@@ -117,8 +118,8 @@ void Preprocess(cv::VideoCapture capture, aclrtContext context, long totalFrameN
 
 void Postprocess(cv::VideoWriter& outputVideo, aclrtContext context, BlockingQueue<message>* queue_post){
     message postmsg;
-    uint32_t* boxNum;
-    float* detectData;
+    uint32_t* boxNum=nullptr;
+    float* detectData=nullptr;
     aclrtSetCurrentContext(context);
 
     while(1)
@@ -129,8 +130,9 @@ void Postprocess(cv::VideoWriter& outputVideo, aclrtContext context, BlockingQue
             continue;
         }
 
-        if (postmsg.number == -1)
+        if (postmsg.number == -1){
             break;
+	}
 
         cv::Mat frame = postmsg.frame;
         detectData = (float*)postmsg.detectData.get();
@@ -139,7 +141,6 @@ void Postprocess(cv::VideoWriter& outputVideo, aclrtContext context, BlockingQue
             break;
         }
         uint32_t totalBox = boxNum[0];
-        printf("total box %d\n", totalBox);
         vector<BBox> detectResults;
         float widthScale = (float)(frame.cols) / kModelWidth;
         float heightScale = (float)(frame.rows) / kModelHeight;
@@ -147,7 +148,9 @@ void Postprocess(cv::VideoWriter& outputVideo, aclrtContext context, BlockingQue
         for (uint32_t i = 0; i < totalBox; i++) {
             BBox boundBox;
             uint32_t score = uint32_t(detectData[totalBox * SCORE + i] * 100);
-            if (score < 90) continue;
+            if (score < 90){
+                continue;
+	    }
             boundBox.rect.ltX = detectData[totalBox * TOPLEFTX + i] * widthScale;
             boundBox.rect.ltY = detectData[totalBox * TOPLEFTY + i] * heightScale;
             boundBox.rect.rbX = detectData[totalBox * BOTTOMRIGHTX + i] * widthScale;
@@ -169,7 +172,7 @@ void Postprocess(cv::VideoWriter& outputVideo, aclrtContext context, BlockingQue
         }
         outputVideo << frame;
     }
-    posttest ++;
+    posttest++;
     outputVideo.release();
     ATLAS_LOG_INFO("postprocess end");
 
@@ -388,7 +391,7 @@ int main(int argc, char *argv[]) {
     }
 
     while(1){
-        if ( posttest == 2)
+        if (posttest == 2)
         {
             break;
         }

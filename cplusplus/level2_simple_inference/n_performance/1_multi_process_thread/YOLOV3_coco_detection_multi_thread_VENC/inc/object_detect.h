@@ -17,7 +17,6 @@
 * Description: handle acl resource
 */
 #pragma once
-
 #include <memory>
 #include "acl/acl.h"
 #include "atlasutil/atlas_model.h"
@@ -25,8 +24,6 @@
 #include <opencv2/opencv.hpp>
 #include "opencv2/imgcodecs/legacy/constants_c.h"
 #include "opencv2/imgproc/types_c.h"
-
-using namespace std;
 
 /**
 * ObjectDetect
@@ -47,14 +44,14 @@ class ObjectDetect {
     private:
     AtlasError CreateInput();
 
-    AtlasModel model_;          //Inference model instance
-    const char* modelPath_;     //Offline model file path
-    uint32_t modelWidth_;       //The input width required by the model
-    uint32_t modelHeight_;      //The model requires high input
-    uint32_t imageDataSize_;    //Model input data size
-    void*    imageDataBuf_;     //Model input data cache
+    AtlasModel model_;
+    const char* modelPath_;
+    uint32_t modelWidth_;
+    uint32_t modelHeight_;
+    uint32_t imageDataSize_;
+    void*    imageDataBuf_;
     uint32_t imageInfoSize_;
     void*    imageInfoBuf_;
-    aclrtRunMode runMode_;      //Run mode, which is whether the current application is running on atlas200DK or AI1
-    bool isInited_;             //Initializes the tag to prevent inference instances from being initialized multiple times
+    aclrtRunMode runMode_;
+    bool isInited_;
 };
