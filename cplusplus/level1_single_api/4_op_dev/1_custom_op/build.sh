@@ -149,11 +149,11 @@ cd $project_path/build_out
 rm -rf *.run
 log "[INFO] Cmake begin."
 
-if [ "x$AICPU_SOC_VERSION" = "xLhisi" ];then
+if [ "x$AICPU_SOC_VERSION" = "xLHISI" ];then
      CMAKE_ARGS="-DLHISI=TRUE"
      cmake $CMAKE_ARGS ..
 else
-  if [ -d $ASCEND_AICPU_PATH/opp/Ascend310RC/aicpu ];then
+  if [ "x$AICPU_SOC_VERSION" = "xAscend310RC" ];then
     CMAKE_ARGS="-DMINRC=TRUE"
     cmake $CMAKE_ARGS ..
   else 
