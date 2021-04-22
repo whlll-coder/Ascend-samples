@@ -2,7 +2,7 @@
 
 **本样例为大家学习昇腾软件栈提供参考，非商业目的！**
 
-**本样例适配3.1.0版本，支持产品为Atlas200DK**
+**本样例适配3.1.0版本，支持产品为Atlas200DK、Atlas300**
 
 **本README只提供命令行方式运行样例的指导，如需在Mindstudio下运行样例，请参考[Mindstudio运行视频样例wiki](https://gitee.com/ascend/samples/wikis/Mindstudio%E8%BF%90%E8%A1%8C%E8%A7%86%E9%A2%91%E6%A0%B7%E4%BE%8B?sort_id=3170138)。**
 
@@ -10,7 +10,7 @@
 
 功能：使用文本识别模型对摄像头输入的图像中识别出印刷体英文字母。
 
-样例输入：包含印刷体英文字母的摄像头输入。
+样例输入：包含印刷体英文字母的视频。
 
 样例输出：presenter界面展现推理结果。
 
@@ -46,8 +46,8 @@
     
     |  **模型名称**  |  **模型说明**  |  **模型下载路径**  |
     |---|---|---|
-    |  dbnet| 基于Tensorflow的文本识别模型。  |  请参考https://modelzoo-train-atc.obs.cn-north-4.myhuaweicloud.com/003_Atc_Models/AE/ATC%20Model/dbnet/dbnet.pb](https://modelzoo-train-atc.obs.cn-north-4.myhuaweicloud.com/003_Atc_Models/AE/ATC%20Model/dbnet/dbnet.pb) |
-    | crnn_static| 基于Tensorflow的字母识别模型。  | [https://modelzoo-train-atc.obs.cn-north-4.myhuaweicloud.com/003_Atc_Models/AE/ATC%20Model/crnn_static/crnn_static.pb](https://modelzoo-train-atc.obs.cn-north-4.myhuaweicloud.com/003_Atc_Models/AE/ATC%20Model/crnn_static/crnn_static.pb)|
+    |  dbnet| 基于Tensorflow的文本识别模型。  |  [下载地址](https://modelzoo-train-atc.obs.cn-north-4.myhuaweicloud.com/003_Atc_Models/AE/ATC%20Model/dbnet/dbnet.pb) |
+    | crnn_static| 基于Tensorflow的字母识别模型。  | [下载地址](https://modelzoo-train-atc.obs.cn-north-4.myhuaweicloud.com/003_Atc_Models/AE/ATC%20Model/crnn_static/crnn_static.pb)|
 
     ![](https://images.gitee.com/uploads/images/2020/1106/160652_6146f6a4_5395865.gif "icon-note.gif") 
 
@@ -71,23 +71,45 @@
 
         **atc --model=./crnn_static.pb --framework=3 --output=./crnn_static --soc_version=Ascend310 --input_shape="new_input:1,32,100,3" --input_format=NHWC**
 
+4. 获取样例需要的测试文件。
+
+    执行以下命令，创建样例的data文件夹并下载对应的测试文件，完成后返回样例文件夹。
+
+    **cd $HOME/samples/cplusplus/contrib/TextRecognize**
+
+    **mkdir data**
+
+    **cd data**
+
+    **wget https://c7xcode.obs.cn-north-4.myhuaweicloud.com/models/TextRecognize/data.mp4**
+
+5. 命令行安装样例需要的依赖。
+     
+     **sudo apt-get install libeigen3-dev**
+
+     **sudo apt-get install libjsoncpp-dev**
+
+6. 编译Atlasutil库
+    
+    参考[atlasutil库使用说明](https://gitee.com/ascend/samples/tree/master/cplusplus/common/atlasutil)，编译样例所需要的atlasutil库文件
+
 
 ### 样例部署
 
 1. 修改present相关配置文件。
 
-    将样例目录下**scripts/param.conf**中的 presenter_server_ip、presenter_view_ip 修改为开发环境中可以ping通运行环境的ip地址，使用以下两种情况举例说明。
+    将样例目录下**scripts/TextRecongnize.conf**中的 presenter_server_ip、presenter_view_ip 修改为开发环境中可以ping通运行环境的ip地址，使用以下两种情况举例说明。
 
      - 使用产品为200DK开发者板。   
         1. 开发环境中使用ifconfig查看可用ip。   
-        2. 在开发环境中将**scripts/param.conf**中的 presenter_server_ip、presenter_view_ip 修改为该ip地址。   
+        2. 在开发环境中将**scripts/TextRecongnize.conf**中的 presenter_server_ip、presenter_view_ip 修改为该ip地址。   
         ![](https://images.gitee.com/uploads/images/2020/1106/160652_6146f6a4_5395865.gif "icon-note.gif") **说明：**  
         > - 1.开发环境和运行环境分离部署，一般使用配置的虚拟网卡ip，例如192.168.1.223。
         > - 2.开发环境和运行环境合一部署，一般使用200dk固定ip，例如192.168.1.2。
 
     - 使用产品为300加速卡（ai1s云端推理环境）。   
         1. ECS弹性云服务器控制台中查看ai1s云端环境可用内网ip，例如192.168.0.198。   
-        2. 在开发环境中将**scripts/param.conf**中的 presenter_server_ip、presenter_view_ip 修改为该ip地址。   
+        2. 在开发环境中将**scripts/TextRecongnize.conf**中的 presenter_server_ip、presenter_view_ip 修改为该ip地址。   
         ![](https://images.gitee.com/uploads/images/2020/1106/160652_6146f6a4_5395865.gif "icon-note.gif") **说明：**  
         > - 也可以在ai1s云端环境中使用ifconfig查看内网ip。
         > - 登录ai1s云端环境时的ip地址为此环境的公网ip，ai1s云端环境中ifconfig查看到的ip为此环境的内网ip。
@@ -108,11 +130,6 @@
  
      **export NPU_HOST_LIB=$DDK_PATH/acllib/lib64/stub**
 
-3. 命令行安装样例额外需要的依赖。
-     
-     **sudo apt-get install libeigen3-dev**
-
-     **sudo apt-get install libjsoncpp-dev**
 
 4. 切换到TextRecognize目录，创建目录用于存放编译文件，例如，本文中，创建的目录为 **build/intermediates/host**。
 

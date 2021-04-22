@@ -40,13 +40,13 @@ function downloadData() {
 
 function buildLibAtlasUtil() {
 	cd ${project_path}/../../common/atlasutil/
-	make
+	make mode=ASIC
 	if [ $? -ne 0 ];then
         echo "ERROR: make atlasutil failed."
         return ${inferenceError}
     fi
 	
-	make install
+	make mode=ASIC install
 	if [ $? -ne 0 ];then
         echo "ERROR: make install atlasutil failed."
         return ${inferenceError}
@@ -62,32 +62,28 @@ function setAtcEnv() {
         export ASCEND_OPP_PATH=${install_path}/opp
         export LD_LIBRARY_PATH=${install_path}/atc/lib64:${LD_LIBRARY_PATH}
     elif [[ ${version} = "c75" ]] || [[ ${version} = "C75" ]];then
-        export HOME=/home/HwHiAiUser
         export install_path=$HOME/Ascend/ascend-toolkit/latest
         export PATH=/usr/local/python3.7.5/bin:${install_path}/atc/ccec_compiler/bin:${install_path}/atc/bin:$PATH
         export ASCEND_OPP_PATH=${install_path}/opp
         export PYTHONPATH=${install_path}/atc/python/site-packages:${install_path}/atc/python/site-packages/auto_tune.egg/auto_tune:${install_path}/atc/python/site-packages/schedule_search.egg:$PYTHONPATH
-        export LD_LIBRARY_PATH=${install_path}/atc/lib64:${LD_LIBRARY_PATH}      
+        export LD_LIBRARY_PATH=${install_path}/atc/lib64:${LD_LIBRARY_PATH}
     fi
-
     return 0
 }
 
 function setBuildEnv() {
     # 设置代码编译时需要的环境变量
     if [[ ${version} = "c73" ]] || [[ ${version} = "C73" ]];then
-        export DDK_PATH=/home/HwHiAiUser/Ascend/ascend-toolkit/latest/arm64-linux_gcc7.3.0
+        export DDK_PATH=/home/HwHiAiUser/Ascend/ascend-toolkit/latest/x86_64-linux_gcc7.3.0
         export NPU_HOST_LIB=${DDK_PATH}/acllib/lib64/stub
     elif [[ ${version} = "c75" ]] || [[ ${version} = "C75" ]];then
-        export DDK_PATH=/home/HwHiAiUser/Ascend/ascend-toolkit/latest/arm64-linux
+        export DDK_PATH=/home/HwHiAiUser/Ascend/ascend-toolkit/latest/x86_64-linux
         export NPU_HOST_LIB=${DDK_PATH}/acllib/lib64/stub
     fi
-
     return 0
 }
 
 function downloadOriginalDbnetModel() {
-    mkdir -p ${project_path}/model/
     wget -O ${project_path}/model/${dbnet_model##*/} ${dbnet_model} --no-check-certificate
     if [ $? -ne 0 ];then
         echo "download dbnet_model failed, please check Network."
@@ -105,8 +101,6 @@ function downloadOriginalCrnnModel() {
     return 0
 }
 
-
-
 function main() {
 
     if [[ ${version}"x" = "x" ]];then
@@ -120,16 +114,9 @@ function main() {
         echo "ERROR: download test images failed"
         return ${inferenceError}
     fi
-
-    # reconfigure enviroment param
-    export LD_LIBRARY_PATH=/home/HwHiAiUser/Ascend/nnrt/latest/acllib/lib64:/home/HwHiAiUser/ascend_ddk/x86/lib:${LD_LIBRARY_PATH}
-    export ASCEND_HOME=/home/HwHiAiUser/Ascend     
-    export LD_LIBRARY_PATH=$ASCEND_HOME/ascend-toolkit/latest/acllib/lib64:$LD_LIBRARY_PATH
-    export LD_LIBRARY_PATH=/usr/local/opencv/lib64:$LD_LIBRARY_PATH
-    export LD_LIBRARY_PATH=/usr/local/opencv/lib:$LD_LIBRARY_PATH
     
-    mkdir -p ${HOME}/models/${project_name}     
-    mkdir -p ${project_path}/model/
+    mkdir -p ${HOME}/models/${project_name}
+    mkdir -p ${project_path}/model/   
     if [[ $(find ${HOME}/models/${project_name} -name ${dbnet_model_name}".om")"x" = "x" ]];then 
         downloadOriginalDbnetModel
         if [ $? -ne 0 ];then
@@ -200,6 +187,13 @@ function main() {
         fi
     fi
 
+    # 创建目录用于存放编译文件
+    mkdir -p ${project_path}/build/intermediates/host
+    if [ $? -ne 0 ];then
+        echo "ERROR: mkdir build folder failed. please check your project"
+        return ${inferenceError}
+    fi
+
     setBuildEnv
     if [ $? -ne 0 ];then
         echo "ERROR: set build environment failed"
@@ -212,16 +206,9 @@ function main() {
         return ${inferenceError}
     fi
 
-    # 创建目录用于存放编译文件
-    mkdir -p ${project_path}/build/intermediates/host
-    if [ $? -ne 0 ];then
-        echo "ERROR: mkdir build folder failed. please check your project"
-        return ${inferenceError}
-    fi
     cd ${project_path}/build/intermediates/host
-
     # 产生Makefile
-    cmake ${project_path}/src -DCMAKE_CXX_COMPILER=aarch64-linux-gnu-g++ -DCMAKE_SKIP_RPATH=TRUE
+    cmake ${project_path}/src -DCMAKE_CXX_COMPILER=g++ -DCMAKE_SKIP_RPATH=TRUE
     if [ $? -ne 0 ];then
         echo "ERROR: cmake failed. please check your project"
         return ${inferenceError}
@@ -237,7 +224,7 @@ function main() {
 
     # 重新配置程序运行所需的环境变量
     export LD_LIBRARY_PATH=
-    export LD_LIBRARY_PATH=/home/HwHiAiUser/Ascend/acllib/lib64:/home/HwHiAiUser/ascend_ddk/arm/lib:${LD_LIBRARY_PATH}
+    export LD_LIBRARY_PATH=/home/HwHiAiUser/Ascend/nnrt/latest/acllib/lib64:/home/HwHiAiUser/ascend_ddk/x86/lib:$LD_LIBRARY_PATH
 
     # presenter server
     cd ${project_path}/../../../common/
@@ -248,7 +235,7 @@ function main() {
         return ${inferenceError}
     fi
 
-    sleep 4
+    sleep 5
     # run program
     cd ${project_path}/out
     mv ${project_path}/out/main ${project_path}/out/textrecognize
