@@ -53,7 +53,7 @@ python3.7.5 ./src/resnet-50_v1_retrain.py --config_defination CONFIG_DEFINATION 
 | --momentum MOMENTUM | 否 | float | 0.9 | RMSPropOptimizer优化器的动量。 |
 | --train_iter TRAIN_ITER | 否 | int | 1000 | 训练迭代次数。 |
 
-如果测试数据集和验证数据集位于同一路径下，为确保量化过程中使用了正确的数据集，该场景下量化命令中需要追加 --train_keyword TRAIN_KEYWORD 和 --eval_keyword EVAL_KEYWORD 参数，根据上述两个参数过滤相关文件名，确保--train_set参数使用的是测试数据集，--eval_set使用的是验证数据集。
+如果测试数据集和验证数据集位于同一路径下，为确保量化过程中使用了正确的数据集，该场景下量化命令中需要追加 --train_keyword TRAIN_KEYWORD 和 --eval_keyword EVAL_KEYWORD 参数，根据上述两个参数过滤相关文件名，确保 --train_set 参数使用的是测试数据集，--eval_set 使用的是验证数据集。
 
 若出现如下信息则说明重训练成功：
 

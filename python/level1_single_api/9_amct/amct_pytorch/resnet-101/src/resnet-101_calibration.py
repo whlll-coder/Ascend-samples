@@ -28,7 +28,7 @@ from ..model.resnet import resnet101 # pylint: disable=E0401, C0415
 PATH = os.path.realpath('./')
 IMG_DIR = os.path.join(PATH, 'data/images')
 LABEL_FILE = os.path.join(IMG_DIR, 'image_label.txt')
-OUTPUTS = os.path.join(PATH, 'outputs/nuq')
+OUTPUTS = os.path.join(PATH, 'outputs/calibration')
 TMP = os.path.join(OUTPUTS, 'tmp')
 
 
@@ -136,10 +136,7 @@ def main():
     config_json_file = os.path.join(TMP, 'config.json')
     skip_layers = []
     batch_num = 2
-    print("..........start create quant config...............")
-    config_defination = os.path.join(PATH, 'src/nuq_files/nuq_quant.cfg')
-    amct.create_quant_config(
-        config_json_file, model, input_data, skip_layers, batch_num, config_defination=config_defination)
+    amct.create_quant_config(config_json_file, model, input_data, skip_layers, batch_num)
 
     # Phase1: do conv+bn fusion, weights calibration and generate
     #         calibration model
