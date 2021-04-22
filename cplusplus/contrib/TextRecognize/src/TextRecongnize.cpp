@@ -28,28 +28,25 @@ using namespace ascend::presenter;
 using namespace cv;
 
 namespace {
-uint32_t firstModelWidth = 1312;
-uint32_t firstModelHeight = 736;
-uint32_t secondModelWidth = 100;
-uint32_t secondModelHeight = 32;
+const uint32_t firstModelWidth = 1312;
+const uint32_t firstModelHeight = 736;
+const uint32_t secondModelWidth = 100;
+const uint32_t secondModelHeight = 32;
 const string firstModelPath = "../model/dbnet.om";
 const string secondModelPath = "../model/crnn_static.om";
 const string kConfigFile = "../scripts/TextRecongnize.conf";
-
-cv::Mat frame_rgb;
-cv::Mat detectResImg = cv::Mat(cv::Size(firstModelWidth, firstModelHeight), CV_8UC3, cv::Scalar(255, 255, 255));
-vector<cv::Mat> cropAreas;
-vector<vector<cv::Point2f>> boxes;
-string textRes;
-vector<cv::Mat> hMatrix;
 }
 
-TextRecongnize::TextRecongnize() : 
+TextRecongnize::TextRecongnize(): 
 FirstModel_(firstModelPath),
 SecondModel_(secondModelPath),
 presenterChannel_(nullptr),
 isInited_(false), 
-isReleased_(false){
+isReleased_(false),
+firstModelWidth_(firstModelWidth),
+firstModelHeight_(firstModelHeight),
+secondModelWidth_(secondModelWidth),
+secondModelHeight_(secondModelHeight){
 }
 
 TextRecongnize::~TextRecongnize() {
@@ -83,12 +80,15 @@ AtlasError TextRecongnize::Init() {
         ATLAS_LOG_ERROR("Model dbnet init failed, error %d", atlRet);
         return ATLAS_ERROR;
     }
+    printf("Model dbnet intialiaze ");
 
     atlRet = SecondModel_.Init();
     if (atlRet) {
         ATLAS_LOG_ERROR("Model crnn_static init failed, error %d", atlRet);
         return ATLAS_ERROR;
     }
+    printf("Model crnn_static intialiaze ");
+
     isInited_ = true;
     return ATLAS_OK;
 }
@@ -144,17 +144,15 @@ AtlasError TextRecongnize::Process(ImageData& image, aclrtRunMode runMode) {
         ATLAS_LOG_ERROR("SendImage failed");
         return ATLAS_ERROR;
     }
-
     cropAreas.clear();
     boxes.clear();
     hMatrix.clear();
     return ATLAS_OK;
 }
 
-AtlasError TextRecongnize::FirstModelPreprocess(cv::Mat &camera_rgb, ImageData &srcImage, 
-                                            cv::Mat &modelInputMat, aclrtRunMode runMode) {
+AtlasError TextRecongnize::FirstModelPreprocess(cv::Mat &camera_rgb, ImageData &srcImage, cv::Mat &modelInputMat, aclrtRunMode runMode) {
     ImageData resizedImage;
-    AtlasError ret = dvpp_.Resize(resizedImage, srcImage, firstModelWidth, firstModelHeight);
+    AtlasError ret = dvpp_.Resize(resizedImage, srcImage, firstModelWidth_, firstModelHeight_);
     if (ret == ATLAS_ERROR) {
         ATLAS_LOG_ERROR("Resize image failed\n");
         return ATLAS_ERROR;
@@ -168,7 +166,6 @@ AtlasError TextRecongnize::FirstModelPreprocess(cv::Mat &camera_rgb, ImageData &
     cv::Mat rgbImg;
     cv::cvtColor(yuvImg, rgbImg, CV_YUV420sp2RGB);
     rgbImg.copyTo(camera_rgb);
-
     cv::Mat tempImg;
     rgbImg.convertTo(tempImg, CV_32FC3);
     std::vector<float> mean_value{123.68, 116.78, 103.94};
@@ -176,8 +173,7 @@ AtlasError TextRecongnize::FirstModelPreprocess(cv::Mat &camera_rgb, ImageData &
     std::vector<cv::Mat> bgrChannels(3);
     cv::split(tempImg, bgrChannels);
     for (auto i = 0; i < bgrChannels.size(); i++) {
-        bgrChannels[i].convertTo(bgrChannels[i], CV_32FC1, 1.0 / std_value[i], 
-                                (0.0 - mean_value[i]) / std_value[i]);
+        bgrChannels[i].convertTo(bgrChannels[i], CV_32FC1, 1.0 / std_value[i], (0.0 - mean_value[i]) / std_value[i]);
     }
     cv::merge(bgrChannels, modelInputMat);
     return ATLAS_OK;
@@ -198,7 +194,6 @@ AtlasError TextRecongnize::FirstModelInference(std::vector<InferenceOutput>& inf
         ATLAS_LOG_ERROR("Execute model inference failed\n");
     }
     FirstModel_.DestroyInput();
-
     return ret;
 }
 
@@ -218,7 +213,6 @@ AtlasError TextRecongnize::FirstModelPostprocess(std::vector<InferenceOutput>& f
                 line(detectResImg, bbox[1], bbox[2], Scalar(0, 0, 255), 2);
                 line(detectResImg, bbox[2], bbox[3], Scalar(0, 0, 255), 2);
                 line(detectResImg, bbox[3], bbox[0], Scalar(0, 0, 255), 2);
-
                 Mat result;
                 fourPointsTransform(rgbImg, pts, result, hMatrix);
                 cropAreas.push_back(result);
@@ -239,21 +233,17 @@ AtlasError TextRecongnize::SecondModelPreprocess(cv::Mat &srcImage, cv::Mat &mod
     }
 
     cv::Mat resizedImg;
-    cv::resize(srcImage, resizedImg, Size(secondModelWidth, secondModelHeight));
-
+    cv::resize(srcImage, resizedImg, Size(secondModelWidth_, secondModelHeight_));
     cv::Mat bgr8Img, tempImg;
     cv::cvtColor(resizedImg, bgr8Img, COLOR_RGB2BGR);
     bgr8Img.convertTo(tempImg, CV_32FC3);
     modelInputMat = tempImg / 127.5 - 1;
-
     return ATLAS_OK;
 }
 
 
 // recognize推理函数
-AtlasError TextRecongnize::SecondModelInference(std::vector<InferenceOutput>& inferOutputs, 
-                                                Mat &secondModelInputMat) {
-
+AtlasError TextRecongnize::SecondModelInference(std::vector<InferenceOutput>& inferOutputs, Mat &secondModelInputMat) {
     AtlasError ret = SecondModel_.CreateInput(secondModelInputMat.data,
                                           secondModelInputMat.rows * secondModelInputMat.cols *
                                           (int) secondModelInputMat.elemSize());
@@ -261,7 +251,6 @@ AtlasError TextRecongnize::SecondModelInference(std::vector<InferenceOutput>& in
         ATLAS_LOG_ERROR("Create mode input dataset failed");
         return ATLAS_ERROR;
     }
-
     ret = SecondModel_.Execute(inferOutputs);
     if (ret != ATLAS_OK) {
         ATLAS_LOG_ERROR("Execute model inference failed");
@@ -270,9 +259,8 @@ AtlasError TextRecongnize::SecondModelInference(std::vector<InferenceOutput>& in
     return ATLAS_OK;
 }
 
-AtlasError TextRecongnize::SecondModelPostprocess(std::vector<InferenceOutput>& inferOutputs, 
-                                                string &textRes, cv::Mat &detectResImg,
-                                                vector<cv::Point2f> &box) {
+AtlasError TextRecongnize::SecondModelPostprocess(std::vector<InferenceOutput>& inferOutputs, string &textRes, cv::Mat &detectResImg,
+                                              vector<cv::Point2f> &box) {
     size_t outputnum = inferOutputs.size();
     for (size_t index = 0; index < outputnum; ++index) {
         if (index == 0) {
@@ -282,7 +270,6 @@ AtlasError TextRecongnize::SecondModelPostprocess(std::vector<InferenceOutput>& 
             Json::Value ord_map, char_dict;
             Json::Reader reader;
             std::ifstream ifs_ord("../data/ord_map_en.json");
-
             if (!reader.parse(ifs_ord, ord_map)) {
                 std::cout << "Read ord_map failed..." << std::endl;
             }
@@ -320,7 +307,7 @@ AtlasError TextRecongnize::SecondModelPostprocess(std::vector<InferenceOutput>& 
 }
 
 void TextRecongnize::PostProcessDBNet(float *outData, Mat rgbImg, vector<vector<Point2f>> &boxes) {
-    Mat outputMap(firstModelHeight, firstModelWidth, CV_32FC1, const_cast<float_t *>((float_t *) outData));
+    Mat outputMap(firstModelHeight_, firstModelWidth_, CV_32FC1, const_cast<float_t *>((float_t *) outData));
     Mat bitmap = Mat(outputMap > 0.3);
     vector<float> scores;
     bboxFromBitmap(outputMap, bitmap, rgbImg.rows, rgbImg.cols, boxes, scores, 1000, 0.7f);
@@ -339,7 +326,6 @@ void TextRecongnize::bboxFromBitmap(Mat outputMap, Mat bitmap,
     vector<vector<cv::Point>> contours;
     findContours(bitmap, contours, RETR_LIST, CHAIN_APPROX_SIMPLE);
     uint32_t num_contours = min(uint32_t(contours.size()), maxCandidates);
-
     for (uint32_t index = 0; index < num_contours; index++) {
         vector<cv::Point> contour = contours[index];
         Point2f vtx[4];
@@ -364,6 +350,7 @@ void TextRecongnize::bboxFromBitmap(Mat outputMap, Mat bitmap,
             vtx[i].x = min(max(round(vtx[i].x / width * destWidth), 0.0f), destWidth - 1.0f);
             vtx[i].y = min(max(round(vtx[i].y / height * destHeight), 0.0f), destHeight - 1.0f);
         }
+
         vector<Point2f> ans(vtx, vtx + 4);
         sortVertices(ans);
         boxes.push_back(ans);
@@ -374,12 +361,10 @@ void TextRecongnize::bboxFromBitmap(Mat outputMap, Mat bitmap,
 float TextRecongnize::boxScoreFast(Mat outputMap, Point2f *vtx) {
     uint32_t height = outputMap.rows;
     uint32_t width = outputMap.cols;
-
     Mat mask = Mat::zeros(outputMap.size(), CV_8UC1);
     vector<cv::Point> pts(vtx, vtx + 4);
     vector<vector<cv::Point>> tmp;
     tmp.push_back(pts);
-
     fillPoly(mask, tmp, 1);
     return cv::mean(outputMap, mask)[0];
 }
@@ -388,7 +373,6 @@ vector<cv::Point> TextRecongnize::unclip(RotatedRect boundingBox, Point2f *vtx, 
     float area = boundingBox.size.height * boundingBox.size.width;
     float length = 2 * (boundingBox.size.height + boundingBox.size.width);
     float distance = area * unclipRatio / length;
-
     ClipperOffset co;
     Path path;
     Paths expand;
@@ -398,10 +382,8 @@ vector<cv::Point> TextRecongnize::unclip(RotatedRect boundingBox, Point2f *vtx, 
         ip.Y = vtx[i].y;
         path.push_back(ip);
     }
-
     co.AddPath(path, jtRound, etClosedPolygon);
     co.Execute(expand, distance);
-
     vector<cv::Point> ans;
     for (auto ip: expand[0]) {
         cv::Point pt = cv::Point(ip.X, ip.Y);
@@ -445,22 +427,19 @@ void TextRecongnize::sortVertices(vector<Point2f> &bbox) {
 }
 
 void TextRecongnize::fourPointsTransform(const Mat &frame, Point2f *vertices, Mat &result, vector<Mat> &hMatrix) {
-    const Size outputSize = Size(secondModelWidth, secondModelHeight);
+    const Size outputSize = Size(secondModelWidth_, secondModelHeight_);
     Point2f targetVertices[4] = {cv::Point(0, 0), cv::Point(outputSize.width - 1, 0),
                                  cv::Point(outputSize.width - 1, outputSize.height - 1),
                                  cv::Point(0, outputSize.height - 1)};
-
     Mat rotationMatrix = getPerspectiveTransform(vertices, targetVertices);
     hMatrix.push_back(rotationMatrix);
     warpPerspective(frame, result, rotationMatrix, outputSize);
 }
 
 AtlasError TextRecongnize::SendImage(cv::Mat &image) {
-
     //add
     vector<uint8_t> encodeImg;
     EncodeImage(encodeImg, image);
-
     //ascend::presenter::ImageFrame frame;
     ImageFrame imageParam;
     imageParam.format = ImageFormat::kJpeg;
@@ -475,7 +454,6 @@ AtlasError TextRecongnize::SendImage(cv::Mat &image) {
         ATLAS_LOG_ERROR("Send JPEG image to presenter failed, error %d\n", (int) ret);
         return ATLAS_ERROR;
     }
-
     return ATLAS_OK;
 }
 
@@ -488,7 +466,8 @@ AtlasError TextRecongnize::CopyImageToDvpp(ImageData &srcImage,
             ATLAS_LOG_ERROR("Malloc dvpp memory failed, error No:%d", ret);
             return ATLAS_ERROR;
         }
-        ret = aclrtMemcpy(buffer, srcImage.size, srcImage.data.get(), srcImage.size, ACL_MEMCPY_HOST_TO_DEVICE);
+        ret = aclrtMemcpy(buffer, srcImage.size, srcImage.data.get(), 
+                        srcImage.size, ACL_MEMCPY_HOST_TO_DEVICE);
         if (ret != ACL_ERROR_NONE) {
             ATLAS_LOG_ERROR("Copy data to device failed, aclRet is %d", ret);
             return ATLAS_ERROR;
@@ -503,7 +482,7 @@ AtlasError TextRecongnize::CopyImageFromDvpp(ImageData &srcImage,
     if (runMode == ACL_HOST) {
         void * buffer = new uint8_t[srcImage.size];
         aclError ret = aclrtMemcpy(buffer, srcImage.size, srcImage.data.get(), 
-                                srcImage.size, ACL_MEMCPY_DEVICE_TO_HOST);
+                                    srcImage.size, ACL_MEMCPY_DEVICE_TO_HOST);
         if (ret != ACL_ERROR_NONE) {
             ATLAS_LOG_ERROR("Copy data from dvpp to host failed, aclRet is %d", ret);
             return ATLAS_ERROR;
@@ -537,7 +516,6 @@ void TextRecongnize::EncodeImage(vector<uint8_t> &encodeImg, cv::Mat &origImg) {
     vector<int> param = vector<int>(2);
     param[0] = cv::IMWRITE_JPEG_QUALITY;
     param[1] = 100;//default(95) 0-100
-
     cv::imencode(".jpg", origImg, encodeImg, param);
 }
 
