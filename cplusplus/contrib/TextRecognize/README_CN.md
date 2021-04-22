@@ -1,4 +1,4 @@
-[中文](README_CN.md)|[English](README.md)
+中文|[English](README.md)
 
 **本样例为大家学习昇腾软件栈提供参考，非商业目的！**
 
@@ -42,7 +42,7 @@
 
 2. 获取此应用中所需要的原始网络模型。
 
-    参考下表获取此应用中所用到的原始网络模型和权重文件，并将其存放到开发环境普通用户下该样例的model文件夹中，本例为：$HOME/samples/samples/cplusplus/contrib/TextRecognize/model。
+    参考下表获取此应用中所用到的原始网络模型和权重文件，并将其存放到开发环境普通用户下该样例的model文件夹中，本例为：$HOME/samples/cplusplus/contrib/TextRecognize/model。
     
     |  **模型名称**  |  **模型说明**  |  **模型下载路径**  |
     |---|---|---|
