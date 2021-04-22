@@ -91,12 +91,14 @@ class AverageCounter(object):
         self.reset_param()
 
     def reset_param(self):
+        """reset_param"""
         self.value = 0
         self.average = 0
         self.sum = 0
         self.count_num = 0
 
     def update_param(self, value, size=1):
+        """update_param"""
         self.value = value
         self.sum += value * size
         self.count_num += size
@@ -115,6 +117,7 @@ class ProgressCounter(object):
         self.prefix = prefix
 
     def display(self, batch):
+        """display"""
         entries = [self.prefix + self.batch_fmtstr.format(batch)]
         entries += [str(meter) for meter in self.meters]
         print('\t'.join(entries))
@@ -288,7 +291,7 @@ def validate_onnx(val_loader, model, print_freq):
 
 
 def create_data_loader(train_set_dir, test_set_dir, args):
-    # Generate training dataset loader.
+    """Generate dataset loader."""
     traindir = os.path.realpath(train_set_dir)
     train_dataset = datasets.ImageFolder(
         traindir, transforms.Compose(
@@ -300,7 +303,7 @@ def create_data_loader(train_set_dir, test_set_dir, args):
     train_loader = torch.utils.data.DataLoader(
         train_dataset, batch_size=args.batch_size, shuffle=(train_sampler is None),
         num_workers=args.num_parallel_reads, pin_memory=True, sampler=train_sampler)
-    # Generate validation dataset loader.
+
     valdir = os.path.realpath(test_set_dir)
     val_loader = torch.utils.data.DataLoader(
         datasets.ImageFolder(valdir, transforms.Compose(
@@ -311,14 +314,13 @@ def create_data_loader(train_set_dir, test_set_dir, args):
 
 
 def cal_original_model_accuracy(model, gpu_index, val_loader, args):
-    # Infer the accuracy of the original model.
+    """Infer the accuracy of the original model."""
     device = 'cpu'
     if gpu_index >= 0:
         torch.cuda.set_device(gpu_index)
         model = model.cuda(gpu_index)
         device = 'cuda'
 
-    # Validation origin model.
     print("=> Validate pre-trained model 'resnet101'")
     ori_top1, ori_top5 = validate(val_loader, model, len(val_loader), gpu_index, args.print_freq)
     print('The origin model top 1 accuracy = {:.2f}%.'.format(ori_top1))
@@ -328,6 +330,7 @@ def cal_original_model_accuracy(model, gpu_index, val_loader, args):
 
 
 def train_and_val(model, gpu_index, train_loader, train_sampler, val_loader, args):
+    """train_and_val"""
     # Allocating a model to a specified device.
     if gpu_index >= 0:
         if args.distributed:
@@ -356,7 +359,7 @@ def train_and_val(model, gpu_index, train_loader, train_sampler, val_loader, arg
 
 
 def cal_quant_model_accuracy(model, gpu_index, val_loader, args, config_file, record_file):
-    # Save the quantized model and infer the accuracy of the quantized model.
+    """Save the quantized model and infer the accuracy of the quantized model."""
     torch.save({'state_dict': model.state_dict()}, os.path.join(TMP, 'model_best.pth.tar'))
     print('==> AMCT step3: save_quant_retrain_model..')
     quantized_pb_path = os.path.join(OUTPUTS, 'ResNet101')
@@ -372,6 +375,7 @@ def cal_quant_model_accuracy(model, gpu_index, val_loader, args, config_file, re
 
 
 def main():
+    """retrain"""
     args = parser.parse_args()
     args_check(args)
 
@@ -400,6 +404,7 @@ def main():
 
 
 def main_worker(gpu_index, gpu_num, args):
+    """main_worker"""
     # Phase initialization.
     # If multi-card distributed training is used, initialize the training
     # process.
