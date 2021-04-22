@@ -105,8 +105,6 @@ function downloadOriginalCrnnModel() {
     return 0
 }
 
-
-
 function main() {
 
     if [[ ${version}"x" = "x" ]];then
@@ -120,13 +118,6 @@ function main() {
         echo "ERROR: download test images failed"
         return ${inferenceError}
     fi
-
-    # reconfigure enviroment param
-    export LD_LIBRARY_PATH=/home/HwHiAiUser/Ascend/nnrt/latest/acllib/lib64:/home/HwHiAiUser/ascend_ddk/x86/lib:${LD_LIBRARY_PATH}
-    export ASCEND_HOME=/home/HwHiAiUser/Ascend     
-    export LD_LIBRARY_PATH=$ASCEND_HOME/ascend-toolkit/latest/acllib/lib64:$LD_LIBRARY_PATH
-    export LD_LIBRARY_PATH=/usr/local/opencv/lib64:$LD_LIBRARY_PATH
-    export LD_LIBRARY_PATH=/usr/local/opencv/lib:$LD_LIBRARY_PATH
     
     mkdir -p ${HOME}/models/${project_name}     
     mkdir -p ${project_path}/model/
