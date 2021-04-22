@@ -150,7 +150,8 @@ AtlasError TextRecongnize::Process(ImageData& image, aclrtRunMode runMode) {
     return ATLAS_OK;
 }
 
-AtlasError TextRecongnize::FirstModelPreprocess(cv::Mat &camera_rgb, ImageData &srcImage, cv::Mat &modelInputMat, aclrtRunMode runMode) {
+AtlasError TextRecongnize::FirstModelPreprocess(cv::Mat &camera_rgb, ImageData &srcImage, 
+                                            cv::Mat &modelInputMat, aclrtRunMode runMode) {
     ImageData resizedImage;
     AtlasError ret = dvpp_.Resize(resizedImage, srcImage, firstModelWidth_, firstModelHeight_);
     if (ret == ATLAS_ERROR) {
@@ -259,8 +260,8 @@ AtlasError TextRecongnize::SecondModelInference(std::vector<InferenceOutput>& in
     return ATLAS_OK;
 }
 
-AtlasError TextRecongnize::SecondModelPostprocess(std::vector<InferenceOutput>& inferOutputs, string &textRes, cv::Mat &detectResImg,
-                                              vector<cv::Point2f> &box) {
+AtlasError TextRecongnize::SecondModelPostprocess(std::vector<InferenceOutput>& inferOutputs, string &textRes, 
+                                                cv::Mat &detectResImg, vector<cv::Point2f> &box) {
     size_t outputnum = inferOutputs.size();
     for (size_t index = 0; index < outputnum; ++index) {
         if (index == 0) {
