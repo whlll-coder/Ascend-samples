@@ -101,10 +101,20 @@ private:
 private:
     AtlasModel FirstModel_;
     AtlasModel SecondModel_;
+    uint32_t firstModelWidth_;
+    uint32_t firstModelHeight_;
+    uint32_t secondModelWidth_;
+    uint32_t secondModelHeight_;
     DvppProcess dvpp_;    
     ascend::presenter::Channel* presenterChannel_;
 
     bool isInited_;
     bool isReleased_;
+    
+    cv::Mat frame_rgb;
+    cv::Mat detectResImg = cv::Mat(cv::Size(firstModelWidth_, firstModelHeight_), CV_8UC3, cv::Scalar(255, 255, 255));
+    vector<cv::Mat> cropAreas;
+    vector<vector<cv::Point2f>> boxes;
+    string textRes;
+    vector<cv::Mat> hMatrix;
 };
-
