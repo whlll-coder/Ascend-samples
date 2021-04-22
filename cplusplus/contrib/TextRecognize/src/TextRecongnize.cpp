@@ -83,16 +83,12 @@ AtlasError TextRecongnize::Init() {
         ATLAS_LOG_ERROR("Model dbnet init failed, error %d", atlRet);
         return ATLAS_ERROR;
     }
-    printf("Model dbnet intialiaze ");
 
     atlRet = SecondModel_.Init();
     if (atlRet) {
         ATLAS_LOG_ERROR("Model crnn_static init failed, error %d", atlRet);
         return ATLAS_ERROR;
     }
-    printf("Model crnn_static intialiaze ");
-
-
     isInited_ = true;
     return ATLAS_OK;
 }
@@ -155,7 +151,8 @@ AtlasError TextRecongnize::Process(ImageData& image, aclrtRunMode runMode) {
     return ATLAS_OK;
 }
 
-AtlasError TextRecongnize::FirstModelPreprocess(cv::Mat &camera_rgb, ImageData &srcImage, cv::Mat &modelInputMat, aclrtRunMode runMode) {
+AtlasError TextRecongnize::FirstModelPreprocess(cv::Mat &camera_rgb, ImageData &srcImage, 
+                                            cv::Mat &modelInputMat, aclrtRunMode runMode) {
     ImageData resizedImage;
     AtlasError ret = dvpp_.Resize(resizedImage, srcImage, firstModelWidth, firstModelHeight);
     if (ret == ATLAS_ERROR) {
@@ -179,7 +176,8 @@ AtlasError TextRecongnize::FirstModelPreprocess(cv::Mat &camera_rgb, ImageData &
     std::vector<cv::Mat> bgrChannels(3);
     cv::split(tempImg, bgrChannels);
     for (auto i = 0; i < bgrChannels.size(); i++) {
-        bgrChannels[i].convertTo(bgrChannels[i], CV_32FC1, 1.0 / std_value[i], (0.0 - mean_value[i]) / std_value[i]);
+        bgrChannels[i].convertTo(bgrChannels[i], CV_32FC1, 1.0 / std_value[i], 
+                                (0.0 - mean_value[i]) / std_value[i]);
     }
     cv::merge(bgrChannels, modelInputMat);
     return ATLAS_OK;
@@ -253,7 +251,8 @@ AtlasError TextRecongnize::SecondModelPreprocess(cv::Mat &srcImage, cv::Mat &mod
 
 
 // recognize推理函数
-AtlasError TextRecongnize::SecondModelInference(std::vector<InferenceOutput>& inferOutputs, Mat &secondModelInputMat) {
+AtlasError TextRecongnize::SecondModelInference(std::vector<InferenceOutput>& inferOutputs, 
+                                                Mat &secondModelInputMat) {
 
     AtlasError ret = SecondModel_.CreateInput(secondModelInputMat.data,
                                           secondModelInputMat.rows * secondModelInputMat.cols *
@@ -271,8 +270,9 @@ AtlasError TextRecongnize::SecondModelInference(std::vector<InferenceOutput>& in
     return ATLAS_OK;
 }
 
-AtlasError TextRecongnize::SecondModelPostprocess(std::vector<InferenceOutput>& inferOutputs, string &textRes, cv::Mat &detectResImg,
-                                              vector<cv::Point2f> &box) {
+AtlasError TextRecongnize::SecondModelPostprocess(std::vector<InferenceOutput>& inferOutputs, 
+                                                string &textRes, cv::Mat &detectResImg,
+                                                vector<cv::Point2f> &box) {
     size_t outputnum = inferOutputs.size();
     for (size_t index = 0; index < outputnum; ++index) {
         if (index == 0) {
@@ -281,12 +281,12 @@ AtlasError TextRecongnize::SecondModelPostprocess(std::vector<InferenceOutput>& 
             // load json dict
             Json::Value ord_map, char_dict;
             Json::Reader reader;
-            std::ifstream ifs_ord ("../data/ord_map_en.json");
+            std::ifstream ifs_ord("../data/ord_map_en.json");
 
             if (!reader.parse(ifs_ord, ord_map)) {
                 std::cout << "Read ord_map failed..." << std::endl;
             }
-            std::ifstream ifs_char ("../data/char_dict_en.json");
+            std::ifstream ifs_char("../data/char_dict_en.json");
             if (!reader.parse(ifs_char, char_dict)) {
                 std::cout << "Read char_dict failed..." << std::endl;
             }
@@ -338,7 +338,6 @@ void TextRecongnize::bboxFromBitmap(Mat outputMap, Mat bitmap,
     bitmap.convertTo(bitmap, CV_8UC1);
     vector<vector<cv::Point>> contours;
     findContours(bitmap, contours, RETR_LIST, CHAIN_APPROX_SIMPLE);
-
     uint32_t num_contours = min(uint32_t(contours.size()), maxCandidates);
 
     for (uint32_t index = 0; index < num_contours; index++) {
@@ -346,7 +345,6 @@ void TextRecongnize::bboxFromBitmap(Mat outputMap, Mat bitmap,
         Point2f vtx[4];
         RotatedRect boundingBox = minAreaRect(contour);
         boundingBox.points(vtx);
-
         float sside = min(boundingBox.size.height, boundingBox.size.width);
         if (sside < 3) {
             continue;
@@ -358,21 +356,16 @@ void TextRecongnize::bboxFromBitmap(Mat outputMap, Mat bitmap,
         vector<cv::Point> tmp = unclip(boundingBox, vtx, 1.5);
         boundingBox = minAreaRect(tmp);
         boundingBox.points(vtx);
-
-
         sside = min(boundingBox.size.height, boundingBox.size.width);
         if (sside < 5) {
             continue;
         }
-
         for (int i = 0; i < 4; i++) {
             vtx[i].x = min(max(round(vtx[i].x / width * destWidth), 0.0f), destWidth - 1.0f);
             vtx[i].y = min(max(round(vtx[i].y / height * destHeight), 0.0f), destHeight - 1.0f);
         }
-
         vector<Point2f> ans(vtx, vtx + 4);
         sortVertices(ans);
-
         boxes.push_back(ans);
         scores.push_back(score);
     }
@@ -502,7 +495,6 @@ AtlasError TextRecongnize::CopyImageToDvpp(ImageData &srcImage,
         }
         srcImage.data = SHARED_PRT_DVPP_BUF(buffer);
     }
-
     return ATLAS_OK;                            
 }
 
@@ -510,7 +502,8 @@ AtlasError TextRecongnize::CopyImageFromDvpp(ImageData &srcImage,
                             aclrtRunMode runMode) {
     if (runMode == ACL_HOST) {
         void * buffer = new uint8_t[srcImage.size];
-        aclError ret = aclrtMemcpy(buffer, srcImage.size, srcImage.data.get(), srcImage.size, ACL_MEMCPY_DEVICE_TO_HOST);
+        aclError ret = aclrtMemcpy(buffer, srcImage.size, srcImage.data.get(), 
+                                srcImage.size, ACL_MEMCPY_DEVICE_TO_HOST);
         if (ret != ACL_ERROR_NONE) {
             ATLAS_LOG_ERROR("Copy data from dvpp to host failed, aclRet is %d", ret);
             return ATLAS_ERROR;
@@ -539,7 +532,6 @@ AtlasError TextRecongnize::CopyMatToDevice(cv::Mat &srcMat,
     }
     return ATLAS_OK;                            
 }
-
 
 void TextRecongnize::EncodeImage(vector<uint8_t> &encodeImg, cv::Mat &origImg) {
     vector<int> param = vector<int>(2);
