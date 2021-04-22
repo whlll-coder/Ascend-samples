@@ -1,7 +1,7 @@
 # CMake minimum version number requirements
 cmake_minimum_required(VERSION 3.5)
 project(kernel)
-add_definitions(-D_GLIBCXX_USE_CXX11_ABI=1)
+add_definitions(-D_GLIBCXX_USE_CXX11_ABI=0)
 set(TOOLCHAIN_DIR $ENV{TOOLCHAIN_DIR})
 
 #Specify cross compiler
@@ -16,7 +16,6 @@ else()
     endif()
     message(STATUS "TOOLCHAIN_DIR=${TOOLCHAIN_DIR}")
     if (MINRC)
-        add_definitions(-D_GLIBCXX_USE_CXX11_ABI=0)
         set(CMAKE_C_COMPILER ${TOOLCHAIN_DIR}/bin/aarch64-linux-gnu-gcc)
         set(CMAKE_CXX_COMPILER ${TOOLCHAIN_DIR}/bin/aarch64-linux-gnu-g++)
     else()
