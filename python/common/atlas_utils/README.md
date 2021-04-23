@@ -8,7 +8,7 @@
 
 ## C码库编译
 
-本库包含Atlas200dk的板载摄像头访问接口，该接口是在C码（lib/src/目录）基础上做的python封装。在Atlas200dk设备上使用本库时，如果对这部分代码有修改，需要重新编译C码。编译依赖libmedia_mini.so, 部署方法参见[环境准备和依赖安装](../../../../../cplusplus/environment)Atlas200DK基础环境配置部分
+本库包含Atlas200dk的板载摄像头访问接口，该接口是在C码（lib/src/目录）基础上做的python封装。在Atlas200dk设备上使用本库时，如果对这部分代码有修改，需要重新编译C码。编译依赖libmedia_mini.so, 部署方法参见[环境准备和依赖安装](../../../cplusplus/environment)Atlas200DK基础环境配置部分
 
 ### 编译步骤
 
@@ -32,7 +32,7 @@ python atlasutil库依赖pyav, numpy和PIL。在运行环境中需要安装这�
 
 ### 安装pyav
 
-1. 安装ffmpeg。因为apt-get安装的ffmpeg版本很低，所以需要采用源码编译的方式在运行环境中部署ffmpeg。ffmpeg的编译部署参考[环境准备和依赖安装](../../../../../cplusplus/environment)
+1. 安装ffmpeg。因为apt-get安装的ffmpeg版本很低，所以需要采用源码编译的方式在运行环境中部署ffmpeg。ffmpeg的编译部署参考[环境准备和依赖安装](../../../cplusplus/environment)安装ffmpeg章节
 
 2. 安装其他依赖：
 
@@ -117,7 +117,7 @@ source ~/.bashrc
 或者单独将atlas_utils目录拷贝到运行环境$HOME/ascend_ddk/目录下，在~/.bashrc文件中添加：
 
 ```
-export PYTHONPATH=$HOME/samples/python/common/atlas_utils:$PYTHONPATH
+export PYTHONPATH=$HOME/ascend_ddk/atlas_utils:$PYTHONPATH
 ```
 
 并保存，然后执行
