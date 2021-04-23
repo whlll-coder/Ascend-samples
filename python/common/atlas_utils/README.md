@@ -117,7 +117,7 @@ source ~/.bashrc
 或者单独将atlas_utils目录拷贝到运行环境$HOME/ascend_ddk/目录下，在~/.bashrc文件中添加：
 
 ```
-export PYTHONPATH=$HOME/samples/python/common/atlas_utils:$PYTHONPATH
+export PYTHONPATH=$HOME/ascend_ddk/atlas_utils:$PYTHONPATH
 ```
 
 并保存，然后执行
