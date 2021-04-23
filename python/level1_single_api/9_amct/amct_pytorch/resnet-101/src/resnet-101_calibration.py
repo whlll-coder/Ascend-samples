@@ -36,8 +36,8 @@ def get_labels_from_txt(label_file):
     """Read all images' name and label from label_file"""
     images = []
     labels = []
-    with open(label_file, 'r') as file:
-        lines = file.readlines()
+    with open(label_file, 'r') as f:
+        lines = f.readlines()
         for line in lines:
             images.append(line.split(' ')[0])
             labels.append(int(line.split(' ')[1]))

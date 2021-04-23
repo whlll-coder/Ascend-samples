@@ -88,6 +88,10 @@ class AverageCounter(object):
     def __init__(self, name, fmt=':f'):
         self.name = name
         self.fmt = fmt
+        self.value = 0
+        self.average = 0
+        self.sum = 0
+        self.count_num = 0
         self.reset_param()
 
     def reset_param(self):
