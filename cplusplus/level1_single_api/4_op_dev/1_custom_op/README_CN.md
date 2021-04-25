@@ -301,7 +301,7 @@ TBE算子：Add、ScatterNdAdd，单算子网络验证文件可参见“tbe/test
     # FwkACLlib包依赖
     export PYTHONPATH=${install_path}/fwkacllib/python/site-packages:$PYTHONPATH
     export LD_LIBRARY_PATH=${install_path}/fwkacllib/lib64:$LD_LIBRARY_PATH
-    export PATH=${install_path}/fwkacllib/ccec_compiler/bin:${install_path}/fwkacllib/bin:$PATH
+    export PATH=/usr/local/python3.7.5/bin:${install_path}/fwkacllib/ccec_compiler/bin:${install_path}/fwkacllib/bin:$PATH  # 如果用户环境存在多个python3版本，则指定使用的python3.7.5版本，python3.7.5安装路径请根据实际情况替换
     # Driver包依赖
     export LD_LIBRARY_PATH=/usr/local/Ascend/driver/lib64/common/:/usr/local/Ascend/driver/lib64/driver:$LD_LIBRARY_PATH # 仅容器训练场景配置
     # TFPlugin包依赖
@@ -405,7 +405,7 @@ TBE算子：Add、ScatterNdAdd，单算子网络验证文件可参见“tbe/test
         ```
         export install_path=/home/HwHiAiUser/Ascend/ascend-toolkit/latest   # 开发套件包Ascend-cann-toolkit的安装路径  
         # PATH请配置为ATC组件的安装路径
-        export PATH=${install_path}/atc/ccec_compiler/bin:${install_path}/atc/bin:$PATH
+        export PATH=/usr/local/python3.7.5/bin:${install_path}/atc/ccec_compiler/bin:${install_path}/atc/bin:$PATH  # 如果用户环境存在多个python3版本，则指定使用的python3.7.5版本，python3.7.5安装路径请根据实际情况替换
         export ASCEND_OPP_PATH=${install_path}/opp
         export DUMP_GE_GRAPH=3     # 控制dump图的内容多少，配置为3表示仅dump显示节点关系的精简版图文件
         export DUMP_GRAPH_LEVEL=3  # 控制dump图的个数，配置为3表示仅dump最后的生成的build图
