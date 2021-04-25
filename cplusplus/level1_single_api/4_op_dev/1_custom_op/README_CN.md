@@ -219,7 +219,9 @@ Caffe与TensorFlow共存的自定义算子样例工程的目录结构如下所�
 
 ## 算子部署
 
-1.  设置环境变量。
+1.  训练场景下，您需要将算子工程编译生成的自定义算子安装包**custom\_opp\__<target os\>\_<target architecture\>_.run**以运行用户拷贝到运行环境任一路径，如果您的 开发环境即为运行环境，此操作可跳过；推理场景下无需执行此操作，自定义算子部署到开发环境的OPP算子库即可。
+
+2.  设置环境变量。
 
     以HwHiAiUser用户执行如下命令，在当前终端下声明环境变量，关闭Shell终端失效。
 
@@ -229,7 +231,7 @@ Caffe与TensorFlow共存的自定义算子样例工程的目录结构如下所�
 
     /home/HwHiAiUser/Ascend/ascend-toolkit/latest表示OPP组件安装路径，请根据实际路径修改。
 
-2.  在编译生成的自定义算子安装包所在路径下，执行如下命令，安装自定义算子包。
+3.  在编译生成的自定义算子安装包所在路径下，执行如下命令，安装自定义算子包。
 
     **./custom\_opp\__<target os\>\_<target architecture\>_.run**
 
