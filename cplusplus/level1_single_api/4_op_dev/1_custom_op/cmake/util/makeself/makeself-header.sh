@@ -27,6 +27,7 @@ filesizes="$filesizes"
 keep="n"
 nooverwrite="$NOOVERWRITE"
 quiet="n"
+uninstall="n"
 accept="n"
 nodiskspace="n"
 export_conf="$EXPORT_CONF"
@@ -80,9 +81,9 @@ MS_PrintLicense()
 
 MS_diskspace()
 {
-	(
-	df -kP "\$1" | tail -1 | awk '{ if (\$4 ~ /%/) {print \$3} else {print \$4} }'
-	)
+    (
+    df -kP "\$1" | tail -1 | awk '{ if (\$4 ~ /%/) {print \$3} else {print \$4} }'
+    )
 }
 
 MS_dd()
@@ -147,6 +148,7 @@ MS_Help()
   \$0 --lsm    Print embedded lsm entry (or no LSM)
   \$0 --list   Print the list of files in the archive
   \$0 --check  Checks integrity of the archive
+  \$0 --uninstall  Uninstall product
 
  2) Running \$0 :
   \$0 [options] [--] [additional arguments to embedded script]
@@ -172,7 +174,7 @@ MS_Check()
 {
     OLD_PATH="\$PATH"
     PATH=\${GUESS_MD5_PATH:-"\$OLD_PATH:/bin:/usr/bin:/sbin:/usr/local/ssl/bin:/usr/local/bin:/opt/openssl/bin"}
-	MD5_ARG=""
+    MD5_ARG=""
     MD5_PATH=\`exec <&- 2>&-; which md5sum || command -v md5sum || type md5sum\`
     test -x "\$MD5_PATH" || MD5_PATH=\`exec <&- 2>&-; which md5 || command -v md5 || type md5\`
     test -x "\$MD5_PATH" || MD5_PATH=\`exec <&- 2>&-; which digest || command -v digest || type digest\`
@@ -182,75 +184,87 @@ MS_Check()
     test -x "\$SHA_PATH" || SHA_PATH=\`exec <&- 2>&-; which sha256sum || command -v sha256sum || type sha256sum\`
 
     if test x"\$quiet" = xn; then
-		MS_Printf "Verifying archive integrity..."
+        MS_Printf "Verifying archive integrity..."
     fi
     offset=\`head -n $SKIP "\$1" | wc -c | tr -d " "\`
     verb=\$2
     i=1
     for s in \$filesizes
     do
-		crc=\`echo \$CRCsum | cut -d" " -f\$i\`
-		if test -x "\$SHA_PATH"; then
-			if test x"\`basename \$SHA_PATH\`" = xshasum; then
-				SHA_ARG="-a 256"
-			fi
-			sha=\`echo \$SHA | cut -d" " -f\$i\`
-			if test x"\$sha" = x0000000000000000000000000000000000000000000000000000000000000000; then
-				test x"\$verb" = xy
-			else
-				shasum=\`MS_dd_Progress "\$1" \$offset \$s | eval "\$SHA_PATH \$SHA_ARG" | cut -b-64\`;
-				if test x"\$shasum" != x"\$sha"; then
-					echo "Error in SHA256 checksums: \$shasum is different from \$sha" >&2
-					exit 2
-				else
-					test x"\$verb" = xy && MS_Printf " SHA256 checksums are OK." >&2
-				fi
-				crc="0000000000";
-			fi
-		fi
-		if test -x "\$MD5_PATH"; then
-			if test x"\`basename \$MD5_PATH\`" = xdigest; then
-				MD5_ARG="-a md5"
-			fi
-			md5=\`echo \$MD5 | cut -d" " -f\$i\`
-			if test x"\$md5" = x00000000000000000000000000000000; then
-				test x"\$verb" = xy
-			else
-				md5sum=\`MS_dd_Progress "\$1" \$offset \$s | eval "\$MD5_PATH \$MD5_ARG" | cut -b-32\`;
-				if test x"\$md5sum" != x"\$md5"; then
-					echo "Error in MD5 checksums: \$md5sum is different from \$md5" >&2
-					exit 2
-				else
-					test x"\$verb" = xy && MS_Printf " MD5 checksums are OK." >&2
-				fi
-				crc="0000000000"; verb=n
-			fi
-		fi
-		if test x"\$crc" = x0000000000; then
-			test x"\$verb" = xy
-		else
-			sum1=\`MS_dd_Progress "\$1" \$offset \$s | CMD_ENV=xpg4 cksum | awk '{print \$1}'\`
-			if test x"\$sum1" = x"\$crc"; then
-				test x"\$verb" = xy && MS_Printf " CRC checksums are OK." >&2
-			else
-				echo "Error in checksums: \$sum1 is different from \$crc" >&2
-				exit 2;
-			fi
-		fi
-		i=\`expr \$i + 1\`
-		offset=\`expr \$offset + \$s\`
+        crc=\`echo \$CRCsum | cut -d" " -f\$i\`
+        if test -x "\$SHA_PATH"; then
+            if test x"\`basename \$SHA_PATH\`" = xshasum; then
+                SHA_ARG="-a 256"
+            fi
+            sha=\`echo \$SHA | cut -d" " -f\$i\`
+            if test x"\$sha" = x0000000000000000000000000000000000000000000000000000000000000000; then
+                test x"\$verb" = xy
+            else
+                shasum=\`MS_dd_Progress "\$1" \$offset \$s | eval "\$SHA_PATH \$SHA_ARG" | cut -b-64\`;
+                if test x"\$shasum" != x"\$sha"; then
+                    echo "Error in SHA256 checksums: \$shasum is different from \$sha" >&2
+                    exit 2
+                else
+                    test x"\$verb" = xy && MS_Printf " SHA256 checksums are OK." >&2
+                fi
+                crc="0000000000";
+            fi
+        fi
+        if test -x "\$MD5_PATH"; then
+            if test x"\`basename \$MD5_PATH\`" = xdigest; then
+                MD5_ARG="-a md5"
+            fi
+            md5=\`echo \$MD5 | cut -d" " -f\$i\`
+            if test x"\$md5" = x00000000000000000000000000000000; then
+                test x"\$verb" = xy
+            else
+                md5sum=\`MS_dd_Progress "\$1" \$offset \$s | eval "\$MD5_PATH \$MD5_ARG" | cut -b-32\`;
+                if test x"\$md5sum" != x"\$md5"; then
+                    echo "Error in MD5 checksums: \$md5sum is different from \$md5" >&2
+                    exit 2
+                else
+                    test x"\$verb" = xy && MS_Printf " MD5 checksums are OK." >&2
+                fi
+                crc="0000000000"; verb=n
+            fi
+        fi
+        if test x"\$crc" = x0000000000; then
+            test x"\$verb" = xy
+        else
+            sum1=\`MS_dd_Progress "\$1" \$offset \$s | CMD_ENV=xpg4 cksum | awk '{print \$1}'\`
+            if test x"\$sum1" = x"\$crc"; then
+                test x"\$verb" = xy && MS_Printf " CRC checksums are OK." >&2
+            else
+                echo "Error in checksums: \$sum1 is different from \$crc" >&2
+                exit 2;
+            fi
+        fi
+        i=\`expr \$i + 1\`
+        offset=\`expr \$offset + \$s\`
     done
     if test x"\$quiet" = xn; then
-		echo " All good."
+        echo " All good."
     fi
+}
+
+MS_Uninstall()
+{
+    rm -rf \${ASCEND_OPP_PATH}/op_impl/custom/*
+    rm -rf \${ASCEND_OPP_PATH}/framework/custom/*
+    rm -rf \${ASCEND_OPP_PATH}/op_proto/custom/*
+    if [ "`ls -A \${ASCEND_OPP_PATH}/op_impl/custom/`" = "" ] && [ "`ls -A \${ASCEND_OPP_PATH}/framework/custom/`" = "" ] && [ "`ls -A \${ASCEND_OPP_PATH}/op_proto/custom/`" = "" ];then
+        echo "uninstall SUCCESS"
+    else
+        echo "uninstall FAIL"
+     fi
 }
 
 UnTAR()
 {
     if test x"\$quiet" = xn; then
-		tar \$1vf - $UNTAR_EXTRA 2>&1 || { echo " ... Extraction failed." > /dev/tty; kill -15 \$$; }
+        tar \$1vf - $UNTAR_EXTRA 2>&1 || { echo " ... Extraction failed." > /dev/tty; kill -15 \$$; }
     else
-		tar \$1f - $UNTAR_EXTRA 2>&1 || { echo Extraction failed. > /dev/tty; kill -15 \$$; }
+        tar \$1f - $UNTAR_EXTRA 2>&1 || { echo Extraction failed. > /dev/tty; kill -15 \$$; }
     fi
 }
 
@@ -268,145 +282,149 @@ while true
 do
     case "\$1" in
     -h | --help)
-	MS_Help
-	exit 0
-	;;
+    MS_Help
+    exit 0
+    ;;
     -q | --quiet)
-	quiet=y
-	noprogress=y
-	shift
-	;;
-	--accept)
-	accept=y
-	shift
-	;;
+    quiet=y
+    noprogress=y
+    shift
+    ;;
+    --accept)
+    accept=y
+    shift
+    ;;
     --info)
-	echo Identification: "\$label"
-	echo Target directory: "\$targetdir"
-	echo Uncompressed size: $USIZE KB
-	echo Compression: $COMPRESS
-	echo Date of packaging: $DATE
-	echo Built with Makeself version $MS_VERSION on $OSTYPE
-	echo Build command was: "$MS_COMMAND"
-	if test x"\$script" != x; then
-	    echo Script run after extraction:
-	    echo "    " \$script \$scriptargs
-	fi
-	if test x"$copy" = xcopy; then
-		echo "Archive will copy itself to a temporary location"
-	fi
-	if test x"$NEED_ROOT" = xy; then
-		echo "Root permissions required for extraction"
-	fi
-	if test x"$KEEP" = xy; then
-	    echo "directory \$targetdir is permanent"
-	else
-	    echo "\$targetdir will be removed after extraction"
-	fi
-	exit 0
-	;;
+    echo Identification: "\$label"
+    echo Target directory: "\$targetdir"
+    echo Uncompressed size: $USIZE KB
+    echo Compression: $COMPRESS
+    echo Date of packaging: $DATE
+    echo Built with Makeself version $MS_VERSION on $OSTYPE
+    echo Build command was: "$MS_COMMAND"
+    if test x"\$script" != x; then
+        echo Script run after extraction:
+        echo "    " \$script \$scriptargs
+    fi
+    if test x"$copy" = xcopy; then
+        echo "Archive will copy itself to a temporary location"
+    fi
+    if test x"$NEED_ROOT" = xy; then
+        echo "Root permissions required for extraction"
+    fi
+    if test x"$KEEP" = xy; then
+        echo "directory \$targetdir is permanent"
+    else
+        echo "\$targetdir will be removed after extraction"
+    fi
+    exit 0
+    ;;
     --dumpconf)
-	echo LABEL=\"\$label\"
-	echo SCRIPT=\"\$script\"
-	echo SCRIPTARGS=\"\$scriptargs\"
-	echo archdirname=\"$archdirname\"
-	echo KEEP=$KEEP
-	echo NOOVERWRITE=$NOOVERWRITE
-	echo COMPRESS=$COMPRESS
-	echo filesizes=\"\$filesizes\"
-	echo CRCsum=\"\$CRCsum\"
-	echo MD5sum=\"\$MD5\"
-	echo OLDUSIZE=$USIZE
-	echo OLDSKIP=`expr $SKIP + 1`
-	exit 0
-	;;
+    echo LABEL=\"\$label\"
+    echo SCRIPT=\"\$script\"
+    echo SCRIPTARGS=\"\$scriptargs\"
+    echo archdirname=\"$archdirname\"
+    echo KEEP=$KEEP
+    echo NOOVERWRITE=$NOOVERWRITE
+    echo COMPRESS=$COMPRESS
+    echo filesizes=\"\$filesizes\"
+    echo CRCsum=\"\$CRCsum\"
+    echo MD5sum=\"\$MD5\"
+    echo OLDUSIZE=$USIZE
+    echo OLDSKIP=`expr $SKIP + 1`
+    exit 0
+    ;;
     --lsm)
 cat << EOLSM
 EOF
 eval "$LSM_CMD"
 cat << EOF  >> "$archname"
 EOLSM
-	exit 0
-	;;
+    exit 0
+    ;;
     --list)
-	echo Target directory: \$targetdir
-	offset=\`head -n $SKIP "\$0" | wc -c | tr -d " "\`
-	for s in \$filesizes
-	do
-	    MS_dd "\$0" \$offset \$s | eval "$GUNZIP_CMD" | UnTAR t
-	    offset=\`expr \$offset + \$s\`
-	done
-	exit 0
-	;;
-	--tar)
-	offset=\`head -n $SKIP "\$0" | wc -c | tr -d " "\`
-	arg1="\$2"
+    echo Target directory: \$targetdir
+    offset=\`head -n $SKIP "\$0" | wc -c | tr -d " "\`
+    for s in \$filesizes
+    do
+        MS_dd "\$0" \$offset \$s | eval "$GUNZIP_CMD" | UnTAR t
+        offset=\`expr \$offset + \$s\`
+    done
+    exit 0
+    ;;
+    --tar)
+    offset=\`head -n $SKIP "\$0" | wc -c | tr -d " "\`
+    arg1="\$2"
     if ! shift 2; then MS_Help; exit 1; fi
-	for s in \$filesizes
-	do
-	    MS_dd "\$0" \$offset \$s | eval "$GUNZIP_CMD" | tar "\$arg1" - "\$@"
-	    offset=\`expr \$offset + \$s\`
-	done
-	exit 0
-	;;
+    for s in \$filesizes
+    do
+        MS_dd "\$0" \$offset \$s | eval "$GUNZIP_CMD" | tar "\$arg1" - "\$@"
+        offset=\`expr \$offset + \$s\`
+    done
+    exit 0
+    ;;
     --check)
-	MS_Check "\$0" y
-	exit 0
-	;;
+    MS_Check "\$0" y
+    exit 0
+    ;;
+    --uninstall)
+    MS_Uninstall "\$0" y
+    exit 0
+    ;;
     --confirm)
-	verbose=y
-	shift
-	;;
-	--noexec)
-	script=""
-	shift
-	;;
+    verbose=y
+    shift
+    ;;
+    --noexec)
+    script=""
+    shift
+    ;;
     --keep)
-	keep=y
-	shift
-	;;
+    keep=y
+    shift
+    ;;
     --target)
-	keep=y
-	targetdir="\${2:-.}"
+    keep=y
+    targetdir="\${2:-.}"
     if ! shift 2; then MS_Help; exit 1; fi
-	;;
+    ;;
     --noprogress)
-	noprogress=y
-	shift
-	;;
+    noprogress=y
+    shift
+    ;;
     --nox11)
-	nox11=y
-	shift
-	;;
+    nox11=y
+    shift
+    ;;
     --nochown)
-	ownership=n
-	shift
-	;;
+    ownership=n
+    shift
+    ;;
     --nodiskspace)
-	nodiskspace=y
-	shift
-	;;
+    nodiskspace=y
+    shift
+    ;;
     --xwin)
-	if test "$NOWAIT" = n; then
-		finish="echo Press Return to close this window...; read junk"
-	fi
-	xterm_loop=1
-	shift
-	;;
+    if test "$NOWAIT" = n; then
+        finish="echo Press Return to close this window...; read junk"
+    fi
+    xterm_loop=1
+    shift
+    ;;
     --phase2)
-	copy=phase2
-	shift
-	;;
+    copy=phase2
+    shift
+    ;;
     --)
-	shift
-	break ;;
+    shift
+    break ;;
     -*)
-	echo Unrecognized flag : "\$1" >&2
-	MS_Help
-	exit 1
-	;;
+    echo Unrecognized flag : "\$1" >&2
+    MS_Help
+    exit 1
+    ;;
     *)
-	break ;;
+    break ;;
     esac
 done
 
@@ -431,13 +449,13 @@ fi
 
 scriptargs="\$scriptargs""--\$name_of_file""--\$pwd_of_file""\$quiet_para""\$keep_para""\$confirm_para"
 if test x"\$quiet" = xy -a x"\$verbose" = xy; then
-	echo Cannot be verbose and quiet at the same time. >&2
-	exit 1
+    echo Cannot be verbose and quiet at the same time. >&2
+    exit 1
 fi
 
 if test x"$NEED_ROOT" = xy -a \`id -u\` -ne 0; then
-	echo "Administrative privileges required for this archive (use su or sudo)" >&2
-	exit 1	
+    echo "Administrative privileges required for this archive (use su or sudo)" >&2
+    exit 1	
 fi
 
 if test x"\$copy" \!= xphase2; then
@@ -448,8 +466,8 @@ case "\$copy" in
 copy)
     tmpdir="\$TMPROOT"/makeself.\$RANDOM.\`date +"%y%m%d%H%M%S"\`.\$\$
     mkdir "\$tmpdir" || {
-	echo "Could not create temporary directory \$tmpdir" >&2
-	exit 1
+    echo "Could not create temporary directory \$tmpdir" >&2
+    exit 1
     }
     SCRIPT_COPY="\$tmpdir/makeself"
     echo "Copying to a temporary location..." >&2
@@ -465,7 +483,7 @@ esac
 
 if test x"\$nox11" = xn; then
     if tty -s; then                 # Do we have a terminal?
-	:
+    :
     else
         if test x"\$DISPLAY" != x -a x"\$xterm_loop" = x; then  # No, but do we have X?
             if xset q > /dev/null 2>&1; then # Check for valid DISPLAY variable
@@ -491,24 +509,24 @@ if test x"\$targetdir" = x.; then
     tmpdir="."
 else
     if test x"\$keep" = xy; then
-	if test x"\$nooverwrite" = xy && test -d "\$targetdir"; then
+    if test x"\$nooverwrite" = xy && test -d "\$targetdir"; then
             echo "Target directory \$targetdir already exists, aborting." >&2
             exit 1
-	fi
-	if test x"\$quiet" = xn; then
-	    echo "Creating directory \$targetdir" >&2
-	fi
-	tmpdir="\$targetdir"
-	dashp="-p"
+    fi
+    if test x"\$quiet" = xn; then
+        echo "Creating directory \$targetdir" >&2
+    fi
+    tmpdir="\$targetdir"
+    dashp="-p"
     else
-	tmpdir="\$TMPROOT/selfgz\$\$\$RANDOM"
-	dashp=""
+    tmpdir="\$TMPROOT/selfgz\$\$\$RANDOM"
+    dashp=""
     fi
     mkdir \$dashp "\$tmpdir" || {
-	echo 'Cannot create target directory' \$tmpdir >&2
-	echo 'You should try option --target dir' >&2
-	eval \$finish
-	exit 1
+    echo 'Cannot create target directory' \$tmpdir >&2
+    echo 'You should try option --target dir' >&2
+    eval \$finish
+    exit 1
     }
 fi
 
@@ -519,21 +537,21 @@ fi
 offset=\`head -n $SKIP "\$0" | wc -c | tr -d " "\`
 
 if test x"\$verbose" = xy; then
-	MS_Printf "About to extract $USIZE KB in \$tmpdir ... Proceed ? [Y/n] "
-	read yn
-	if test x"\$yn" = xn; then
-		eval \$finish; exit 1
-	fi
+    MS_Printf "About to extract $USIZE KB in \$tmpdir ... Proceed ? [Y/n] "
+    read yn
+    if test x"\$yn" = xn; then
+        eval \$finish; exit 1
+    fi
 fi
 
 if test x"\$quiet" = xn; then
-	MS_Printf "Uncompressing \$label"
-	
+    MS_Printf "Uncompressing \$label"
+    
     # Decrypting with openssl will ask for password,
     # the prompt needs to start on new line
-	if test x"$ENCRYPT" = xy; then
-	    echo
-	fi
+    if test x"$ENCRYPT" = xy; then
+        echo
+    fi
 fi
 res=3
 if test x"\$keep" = xn; then
@@ -558,18 +576,18 @@ fi
 for s in \$filesizes
 do
     if MS_dd_Progress "\$0" \$offset \$s | eval "$GUNZIP_CMD" | ( cd "\$tmpdir"; umask \$ORIG_UMASK ; UnTAR xp ) 1>/dev/null; then
-		if test x"\$ownership" = xy; then
-			(cd "\$tmpdir"; chown -R \`id -u\` .;  chgrp -R \`id -g\` .)
-		fi
+        if test x"\$ownership" = xy; then
+            (cd "\$tmpdir"; chown -R \`id -u\` .;  chgrp -R \`id -g\` .)
+        fi
     else
-		echo >&2
-		echo "Unable to decompress \$0" >&2
-		eval \$finish; exit 1
+        echo >&2
+        echo "Unable to decompress \$0" >&2
+        eval \$finish; exit 1
     fi
     offset=\`expr \$offset + \$s\`
 done
 if test x"\$quiet" = xn; then
-	echo
+    echo
 fi
 
 cd "\$tmpdir"
@@ -603,10 +621,10 @@ if test x"\$script" != x; then
             fi
         done
     else
-		eval "\"\$script\" \$scriptargs \"\\\$@\""; res=\$?
+        eval "\"\$script\" \$scriptargs \"\\\$@\""; res=\$?
     fi
     if test "\$res" -ne 0; then
-		test x"\$verbose" = xy && echo "The program '\$script' returned an error code (\$res)" >&2
+        test x"\$verbose" = xy && echo "The program '\$script' returned an error code (\$res)" >&2
     fi
 fi
 if test x"\$keep" = xn; then
