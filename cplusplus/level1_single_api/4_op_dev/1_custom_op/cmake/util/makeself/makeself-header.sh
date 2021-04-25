@@ -253,9 +253,9 @@ MS_Uninstall()
     rm -rf \${ASCEND_OPP_PATH}/framework/custom/*
     rm -rf \${ASCEND_OPP_PATH}/op_proto/custom/*
     if [ "`ls -A \${ASCEND_OPP_PATH}/op_impl/custom`" = "" ] && [ "`ls -A \${ASCEND_OPP_PATH}/framework/custom`" = "" ] && [ "`ls -A \${ASCEND_OPP_PATH}/op_proto/custom`" = "" ];then
-        echo "uninstall SUCCESS"
+        echo "uninstall SUCCESS."
     else
-        echo "uninstall FAIL"
+        echo "uninstall FAIL."
      fi
 }
 
