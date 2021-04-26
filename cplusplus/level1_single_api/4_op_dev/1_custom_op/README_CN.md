@@ -191,17 +191,7 @@ Caffe与TensorFlow共存的自定义算子样例工程的目录结构如下所�
             ```
 
 
-    -   SYSTEM\_INFO：标志编译生成的算子包的形态的名称，若不设置SYSTEM\_INFO环境变量，则会自动根据操作系统类型及架构获取。
-    
-        若用户需要自定义生成的算子包形态名称，请取消此环境变量的注释，并自行修改，例如，若操作系统版本为CentOS，架构为aarch64，则可设置为：
-    
-        ```
-        export SYSTEM_INFO=centos_aarch64
-        ```
-    
-        则编译生成的算子包名称为custom\_opp\__centos\_aarch64_.run。
-
-    -   AICPU\_SOC\_VERSION：昇腾AI处理器的类型，请配置为AI CPU组件安装路径中“opp/op_impl/built-in/aicpu/aicpu_kernel/lib”路径下的文件夹名称，即“libcpu_kernels_context.a”与“libcpu_kernels_v1.0.1.so”所在文件夹的名称。
+    -    AICPU\_SOC\_VERSION：昇腾AI处理器的类型，请配置为AI CPU组件安装路径中“opp/op_impl/built-in/aicpu/aicpu_kernel/lib”路径下的文件夹名称，即“libcpu_kernels_context.a”与“libcpu_kernels_v1.0.1.so”所在文件夹的名称。
     
 
 3.  执行算子工程编译。
