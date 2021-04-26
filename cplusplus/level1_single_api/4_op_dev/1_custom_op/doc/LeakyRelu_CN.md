@@ -22,7 +22,7 @@ LeakyRelu算子的数学表达式如下所示：
     算子功能请参见[功能描述](#section7526288579)。
 
 2.  明确输入和输出。
-    -   LeakyRelu算子有1个输入x，1个输出y，1个属性（即算子表达式中的![](https://images.gitee.com/uploads/images/2021/0426/102929_a40abaef_5474059.png) 。
+    -   LeakyRelu算子有1个输入x，1个输出y，1个属性（即算子表达式中的![](https://images.gitee.com/uploads/images/2021/0426/102929_a40abaef_5474059.png) )。
     -   本样例中算子的输入支持的数据类型为float16、float32、 int32、int8，算子输出的数据类型与输入数据类型相同。
     -   算子输入支持所有shape，输出shape与输入shape相同。
     -   算子输入支持的format为：NCHW,NC1HWC0,NHWC,。
