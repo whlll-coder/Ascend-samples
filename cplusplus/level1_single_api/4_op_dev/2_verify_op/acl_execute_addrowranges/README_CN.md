@@ -2,7 +2,7 @@
 
 ## 功能描述<a name="section1421916179418"></a>
 
-该样例实现了对[自定义算子Add](../../1_custom_op/doc/Add_CN.md)的功能验证，通过将自定义算子转换为单算子离线模型文件，然后通过AscendCL加载单算子模型文件进行运行。
+该样例实现了对[自定义算子AddRowRanges](../../1_custom_op/doc/AddRowRanges_CN.md)的功能验证，通过将自定义算子转换为单算子离线模型文件，然后通过AscendCL加载单算子模型文件进行运行。
 
 说明：单算子模型文件的生成只依赖算子代码实现文件、算子原型定义、算子信息库，不依赖算子适配插件。
 
@@ -191,7 +191,7 @@
     1.  以运行用户（例如HwHiAiUser）登录开发环境，并进入样例工程的“acl\_execute\_add/run/out“目录。
     2.  在out目录下执行如下命令，生成单算子模型文件。
 
-        **atc --singleop=test\_data/config/add\_op.json  --soc\_version=_$\{soc\_version\}_  --output=op\_models**
+        **atc --singleop=test\_data/config/addrowranges\_op.json  --soc\_version=_$\{soc\_version\}_  --output=op\_models**
 
         其中：
 
@@ -204,7 +204,7 @@
 
         模型转换成功后，会生成如下文件：
 
-        在当前目录的op\_models目录下生成单算子的模型文件**0\_Add\_3\_2\_8\_16\_3\_2\_8\_16\_3\_2\_8\_16.om**，命名规范为：序号+opType + 输入的描述\(dateType\_format\_shape\)+输出的描述。
+        在当前目录的op\_models目录下生成单算子的模型文件**0\_AddRowRanges\_8\_16\_8\_16\_8\_2.om**，命名规范为：序号+opType + 输入的描述\(dateType\_format\_shape\)+输出的描述。
 
         dataType以及format对应枚举值请从ATC组件所在目录下的“atc/include/graph/types.h”文件中查看，枚举值从0开始依次递增。
 
@@ -217,7 +217,7 @@
 
     **python3.7.5 generate\_data.py**
 
-    会在当前目录下生成两个shape为\(8, 16\)，数据类型为int32的数据文件input\_0.bin与input\_1.bin，用于进行Add算子的验证。
+    会在当前目录下生成两个shape为\(8, 16\)和一个shape为\(8, 2\)，数据类型为float32的数据文件input\_0.bin与input\_1.bin，数据类型为int32的数据文件input\_2.bin，用于进行AddRowRanges算子的验证。
 
 3.  编译样例工程，生成单算子验证可执行文件。
     1.  针对Ascend 310与Ascend 910，修改src/CMakeLists.txt文件中的如下配置段，将“**acllib**”修改为“**fwkacllib**”，**Ascend 710无需执行此步骤**。
@@ -230,7 +230,7 @@
         )
         ```
 
-    2.  切换到样例工程根目录acl\_execute\_add，然后在样例工程根目录下执行如下命令创建目录用于存放编译文件，例如，创建的目录为“build/intermediates/host“。
+    2.  切换到样例工程根目录acl\_execute\_addrowranges，然后在样例工程根目录下执行如下命令创建目录用于存放编译文件，例如，创建的目录为“build/intermediates/host“。
 
         **mkdir -p build/intermediates/host**
 
@@ -259,60 +259,25 @@
     
         **make**
     
-        会在工程目录的“run/out“目录下生成可执行文件**execute\_add\_op**。
+        会在工程目录的“run/out“目录下生成可执行文件**execute\_addrowranges\_op**。
 
 
 4.  在硬件设备的Host侧执行单算子验证文件。
-    1.  以运行用户（例如HwHiAiUser）拷贝开发环境中样例工程acl\_execute\_add/run/目录下的out文件夹到运行环境（硬件设备Host侧）任一目录，例如上传到/home/HwHiAiUser/HIAI\_PROJECTS/run\_add/目录下。
+    1.  以运行用户（例如HwHiAiUser）拷贝开发环境中样例工程acl\_execute\_addrowranges/run/目录下的out文件夹到运行环境（硬件设备Host侧）任一目录，例如上传到/home/HwHiAiUser/HIAI\_PROJECTS/run\_addrowranges/目录下。
 
         **说明：**若您的开发环境即为硬件设备的Host侧，此拷贝操作可跳过。
 
-    2.  在运行环境中执行execute\_add\_op文件，验证单算子模型文件。
+    2.  在运行环境中执行execute\_addrowranges\_op文件，验证单算子模型文件。
 
-        在/home/HwHiAiUser/HIAI\_PROJECTS/run\_add/out目录下执行如下命令：
+        在/home/HwHiAiUser/HIAI\_PROJECTS/run\_addrowranges/out目录下执行如下命令：
 
-        **chmod +x execute\_add\_op**
+        **chmod +x execute\_addrowranges\_op**
 
-        **./execute\_add\_op**
+        **./execute\_addrowranges\_op**
 
         会有如下屏显信息（注意：由于数据生成脚本生成的数据文件是随机的，屏显显示的数据会有不同）：
 
-        ```
-        [INFO]  Input[0]:
-                -4        -4        -1         7         0         9        -4         5        -9        -9        -3         7                                                                                                -6         1         8         3
-                -6        -9         8        -3        -9         0         0         4        -3         7        -6        -9                                                                                                 6         6         1        -8
-                -7         7        -3         5         8        -3         6        -4         6         9         8       -10                                                                                                 7         3         3         9
-                -4         6         5         6        -5         3        -1         1         1        -8        -4         9                                                                                                -6        -9         6        -8
-                 5         8         5         2        -9         5        -8        -2        -1       -10        -5         5                                                                                                 7       -10        -8       -10
-                 0         3        -7         8         3         3       -10         5        -7         6        -3         2                                                                                                 7       -10        -8         0
-                -2        -5         8        -4         1         8         4        -5        -7         1        -9         8                                                                                                 2         3        -3         5
-                 8        -6        -8        -5         8       -10         5        -4        -5        -1         0       -10                                                                                                 8         6        -6        -3
-        [INFO]  Set input[1] from test_data/data/input_1.bin success.
-        [INFO]  Input[1]:
-                -8        -1        -3         9        -2         8        -9         7        -7         7        -5         4                                                                                                 9         6        -2         9
-                -6         1        -3         9        -5         5         4        -4        -8        -7        -1         9                                                                                                 6         0         9       -10
-                -6         6        -1        -2        -3         5         1         3        -4         0         6         4                                                                                                -4       -10        -2         7
-                 9         2         2         6        -7        -8         9         6        -2        -5        -8         5                                                                                                 9        -5         1         7
-                -9        -3        -9        -4         6         0         5        -4        -4         1        -1         2                                                                                                 1         7         8       -10
-                 1         3        -5        -8       -10        -3        -7         7         8        -3        -9         5                                                                                                -7        -6        -6        -4
-                -3         3         4        -5         5         4        -9         0        -8         2        -3        -6                                                                                                 5         4        -6        -8
-                 0         8         9        -2         4         1         8        -6        -8         1        -1        -9                                                                                                -2         0       -10         7
-           ......
-           ......
-        [INFO]  Output[0]:
-               -12        -5        -4        16        -2        17       -13        12       -16        -2        -8        11                                                                                                 3         7         6        12
-               -12        -8         5         6       -14         5         4         0       -11         0        -7         0                                                                                                12         6        10       -18
-               -13        13        -4         3         5         2         7        -1         2         9        14        -6                                                                                                 3        -7         1        16
-                 5         8         7        12       -12        -5         8         7        -1       -13       -12        14                                                                                                 3       -14         7        -1
-                -4         5        -4        -2        -3         5        -3        -6        -5        -9        -6         7                                                                                                 8        -3         0       -20
-                 1         6       -12         0        -7         0       -17        12         1         3       -12         7                                                                                                 0       -16       -14        -4
-                -5        -2        12        -9         6        12        -5        -5       -15         3       -12         2                                                                                                 7         7        -9        -3
-                 8         2         1        -7        12        -9        13       -10       -13         0        -1       -19                                                                                                 6         6       -16         4
-        [INFO]  Write output[0] success. output file = result_files/output_0.bin
-        [INFO]  Run op success
-        ```
-
-        可见输出结果=输入数据1+输入数据2，Add算子验证结果正确。
+        可见输出结果=输入数据1+输入数据2，AddRowRanges算子验证结果正确。
 
         result\_files/output\_0.bin：输出数据的二进制文件。
 
@@ -321,10 +286,10 @@
 ## 编译运行（Atlas 200 DK）<a name="section205496819282"></a>
 
 1.  生成Add算子的单算子离线模型文件。
-    1.  以运行用户（例如HwHiAiUser）登录开发环境，并进入样例工程的“acl\_execute\_add/run/out“目录。
+    1.  以运行用户（例如HwHiAiUser）登录开发环境，并进入样例工程的“acl\_execute\_addrowranges/run/out“目录。
     2.  在out目录下执行如下命令，生成单算子模型文件。
 
-        **atc --singleop=test\_data/config/add\_op.json  --soc\_version=Ascend310 --output=op\_models**
+        **atc --singleop=test\_data/config/addrowranges\_op.json  --soc\_version=Ascend310 --output=op\_models**
 
         其中：
 
@@ -334,7 +299,7 @@
 
         模型转换成功后，会生成如下文件：
 
-        在当前目录的op\_models目录下生成单算子的模型文件**0\_Add\_3\_2\_8\_16\_3\_2\_8\_16\_3\_2\_8\_16.om**，命名规范为：序号+opType + 输入的描述\(dateType\_format\_shape\)+输出的描述。
+        在当前目录的op\_models目录下生成单算子的模型文件**0\_AddRowRanges\_8\_16\_8\_16\_8\_2.om**，命名规范为：序号+opType + 输入的描述\(dateType\_format\_shape\)+输出的描述。
 
         dataType以及format对应枚举值请从ATC组件所在目录下的“atc/include/graph/types.h”文件中查看，枚举值从0开始依次递增。
 
@@ -347,10 +312,10 @@
 
     **python3.7.5 generate\_data.py**
 
-    会在当前目录下生成两个shape为\(8, 16\)，数据类型为int32的数据文件input\_0.bin与input\_1.bin，用于进行Add算子的验证。
+    会在当前目录下生成两个shape为\(8, 16\)，一个shape为\(8, 2\)数据类型为float32的数据文件input\_0.bin与input\_1.bin，数据类型为int32的数据文件input\_2.bin用于进行Add算子的验证。
 
 3.  编译样例工程，生成单算子验证可执行文件。
-    1.  切换到样例工程根目录acl\_execute\_add，然后在样例工程根目录下执行如下命令创建目录用于存放编译文件，例如，创建的目录为“build/intermediates/host“。
+    1.  切换到样例工程根目录acl\_execute\_addrowranges，然后在样例工程根目录下执行如下命令创建目录用于存放编译文件，例如，创建的目录为“build/intermediates/host“。
 
         **mkdir -p build/intermediates/host**
 
@@ -371,57 +336,22 @@
     
         **make**
     
-        会在工程目录的“run/out“目录下生成可执行文件**execute\_add\_op**。
+        会在工程目录的“run/out“目录下生成可执行文件**execute\_addrowranges\_op**。
 
 
 4.  在运行环境上执行单算子验证文件。
-    1.  以运行用户（例如HwHiAiUser）拷贝开发环境中样例工程acl\_execute\_add/run/目录下的out文件夹到板端环境任一目录，例如上传到/home/HwHiAiUser/HIAI\_PROJECTS/run\_add/目录下。
-    2.  在板端环境中执行execute\_add\_op文件，验证单算子模型文件。
+    1.  以运行用户（例如HwHiAiUser）拷贝开发环境中样例工程acl\_execute\_addrowranges/run/目录下的out文件夹到板端环境任一目录，例如上传到/home/HwHiAiUser/HIAI\_PROJECTS/run\_addrowranges/目录下。
+    2.  在板端环境中执行execute\_addrowranges\_op文件，验证单算子模型文件。
 
-        在/home/HwHiAiUser/HIAI\_PROJECTS/run\_add/out目录下执行如下命令：
+        在/home/HwHiAiUser/HIAI\_PROJECTS/run\_addrowranges/out目录下执行如下命令：
 
-        **chmod +x execute\_add\_op**
+        **chmod +x execute\_addrowranges\_op**
 
-        **./execute\_add\_op**
+        **./execute\_addrowranges\_op**
 
         会有如下屏显信息（注意：由于数据生成脚本生成的数据文件是随机的，屏显显示的数据会有不同）：
 
-        ```
-        [INFO]  Input[0]:
-                -4        -4        -1         7         0         9        -4         5        -9        -9        -3         7                                                                                                -6         1         8         3
-                -6        -9         8        -3        -9         0         0         4        -3         7        -6        -9                                                                                                 6         6         1        -8
-                -7         7        -3         5         8        -3         6        -4         6         9         8       -10                                                                                                 7         3         3         9
-                -4         6         5         6        -5         3        -1         1         1        -8        -4         9                                                                                                -6        -9         6        -8
-                 5         8         5         2        -9         5        -8        -2        -1       -10        -5         5                                                                                                 7       -10        -8       -10
-                 0         3        -7         8         3         3       -10         5        -7         6        -3         2                                                                                                 7       -10        -8         0
-                -2        -5         8        -4         1         8         4        -5        -7         1        -9         8                                                                                                 2         3        -3         5
-                 8        -6        -8        -5         8       -10         5        -4        -5        -1         0       -10                                                                                                 8         6        -6        -3
-        [INFO]  Set input[1] from test_data/data/input_1.bin success.
-        [INFO]  Input[1]:
-                -8        -1        -3         9        -2         8        -9         7        -7         7        -5         4                                                                                                 9         6        -2         9
-                -6         1        -3         9        -5         5         4        -4        -8        -7        -1         9                                                                                                 6         0         9       -10
-                -6         6        -1        -2        -3         5         1         3        -4         0         6         4                                                                                                -4       -10        -2         7
-                 9         2         2         6        -7        -8         9         6        -2        -5        -8         5                                                                                                 9        -5         1         7
-                -9        -3        -9        -4         6         0         5        -4        -4         1        -1         2                                                                                                 1         7         8       -10
-                 1         3        -5        -8       -10        -3        -7         7         8        -3        -9         5                                                                                                -7        -6        -6        -4
-                -3         3         4        -5         5         4        -9         0        -8         2        -3        -6                                                                                                 5         4        -6        -8
-                 0         8         9        -2         4         1         8        -6        -8         1        -1        -9                                                                                                -2         0       -10         7
-           ......
-           ......
-        [INFO]  Output[0]:
-               -12        -5        -4        16        -2        17       -13        12       -16        -2        -8        11                                                                                                 3         7         6        12
-               -12        -8         5         6       -14         5         4         0       -11         0        -7         0                                                                                                12         6        10       -18
-               -13        13        -4         3         5         2         7        -1         2         9        14        -6                                                                                                 3        -7         1        16
-                 5         8         7        12       -12        -5         8         7        -1       -13       -12        14                                                                                                 3       -14         7        -1
-                -4         5        -4        -2        -3         5        -3        -6        -5        -9        -6         7                                                                                                 8        -3         0       -20
-                 1         6       -12         0        -7         0       -17        12         1         3       -12         7                                                                                                 0       -16       -14        -4
-                -5        -2        12        -9         6        12        -5        -5       -15         3       -12         2                                                                                                 7         7        -9        -3
-                 8         2         1        -7        12        -9        13       -10       -13         0        -1       -19                                                                                                 6         6       -16         4
-        [INFO]  Write output[0] success. output file = result_files/output_0.bin
-        [INFO]  Run op success
-        ```
-
-        可见输出结果=输入数据1+输入数据2，Add算子验证结果正确。
+        可见输出结果=输入数据1+输入数据2，AddRowRanges算子验证结果正确。
 
         result\_files/output\_0.bin：输出数据的二进制文件。
 
