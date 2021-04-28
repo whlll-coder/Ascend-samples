@@ -41,6 +41,7 @@ _B_MEAN = 103.94
 
 
 def _decode(item):
+    '''parse dataset'''
     features = {
         'image/encoded': tf.io.FixedLenFeature((), tf.string, default_value=''),
         'image/format': tf.io.FixedLenFeature((), tf.string, default_value='jpeg'),
@@ -61,12 +62,14 @@ def _decode(item):
 
 
 def _grayscale_to_rgb(image):
+    '''generate rgb_image'''
     rgb_image = tf.cond(
         tf.equal(tf.shape(image)[-1], 1), true_fn=lambda: tf.image.grayscale_to_rgb(image), false_fn=lambda: image)
     return rgb_image
 
 
 def _resize(image, resize_side):
+    '''resize input image'''
     shape = tf.shape(image)
     height = tf.cast(shape[0], tf.float32)
     width = tf.cast(shape[1], tf.float32)
@@ -78,6 +81,7 @@ def _resize(image, resize_side):
 
 
 def _crop(image, is_random=False):
+    '''crop input image'''
     shape = tf.shape(image)
     height = shape[0]
     width = shape[1]
@@ -97,6 +101,7 @@ def _crop(image, is_random=False):
 
 
 def _parse_train(item):
+    '''parse train data'''
     image, label, text = _decode(item)
     rgb_image = _grayscale_to_rgb(image)
     resize_side = tf.random.uniform([], minval=MIN_RESIZE, maxval=MAX_RESIZE + 1, dtype=tf.int32)
@@ -109,6 +114,7 @@ def _parse_train(item):
 
 
 def _parse_eval(item):
+    '''parse validation data'''
     image, label, text = _decode(item)
     rgb_image = _grayscale_to_rgb(image)
     resized_image = _resize(rgb_image, MIN_RESIZE)
@@ -172,7 +178,7 @@ class TFRecordDataset(object): # pylint: disable=R0902, R0903
             plt.title(str(labels[i]) + ': ' + text)
 
 
-PATH, _ = os.path.realpath(os.path(realpath(__file__)))
+PATH, _ = os.path.split(os.path.realpath(__file__))
 TMP = os.path.join(PATH, 'tmp')
 RESULTS = os.path.join(PATH, 'results/retrain')
 TRAIN_SIZE = 1281167
@@ -219,15 +225,15 @@ def parse_args():
         help='The number of samples in each batch.')
     parser.add_argument(
         '--train_model', dest='train_model', type=str,
-        default='../model/resnet_v1_50_train.meta',
+        default='./model/resnet_v1_50_train.meta',
         help='The path of file containing a "MetaGraphDef" of ResNet V1 50 for training.')
     parser.add_argument(
         '--eval_model', dest='eval_model', type=str,
-        default='../model/resnet_v1_50_eval.meta',
+        default='./model/resnet_v1_50_eval.meta',
         help='The path of file containing a "MetaGraphDef" of ResNet V1 50 for evaluation.')
     parser.add_argument(
         '--ckpt', dest='ckpt_path', type=str,
-        default='../model/resnet_v1_50',
+        default='./model/resnet_v1_50',
         help='The path of ResNet V1 50 checkpoint.')
     parser.add_argument(
         '--learning_rate', dest='learning_rate', default=1e-5, type=float,
@@ -239,7 +245,7 @@ def parse_args():
         '--save_interval', dest='save_interval', default=500, type=int,
         help='The number of steps between checkpoints.')
     parser.add_argument(
-        '--train_iter', dest='train_iter', default=500, type=int,
+        '--train_iter', dest='train_iter', default=100, type=int,
         help='The number of retraining iterations.')
 
     return parser.parse_args()
@@ -291,7 +297,7 @@ def get_loss(input_2, logits):
     l2_variables = []
     for i in tf.compat.v1.trainable_variables():
         if 'BatchNorm' not in i.name and 'ULQ' not in i.name:
-            l2_varaibles.append(tf.nn.l2_loss(tf.cast(i,tf.float32)))
+            l2_variables.append(tf.nn.l2_loss(tf.cast(i,tf.float32)))
     l2_loss = 1e-4 * tf.add_n(l2_variables)
     cross_entropy = tf.nn.softmax_cross_entropy_with_logits_v2(labels=input_2, logits=logits) / ARGS.batch_size
     loss = cross_entropy + l2_loss
@@ -378,7 +384,7 @@ def main(): # pylint: disable=R0914, R0915
     """main process"""
     args_check(ARGS)
     mkdir(TMP)
-    mkdir(OUTPUTS)
+    mkdir(RESULTS)
 
     # Phase Check original model accuracy
     # Step 1: Load and evaluate the target model
@@ -386,10 +392,11 @@ def main(): # pylint: disable=R0914, R0915
     session = tf.compat.v1.Session()
     saver = tf.compat.v1.train.import_meta_graph(ARGS.eval_model)
     saver.restore(session, ARGS.ckpt_path)
-    acc_1, acc_5 = evaluate(session)
+    acc_1_before, acc_5_before = evaluate(session)
+
     session.close()
-    print('The origin model top 1 accuracy = {}%.'.format(acc_1))
-    print('The origin model top 5 accuracy = {}%.'.format(acc_5))
+    print('The origin model top 1 accuracy = {}%.'.format(acc_1_before))
+    print('The origin model top 5 accuracy = {}%.'.format(acc_5_before))
 
     # Phase retrain the model
     # Step 1: Generate training dataset.
@@ -438,7 +445,7 @@ def main(): # pylint: disable=R0914, R0915
 
     # Step 6: Convert origin 'pb' model file to fake quantized 'pb'
     # model, using the quantization factor record_file.
-    quantized_pb_path = os.path.join(OUTPUTS, 'resnet_v1_50')
+    quantized_pb_path = os.path.join(RESULTS, 'resnet_v1_50')
     amct.save_quant_retrain_model(pb_path, [PREDICTIONS], record_file, quantized_pb_path)
 
     # Phase verification
@@ -456,6 +463,8 @@ def main(): # pylint: disable=R0914, R0915
     session = tf.compat.v1.Session()
     acc_1, acc_5 = evaluate(session)
     session.close()
+    print('The origin model top 1 accuracy = {}%.'.format(acc_1_before))
+    print('The origin model top 5 accuracy = {}%.'.format(acc_5_before))
     print('The model after retraining top 1 accuracy = {}%.'.format(acc_1))
     print('The model after retraining top 5 accuracy = {}%.'.format(acc_5))
 
