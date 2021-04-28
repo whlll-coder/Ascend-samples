@@ -61,7 +61,7 @@
     |  yolov4| 基于onnx-YOLOV4的目标检测模型。  |  https://www.hiascend.com/zh/software/modelzoo/detail/1/abb7e641964c459398173248aa5353bc |
 
     ![](https://images.gitee.com/uploads/images/2020/1106/160652_6146f6a4_5395865.gif "icon-note.gif") **说明：**  
-    > - modelzoo中提供了转换好的om模型，但此模型不匹配当前样例，所以需要下载原始模型和权重文件后重新进行模型转换。    
+    > - modelzoo中提供了转换好的om模型，但此模型不匹配当前样例，所以需要下载原始模型后重新进行模型转换。    
   将下载的模型名字更改为工程需要的名字
 
 
