@@ -16,7 +16,7 @@
     d.MNIST测试数据集标签文件获取路径：http://yann.lecun.com/exdb/mnist/t10k-labels-idx1-ubyte.gz
 
 ### 1.3 通过训练脚本获取模型和权重文件
-sample/tensor_decompose目录提供两份TensorFlow训练代码：一份使用Session接口训练，一份使用Estimator接口训练，用户根据实际情况进行选择。执行如下命令生成模型文件和权重文件。
+src目录提供两份TensorFlow训练代码：一份使用Session接口训练，一份使用Estimator接口训练，用户根据实际情况进行选择。执行如下命令生成模型文件和权重文件。
 使用样例如下：
 ```bash
 python ./src/train_sample_session.py --data_path data/mnist

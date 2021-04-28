@@ -20,7 +20,7 @@ wget https://modelzoo-train-atc.obs.cn-north-4.myhuaweicloud.com/003_Atc_Models/
 ## 2， 执行样例
 切换到该样例根目录下，执行如下命令分解resnet50网络模型。
 ```bash
-python3.7.5 ./src/tensor_decomposition_sample.py \
+python ./src/tensor_decomposition_sample.py \
     --model_file model/ResNet-50-deploy.prototxt \
     --weights_file model/ResNet-50-model.caffemodel \
     --new_model_file model/ResNet-50-deploy_td.prototxt \
