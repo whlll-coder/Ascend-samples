@@ -25,8 +25,7 @@
 #include <string.h>
 
 #include "mic.h"
-#include<termios.h>    /*PPSIX*/
-
+#include <termios.h>    /*PPSIX*/
 
 Mic::Mic(void)
 {
@@ -46,7 +45,6 @@ Mic::~Mic(void)
 
 }
 
-
 int Mic::mic_open(void)
 {
     int ret = OpenMIC();
@@ -61,7 +59,6 @@ int Mic::mic_open(void)
     }
     return ASCEND_MIC_SUCCESS;
 }
-
 
 int Mic::mic_close(void)
 {
@@ -208,7 +205,7 @@ int Mic::mic_cap(CAP_MIC_CALLBACK tfunc, void* param)
 }
 int Mic::mic_read_sound(void* pdata, int *size)
 {
-    if((nullptr == pdata)||(nullptr == size))
+    if((nullptr == pdata) || (nullptr == size))
     {
         ERROR_LOG("mic_read_sound  param nullptr! ");
         return ASCEND_MIC_ERROR;

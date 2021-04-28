@@ -65,7 +65,7 @@ int main(int argc, char* argv[])
     time(&timep);
     p = localtime(&timep);
 
-    sprintf(name, "./%d-%d-%d-%d-%02d.pcm",1900+p->tm_year,1+p->tm_mon,p->tm_mday,p->tm_hour,p->tm_min);
+    snprintf(name, sizeof(name),"./%d-%d-%d-%d-%02d.pcm",1900+p->tm_year,1+p->tm_mon,p->tm_mday,p->tm_hour,p->tm_min);
     g_file = fopen(name, "a+b");
     ret = micDevice.mic_cap(mic_callback, nullptr);
     if(ASCEND_MIC_SUCCESS != ret)
