@@ -465,8 +465,8 @@ def main(): # pylint: disable=R0914, R0915
     session.close()
     print('The origin model top 1 accuracy = {}%.'.format(acc_1_before))
     print('The origin model top 5 accuracy = {}%.'.format(acc_5_before))
-    print('The model after retraining top 1 accuracy = {}%.'.format(acc_1))
-    print('The model after retraining top 5 accuracy = {}%.'.format(acc_5))
+    print('The model after retrain top 1 accuracy = {}%.'.format(acc_1))
+    print('The model after retrain top 5 accuracy = {}%.'.format(acc_5))
 
 
 if __name__ == '__main__':

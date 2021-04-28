@@ -35,7 +35,7 @@ python3.7.5 ./src/resnet-50_v1_retrain.py --config_defination CONFIG_DEFINATION 
 | 参数 | 必填项 | 数据类型 | 默认值 | 参数解释 |
 | :-- | :-: | :-: | :-: | :-- |
 | -h | 否 | / | / | 显示帮助信息。 |
-| --config_defination CONFIG_DEFINATION | 否 | string | None | 量化的简易配置文件路径。 |
+| --config_defination CONFIG_DEFINATION | 否 | string | None | 量化的简易配置文件路径。可使用 './src/sample.cfg'，ResNet网络样例首尾层INT8，中间层INT4量化配置。|
 | --batch_num BATCH_NUM | 否 | int| 2 | retrain 量化推理阶段的 batch 数。 |
 | --train_set TRAIN_SET | 是 | string | None | 测试数据集路径。 |
 | --train_keyword TRAIN_KEYWORD | 否 | string | None | 用于筛选训练集路径下包含该关键词的文件，若未定义，则默认训练集路径下所有文件作为训练集。 |
@@ -55,11 +55,11 @@ python3.7.5 ./src/resnet-50_v1_retrain.py --config_defination CONFIG_DEFINATION 
 
 如果测试数据集和验证数据集位于同一路径下，为确保量化过程中使用了正确的数据集，该场景下量化命令中需要追加 --train_keyword TRAIN_KEYWORD 和 --eval_keyword EVAL_KEYWORD 参数，根据上述两个参数过滤相关文件名，确保--train_set参数使用的是测试数据集，--eval_set使用的是验证数据集。
 
-若出现如下信息则说明重训练成功：
+本示例脚本仅用于展示量化感知训练流程，可以增大迭代训练次数（参数--train_iter）来缩小量化后精度损失。若出现如下信息则说明重训练成功。
 
 ```none
-The model after retraining top 1 accuracy = 52.0%.
-The model after retraining top 5 accuracy = 77.4%.
+The model after retrain top 1 accuracy = 52.0%.
+The model after retrain top 5 accuracy = 77.4%.
 ```
 
 ## 量化结果
