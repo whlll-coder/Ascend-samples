@@ -363,7 +363,7 @@ def evaluate(session):
         count_5 += np.sum(labels.repeat(5).reshape([labels.shape[0], 5]) == top_5)
     acc_1 = count_1 / EVAL_SIZE * 100
     acc_5 = count_5 / EVAL_SIZE * 100
-    return acc_1, acc_5
+    return round(acc_1,2), round(acc_5,2)
 
 
 def evaluate_for_search_n(session, predictions_name, batch_num):
