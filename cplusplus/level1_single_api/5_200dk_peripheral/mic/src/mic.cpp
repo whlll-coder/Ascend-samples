@@ -47,7 +47,7 @@ Mic::~Mic(void)
 }
 
 
-int Mic::MicOpen(void)
+int Mic::mic_open(void)
 {
     int ret = OpenMIC();
     if(LIBMEDIA_STATUS_FAILED == ret)
@@ -63,7 +63,7 @@ int Mic::MicOpen(void)
 }
 
 
-int Mic::MicClose(void)
+int Mic::mic_close(void)
 {
     int ret = CloseMIC();
     if(LIBMEDIA_STATUS_FAILED == ret)
@@ -79,7 +79,7 @@ int Mic::MicClose(void)
 
 }
 
-int Mic::MicQryStatus()
+int Mic::mic_qry_status()
 {
     int ret = QueryMICStatus();
     switch(ret)
@@ -108,7 +108,7 @@ int Mic::MicQryStatus()
     return ret;
 }
 
-int Mic::MicGetProperty(struct MICProperties *propties)
+int Mic::mic_get_property(struct MICProperties *propties)
 {
     if(nullptr  == propties)
     {
@@ -127,7 +127,7 @@ int Mic::MicGetProperty(struct MICProperties *propties)
     }
     return ASCEND_MIC_SUCCESS;
 }
-int Mic::MicSetProperty(MICProperties *propties)
+int Mic::mic_set_property(MICProperties *propties)
 {
     if(nullptr  == propties)
     {
@@ -192,7 +192,7 @@ int Mic::MicSetProperty(MICProperties *propties)
     }
     return ASCEND_MIC_SUCCESS;
 }
-int Mic::MicCap(CAP_MIC_CALLBACK tfunc, void* param)
+int Mic::mic_cap(CAP_MIC_CALLBACK tfunc, void* param)
 {
     int ret = CapMIC(tfunc, param);
     if(LIBMEDIA_STATUS_FAILED == ret)
@@ -206,9 +206,8 @@ int Mic::MicCap(CAP_MIC_CALLBACK tfunc, void* param)
     }
     return ASCEND_MIC_SUCCESS;
 }
-int Mic::MicReadSound(void* pdata, int *size)
+int Mic::mic_read_sound(void* pdata, int *size)
 {
-
     if((nullptr == pdata)||(nullptr == size))
     {
         ERROR_LOG("mic_read_sound  param nullptr! ");

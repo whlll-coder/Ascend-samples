@@ -13,35 +13,29 @@
 * See the License for the specific language governing permissions and
 * limitations under the License.
 */
-
 #ifndef MIC_H_
 #define MIC_H_
-
 
 extern "C" {
 #include "driver/peripheral_api.h"
 }
 
-
 #define INFO_LOG(fmt, args...) fprintf(stdout, "[INFO]  " fmt "\n", ##args)
 #define WARN_LOG(fmt, args...) fprintf(stdout, "[WARN]  " fmt "\n", ##args)
 #define ERROR_LOG(fmt, args...) fprintf(stdout, "[ERROR]  " fmt "\n", ##args)
-
-
 #define ASCEND_MIC_ERROR 0xFF
 #define ASCEND_MIC_SUCCESS 0
 class Mic {
 public:
-    Mic(void) ;
-    ~Mic(void) ;
-
-    int MicOpen(void);
-    int MicClose(void);
-    int MicCap(CAP_MIC_CALLBACK tfunc, void* param);
-    int MicReadSound(void* pdata, int *size);
-    int MicSetProperty(struct MICProperties *propties);
-    int MicGetProperty(struct MICProperties *propties);
-    int MicQryStatus();
+    Mic(void);
+    ~Mic(void);
+    int mic_open(void);
+    int mic_close(void);
+    int mic_cap(CAP_MIC_CALLBACK tfunc, void* param);
+    int mic_read_sound(void* pdata, int *size);
+    int mic_set_property(struct MICProperties *propties);
+    int mic_get_property(struct MICProperties *propties);
+    int mic_qry_status();
 
 private:
 };
