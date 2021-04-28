@@ -41,7 +41,7 @@ _B_MEAN = 103.94
 
 
 def _decode(item):
-    '''parse dataset'''
+    """parse dataset"""
     features = {
         'image/encoded': tf.io.FixedLenFeature((), tf.string, default_value=''),
         'image/format': tf.io.FixedLenFeature((), tf.string, default_value='jpeg'),
@@ -62,14 +62,14 @@ def _decode(item):
 
 
 def _grayscale_to_rgb(image):
-    '''generate rgb_image'''
+    """generate rgb_image"""
     rgb_image = tf.cond(
         tf.equal(tf.shape(image)[-1], 1), true_fn=lambda: tf.image.grayscale_to_rgb(image), false_fn=lambda: image)
     return rgb_image
 
 
 def _resize(image, resize_side):
-    '''resize input image'''
+    """resize input image"""
     shape = tf.shape(image)
     height = tf.cast(shape[0], tf.float32)
     width = tf.cast(shape[1], tf.float32)
@@ -81,7 +81,7 @@ def _resize(image, resize_side):
 
 
 def _crop(image, is_random=False):
-    '''crop input image'''
+    """crop input image"""
     shape = tf.shape(image)
     height = shape[0]
     width = shape[1]
@@ -101,7 +101,7 @@ def _crop(image, is_random=False):
 
 
 def _parse_train(item):
-    '''parse train data'''
+    """parse train data"""
     image, label, text = _decode(item)
     rgb_image = _grayscale_to_rgb(image)
     resize_side = tf.random.uniform([], minval=MIN_RESIZE, maxval=MAX_RESIZE + 1, dtype=tf.int32)
@@ -114,7 +114,7 @@ def _parse_train(item):
 
 
 def _parse_eval(item):
-    '''parse validation data'''
+    """parse validation data"""
     image, label, text = _decode(item)
     rgb_image = _grayscale_to_rgb(image)
     resized_image = _resize(rgb_image, MIN_RESIZE)
@@ -293,11 +293,11 @@ def mkdir(name):
 
 
 def get_loss(input_2, logits):
-    '''Prepare losses'''
+    """Prepare losses"""
     l2_variables = []
     for i in tf.compat.v1.trainable_variables():
         if 'BatchNorm' not in i.name and 'ULQ' not in i.name:
-            l2_variables.append(tf.nn.l2_loss(tf.cast(i,tf.float32)))
+            l2_variables.append(tf.nn.l2_loss(tf.cast(i, tf.float32)))
     l2_loss = 1e-4 * tf.add_n(l2_variables)
     cross_entropy = tf.nn.softmax_cross_entropy_with_logits_v2(labels=input_2, logits=logits) / ARGS.batch_size
     loss = cross_entropy + l2_loss
@@ -311,7 +311,7 @@ def get_loss(input_2, logits):
 
 
 def retrain(saver, retrain_ckpt):
-    '''Retrain the model'''
+    """Retrain the model"""
     dataset = TFRecordDataset(
         ARGS.train_set, is_training=True, keywords=ARGS.train_keyword, num_parallel_reads=ARGS.num_parallel_reads,
         is_shuffle=True, is_repeat=True, batch_size=ARGS.batch_size)
@@ -363,7 +363,7 @@ def evaluate(session):
         count_5 += np.sum(labels.repeat(5).reshape([labels.shape[0], 5]) == top_5)
     acc_1 = count_1 / EVAL_SIZE * 100
     acc_5 = count_5 / EVAL_SIZE * 100
-    return round(acc_1,2), round(acc_5,2)
+    return round(acc_1, 2), round(acc_5, 2)
 
 
 def evaluate_for_search_n(session, predictions_name, batch_num):
