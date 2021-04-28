@@ -380,7 +380,7 @@
             [INFO] call vpcResize
             [INFO] Process dvpp success
             [INFO] model execute success
-            [INFO] result : classType[283], top1[ **_xxxxxx_** ], top5[**_xxxxxx_** ]
+            [INFO] result : classType[283], top1[ **xxxxxx** ], top5[**_xxxxxx_** ]
             [INFO]---------------------------------------------
             [INFO] start to process picture:../data/wood_rabbit_1024_1061_330.jpg
             [INFO] call JpegD
