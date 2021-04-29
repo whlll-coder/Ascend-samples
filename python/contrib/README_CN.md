@@ -16,7 +16,7 @@
 ├── [edge_detection_picture](./edge_detection_picture)： **图像边缘检测**     
 ├── [garbage_picture](./garbage_picture)： **垃圾分类**   
 ├── [gesture_recognition_picture](./gesture_recognition_picture)： **手势识别**    
-├── [human_protein_map_classification](./human_protein_map_classification)： **基于输入图像开发自动化预测蛋白所属亚细胞位置**
+├── [human_protein_map_classification](./human_protein_map_classification)： **基于输入图像开发自动化预测蛋白所属亚细胞位置**    
 ├── [image_HDR_enhance](./image_HDR_enhance)： **HDR效果增强样例（本样例由深圳大学贡献）**   
 ├── [inceptionv2_picture](./inceptionv2_picture)： **InceptionV2踢脚线分类样例（本样例由尚艺良品贡献 ）**   
 └── [portrait_picture](./portrait_picture)： **背景替换样例（本样例由清华大学贡献）**
