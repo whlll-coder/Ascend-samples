@@ -16,7 +16,7 @@
 
 部署此Sample前，需要准备好以下环境：
 
-- 请确认已按照[环境准备和依赖安装](../../environment)准备好环境。
+- 请确认已按照[环境准备和依赖安装](../../../environment)准备好环境。
 
 - 已完成对应产品的开发环境和运行环境安装。
 
@@ -60,7 +60,7 @@
 
 3. 将原始模型转换为Davinci模型。
     
-    **注：请确认环境变量已经在[环境准备和依赖安装](../../environment)中配置完成**
+    **注：请确认环境变量已经在[环境准备和依赖安装](../../../environment)中配置完成**
 
     1. 设置LD_LIBRARY_PATH环境变量。
 
@@ -72,7 +72,7 @@
 
         **cd $HOME/models/gesture_recognition_picture**  
 
-        **https://modelzoo-train-atc.obs.cn-north-4.myhuaweicloud.com/003_Atc_Models/AE/ATC%20Model/gesture_recognition/insert_op.cfg**
+        **wget https://modelzoo-train-atc.obs.cn-north-4.myhuaweicloud.com/003_Atc_Models/AE/ATC%20Model/gesture_recognition/insert_op.cfg**
 
         **atc --model=./resnet18_gesture.prototxt --weight=./resnet18_gesture.caffemodel --framework=0 --output=gesture_yuv --soc_version=Ascend310 --insert_op_conf=./insert_op.cfg --input_shape="data:1,3,224,224" --input_format=NCHW**
 
