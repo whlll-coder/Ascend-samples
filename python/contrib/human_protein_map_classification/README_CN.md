@@ -51,7 +51,7 @@
 
    参考下表获取此应用中所用到的模型，并将其存放到开发环境普通用户下的工程目录：
 
-	cd $HOME/samples/python/contrib/hpa_classification/model
+	cd $HOME/samples/python/contrib/human_protein_map_classification/model
 
 | **模型名称** | **模型说明**          | **模型下载路径**                                             |
 | ------------ | --------------------- | ------------------------------------------------------------ |
@@ -78,17 +78,17 @@
 
 执行以下命令，进入样例的data文件夹中，下载对应的测试图片。
 
-    cd $HOME/samples/python/contrib/hpa_classification/data
-    wget https://c7xcode.obs.cn-north-4.myhuaweicloud.com/models/hpa_classification/test_image/test.jpeg
+    cd $HOME/samples/python/contrib/human_protein_map_classification/data
+    wget https://c7xcode.obs.cn-north-4.myhuaweicloud.com/models/human_protein_map_classification/test_image/test.jpeg
 
 
 ### 样例运行
 
 **注：开发环境与运行环境合一部署，请跳过步骤1，直接执行步骤2即可。**
 
-1. 执行以下命令,将开发环境的**edge_detection_picture**目录上传到运行环境中，例如 **/home/HwHiAiUser**，并以HwHiAiUser（运行用户）登录运行环境（Host）。
+1. 执行以下命令,将开发环境的**human_protein_map_classification**目录上传到运行环境中，例如 **/home/HwHiAiUser**，并以HwHiAiUser（运行用户）登录运行环境（Host）。
       ```
-   scp -r $HOME/samples/python/contrib/hpa_classification/  HwHiAiUser@xxx.xxx.xxx.xxx:/home/HwHiAiUser
+   scp -r $HOME/samples/python/contrib/human_protein_map_classification/  HwHiAiUser@xxx.xxx.xxx.xxx:/home/HwHiAiUser
    scp -r $HOME/samples/python/common/atlas_utils/   HwHiAiUser@xxx.xxx.xxx.xxx:/home/HwHiAiUser
    ssh HwHiAiUser@xxx.xxx.xxx.xxx
    ```
@@ -104,12 +104,12 @@
 	```
      export LD_LIBRARY_PATH=
      source ~/.bashrc
-     cd $HOME/samples/python/contrib/hpa_classification/src
+     cd $HOME/samples/python/contrib/human_protein_map_classification/src
      python3.6 main.py ../data/
 	```
    - 如果是开发环境与运行环境分离部署，执行以下命令切换目录。
 	```
-     cd $HOME/python/hpa_classification/src
+     cd $HOME/python/human_protein_map_classification/src
 	```
      切换目录后，执行以下命令运行样例。
    
