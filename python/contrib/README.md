@@ -1,3 +1,5 @@
+English|[中文](README_CN.md)
+
 # contrib-User contribution example
 
 #### Directory structure and description
@@ -17,7 +19,7 @@ This directory is a sample directory for python users' contribution. Each folder
 ├── [gesture_recognition_picture](./gesture_recognition_picture)： **Gesture Recognition**    
 ├── [human_protein_map_classification](./human_protein_map_classification)： **Develop automated prediction of the subcellular location of the protein based on the input image**    
 ├── [image_HDR_enhance](./image_HDR_enhance)： **HDR effect enhancement example（Thanks for the sample contribution of Shenzhen University.）**   
-├── [inceptionv2_picture](./inceptionv2_picture)： **InceptionV2 skirting line classification example（Thanks for the sample contribution of 尚艺良品. ）**   
+├── [inceptionv2_picture](./inceptionv2_picture)： **InceptionV2 skirting line classification example（Thanks for the sample contribution of SUNY WONDERS. ）**   
 └── [portrait_picture](./portrait_picture)： **Background replacement example（Thanks for the sample contribution of Tsinghua University.）**
 
  
