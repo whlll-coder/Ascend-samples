@@ -1,3 +1,5 @@
+中文|[English](README.md)
+
 # contrib-用户贡献样例
 
 #### 目录结构与说明
