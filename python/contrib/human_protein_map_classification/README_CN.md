@@ -79,7 +79,7 @@
 执行以下命令，进入样例的data文件夹中，下载对应的测试图片。
 
     cd $HOME/samples/python/contrib/human_protein_map_classification/data
-    wget https://c7xcode.obs.cn-north-4.myhuaweicloud.com/models/human_protein_map_classification/test_image/test.jpeg
+    wget https://c7xcode.obs.cn-north-4.myhuaweicloud.com/models/hpa_classification/test_image/test.jpeg
 
 
 ### 样例运行
