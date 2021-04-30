@@ -42,7 +42,7 @@
 
 2. 获取此应用中所需要的原始网络模型。
 
-    参考下表获取此应用中所用到的原始网络模型及其对应的权重文件，并将其存放到开发环境普通用户下该样例的model文件夹中，本例为：$HOME/samples/cplusplus/level2_simple_inference/n_performance/1_multi_process_thread/YOLOV3_coco_detection_multi_thread_VENC/model。
+    参考下表获取此应用中所用到的原始网络模型及其对应的权重文件，并将其存放到开发环境普通用户下该样例的model文件夹中，本例为：$HOME/samples/cplusplus/level2_simple_inference/n_performance/1_multi_process_thread/YOLOV3_coco_detection_4_thread/model。
     
     |  **模型名称**  |  **模型说明**  |  **模型下载路径**  |
     |---|---|---|
@@ -65,9 +65,9 @@
 
     2. 执行以下命令下载aipp配置文件并使用atc命令进行模型转换。
 
-        **cd $HOME/samples/cplusplus/level2_simple_inference/n_performance/1_multi_process_thread/YOLOV3_coco_detection_multi_thread_VENC/model**  
+        **cd $HOME/samples/cplusplus/level2_simple_inference/n_performance/1_multi_process_thread/YOLOV3_coco_detection_4_thread/model**  
 
-        **wget https://c7xcode.obs.cn-north-4.myhuaweicloud.com/models/YOLOV3_coco_detection_multi_thread_VENC/aipp_bgr.cfg**
+        **wget https://c7xcode.obs.cn-north-4.myhuaweicloud.com/models/YOLOV3_coco_detection_4_thread/aipp_bgr.cfg**
 
         **atc --model=yolov3.prototxt --weight=yolov3.caffemodel --framework=0 --output=yolov3 --soc_version=Ascend310 --insert_op_conf=aipp_bgr.cfg**
 
@@ -76,11 +76,15 @@
 
     执行以下命令，进入样例的data文件夹中，下载对应的测试文件，完成后返回样例文件夹。
 
-    **cd $HOME/samples/cplusplus/level2_simple_inference/n_performance/1_multi_process_thread/YOLOV3_coco_detection_multi_thread_VENC/data**
+    **cd $HOME/samples/cplusplus/level2_simple_inference/n_performance/1_multi_process_thread/YOLOV3_coco_detection_4_thread/data**
 
-    **wget https://c7xcode.obs.cn-north-4.myhuaweicloud.com/models/YOLOV3_coco_detection_multi_thread_VENC/video1.mp4**
+    **wget https://c7xcode.obs.cn-north-4.myhuaweicloud.com/models/YOLOV3_coco_detection_4_thread/video1.mp4**
 
-    **wget https://c7xcode.obs.cn-north-4.myhuaweicloud.com/models/YOLOV3_coco_detection_multi_thread_VENC/video2.mp4**
+    **wget https://c7xcode.obs.cn-north-4.myhuaweicloud.com/models/YOLOV3_coco_detection_4_thread/video2.mp4**
+
+    **wget https://c7xcode.obs.cn-north-4.myhuaweicloud.com/models/YOLOV3_coco_detection_4_thread/video3.mp4**
+
+    **wget https://c7xcode.obs.cn-north-4.myhuaweicloud.com/models/YOLOV3_coco_detection_4_thread/video4.mp4**
 
     **cd \.\.**
 
@@ -108,9 +112,9 @@
 
 2. 参考**https://gitee.com/ascend/samples/tree/master/cplusplus/common/atlasutil** 目录下atlasutil库使用说明编译安装对应atlasutil公共库。
 
-3. 切换到YOLOV3_coco_detection_multi_thread_VENC目录，创建目录用于存放编译文件，例如，本文中，创建的目录为 **build/intermediates/host**。
+3. 切换到YOLOV3_coco_detection_4_thread目录，创建目录用于存放编译文件，例如，本文中，创建的目录为 **build/intermediates/host**。
 
-    **cd $HOME/samples/cplusplus/level2_simple_inference/n_performance/1_multi_process_thread/YOLOV3_coco_detection_multi_thread_VENC**
+    **cd $HOME/samples/cplusplus/level2_simple_inference/n_performance/1_multi_process_thread/YOLOV3_coco_detection_4_thread**
 
     **mkdir -p build/intermediates/host**
 
@@ -132,7 +136,7 @@
     
       **cmake \.\./\.\./\.\./src -DCMAKE_CXX_COMPILER=aarch64-linux-gnu-g++ -DCMAKE_SKIP_RPATH=TRUE**
 
-5. 执行make命令，生成的可执行文件main在 **YOLOV3_coco_detection_multi_thread_VENC/out** 目录下。
+5. 执行make命令，生成的可执行文件main在 **YOLOV3_coco_detection_4_thread/out** 目录下。
 
     **make**
 
@@ -140,9 +144,9 @@
 
 **注：开发环境与运行环境合一部署，请跳过步骤1，直接执行[步骤2](#step_2)即可。**   
 
-1. 执行以下命令,将开发环境的 **YOLOV3_coco_detection_multi_thread_VENC** 目录上传到运行环境中，例如 **/home/HwHiAiUser**，并以HwHiAiUser（运行用户）登录运行环境（Host）。
+1. 执行以下命令,将开发环境的 **YOLOV3_coco_detection_4_thread** 目录上传到运行环境中，例如 **/home/HwHiAiUser**，并以HwHiAiUser（运行用户）登录运行环境（Host）。
 
-    **scp -r $HOME/samples/cplusplus/level2_simple_inference/n_performance/1_multi_process_thread/YOLOV3_coco_detection_multi_thread_VENC HwHiAiUser@xxx.xxx.xxx.xxx:/home/HwHiAiUser**
+    **scp -r $HOME/samples/cplusplus/level2_simple_inference/n_performance/1_multi_process_thread/YOLOV3_coco_detection_4_thread HwHiAiUser@xxx.xxx.xxx.xxx:/home/HwHiAiUser**
 
     **ssh HwHiAiUser@xxx.xxx.xxx.xxx**    
 
@@ -157,15 +161,15 @@
 
       **source ~/.bashrc**
         
-      **cd $HOME/samples/cplusplus/level2_simple_inference/n_performance/1_multi_process_thread/YOLOV3_coco_detection_multi_thread_VENC/out**
+      **cd $HOME/samples/cplusplus/level2_simple_inference/n_performance/1_multi_process_thread/YOLOV3_coco_detection_4_thread/out**
 
     - 如果是开发环境与运行环境分离部署，执行以下命令切换目录。
     
-      **cd $HOME/YOLOV3_coco_detection_multi_thread_VENC/out**
+      **cd $HOME/YOLOV3_coco_detection_4_thread/out**
 
     运行之前需要在out文件夹下新建output文件夹
 
-      **cd $HOME/YOLOV3_coco_detection_multi_thread_VENC/out**
+      **cd $HOME/YOLOV3_coco_detection_4_thread/out**
 
       **mkdir output**
 
@@ -175,4 +179,4 @@
 
 ### 查看结果
 
-运行完成后，会在运行环境的命令行中打印出推理结果,并在$HOME/YOLOV3_coco_detection_multi_thread_VENC/out/output目录下生成推理后的图片。
+运行完成后，会在运行环境的命令行中打印出推理结果,并在$HOME/YOLOV3_coco_detection_4_thread/out/output目录下生成推理后的图片。
