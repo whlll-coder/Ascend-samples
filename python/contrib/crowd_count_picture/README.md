@@ -64,13 +64,13 @@ Before deploying this sample, ensure that:
 
    1. Set the ***LD_LIBRARY_PATH*** environment variable.
 
-      The ***LD_LIBRARY_PATH*** environment variable conflicts with the sample when Ascend Tensor Compiler (ATC) is used. Therefore, you need to set this environment variable separately in the command line to facilitate modification.
+      The ***LD_LIBRARY_PATH*** environment variable conflicts with the sample when Ascend Tensor Compiler (ATC) is used. Therefore, you need to set this environment variable separately in the command line to facilitate modification.    
 
          ```	
       export LD_LIBRARY_PATH=${install_path}/atc/lib64
          ```
 
-   2. Run the following command to convert the model:
+   2. Run the following command to convert the model:    
          ```atc --input_shape="blob1:1,3,800,1408" --weight="count_person.caffe.caffemodel" --input_format=NCHW --output="count_person.caffe" --soc_version=Ascend310 --insert_op_conf=insert_op.cfg --framework=0 --model="count_person.caffe.prototxt"```
 
 
