@@ -6,20 +6,21 @@ English|[中文](README_CN.md)
 
 **This readme file provides only guidance for running the sample in the command line. For details about how to run the sample in MindStudio, see [Running Image Samples in MindStudio](https://gitee.com/ascend/samples/wikis/Running%20Image%20Samples%20in%20MindStudio?sort_id=3736297).**
 
+**Thanks for the sample contribution of Shanghai Jiao Tong University.**
 
-## crowdCount Sample
+## hpa_classification Sample
 
-Function: counts people using the **count_person.caffe** model.
+Function: automatically classifies and evaluates protein micrographs.     
 
-Input: a crowd image
+Input: an original fluorescent protein micrograph    
 
-Output: an image marked with numbers
+Output: a protein micrograph labeled with classifications     
 
 ### Prerequisites
 
 Before deploying this sample, ensure that:
 
-- The environment has been set up by referring to [Environment Preparation and Dependency Installation](https://gitee.com/ascend/samples/blob/master/python/environment/README.md).
+- The environment has been set up by referring to [Environment Preparation and Dependency Installation](../../environment).
 - The development environment and operating environment of the corresponding product have been set up.
 
 ### Software Preparation
@@ -30,7 +31,8 @@ Before deploying this sample, ensure that:
 
    - Command line (The download takes a long time, but the procedure is simple.)
 
-     In the development environment, run the following commands as a non-root user to download the source repository:
+     In the development environment, run the following commands as a non-root user to download the source repository:   
+
         ```
      cd $HOME
      git clone https://gitee.com/ascend/samples.git
@@ -45,50 +47,51 @@ Before deploying this sample, ensure that:
 
       ```
      cd $HOME
-     unzip ascend-samples-master.zipt
+     unzip ascend-samples-master.zip
       ```
 #### 2. Obtain the model required by the application.
 
    Obtain the model used in the application by referring to the following table and save it to the project directory of a common user in the development environment.
 
-	cd $HOME/samples/python/contrib/crowdCount/model
+	cd $HOME/samples/python/contrib/human_protein_map_classification/model
 
-| **Model Name**     | **Description**                      | **How to Obtain**                        |
-| ------------------ | ------------------------------------ | ---------------------------------------- |
-| count_person.caffe | People counting model based on Caffe | Download the model file and the corresponding CFG file by referring to "[Original Model](https://gitee.com/ascend/modelzoo/tree/master/contrib/TensorFlow/Research/cv/crowdCount/ATC_count_person_caffe_AE#%E5%8E%9F%E5%A7%8B%E6%A8%A1%E5%9E%8B)". |
-
+| **Model Name** | **Description**                          | **How to Obtain**                        |
+| -------------- | ---------------------------------------- | ---------------------------------------- |
+| deploy_vel     | Protein subcell location and prediction model based on Caffe | Download the model and weight files by referring to the [**readme.md**](https://gitee.com/ascend/modelzoo/tree/master/contrib/TensorFlow/Research/cv/hpa/ATC_hpa_caffe_AE) file. |
 
 #### 3. Convert the original model to a Da Vinci model.
 
-   **Note: Ensure that the environment variables have been configured in [Environment Preparation and Dependency Installation](https://gitee.com/ascend/samples/tree/master/python/environment).**
+   **Note: Ensure that the environment variables have been configured in [Environment Preparation and Dependency Installation](.../../environment).**
 
    1. Set the ***LD_LIBRARY_PATH*** environment variable.
 
-      The ***LD_LIBRARY_PATH*** environment variable conflicts with the sample when Ascend Tensor Compiler (ATC) is used. Therefore, you need to set this environment variable separately in the command line to facilitate modification.    
+      The ***LD_LIBRARY_PATH*** environment variable conflicts with the sample when Ascend Tensor Compiler (ATC) is used. Therefore, you need to set this environment variable separately in the command line to facilitate modification.
 
          ```	
       export LD_LIBRARY_PATH=${install_path}/atc/lib64
          ```
 
-   2. Run the following command to convert the model:    
-         ```atc --input_shape="blob1:1,3,800,1408" --weight="count_person.caffe.caffemodel" --input_format=NCHW --output="count_person.caffe" --soc_version=Ascend310 --insert_op_conf=insert_op.cfg --framework=0 --model="count_person.caffe.prototxt"```
+   2. Run the following command to convert the model:
 
-
+      ```
+      atc --model=./hpa.prototxt --weight=./hpa.caffemodel --framework=0 --output=./deploy_vel  --soc_version=Ascend310 --input_format=NCHW --input_fp16_nodes=data --output_type=FP32 --out_nodes="score:0"
+      ```
 
 #### 4. Obtain the test image required by the sample.
 
 Run the following commands to go to the **data** folder of the sample and download the corresponding test image:
 
-    cd $HOME/samples/python/contrib/crowdCount/data
-    wget https://c7xcode.obs.cn-north-4.myhuaweicloud.com/models/crowdCount/crowd.jpg
+    cd $HOME/samples/python/contrib/human_protein_map_classification/data
+    wget https://c7xcode.obs.cn-north-4.myhuaweicloud.com/models/hpa_classification/test_image/test.jpeg
+
 
 ### Sample Running
 
 **Note: If the development environment and operating environment are set up on the same server, skip step 1 and go to step 2 directly.**
 
-1. Run the following commands to upload the **crowdCount** directory in the development environment to any directory in the operating environment, for example, **/home/HwHiAiUser**, and log in to the operating environment (host) as the running user (**HwHiAiUser**):
+1. Run the following commands to upload the **human_protein_map_classification** directory in the development environment to any directory in the operating environment, for example, **/home/HwHiAiUser**, and log in to the operating environment (host) as the running user (**HwHiAiUser**):
       ```
-         scp -r $HOME/samples/python/contrib/crowdCount/  HwHiAiUser@xxx.xxx.xxx.xxx:/home/HwHiAiUser
+         scp -r $HOME/samples/python/contrib/human_protein_map_classification/  HwHiAiUser@xxx.xxx.xxx.xxx:/home/HwHiAiUser
          scp -r $HOME/samples/python/common/atlas_utils/   HwHiAiUser@xxx.xxx.xxx.xxx:/home/HwHiAiUser
          ssh HwHiAiUser@xxx.xxx.xxx.xxx
       ```
@@ -101,20 +104,21 @@ Run the following commands to go to the **data** folder of the sample and downlo
 2. Run the executable file.
 
    - If the development environment and operating environment are set up on the same server, run the following commands to set the operating environment variable and switch the directory:
-
      ```
      export LD_LIBRARY_PATH=
      source ~/.bashrc
-     cd $HOME/samples/python/contrib/crowdCount/src
-     python3 main.py ../data/
+     cd $HOME/samples/python/contrib/human_protein_map_classification/src
+     python3.6 main.py ../data/
      ```
 
    - If the development environment and operating environment are set up on separate servers, run the following command to switch the directory:
 
      ```
-     cd $HOME/crowdCount/src
+     cd $HOME/python/human_protein_map_classification/src
      ```
+
      Run the following command to run the sample:
+
      ```
      python3.6 main.py ../data/
      ```

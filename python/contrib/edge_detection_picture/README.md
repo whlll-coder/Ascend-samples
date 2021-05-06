@@ -6,20 +6,21 @@ English|[中文](README_CN.md)
 
 **This readme file provides only guidance for running the sample in the command line. For details about how to run the sample in MindStudio, see [Running Image Samples in MindStudio](https://gitee.com/ascend/samples/wikis/Running%20Image%20Samples%20in%20MindStudio?sort_id=3736297).**
 
+**Thanks for the sample contribution of Nankai University.**
 
-## crowdCount Sample
+## edge_detection_picture Sample
 
-Function: counts people using the **count_person.caffe** model.
+Function: detects edges in an input image by using the RCF model.
 
-Input: a crowd image
+Input: a JPG image
 
-Output: an image marked with numbers
+Output: an edge image
 
 ### Prerequisites
 
 Before deploying this sample, ensure that:
 
-- The environment has been set up by referring to [Environment Preparation and Dependency Installation](https://gitee.com/ascend/samples/blob/master/python/environment/README.md).
+- The environment has been set up by referring to [Environment Preparation and Dependency Installation](https://gitee.com/ascend/samples/tree/master/python/environment/README.md).
 - The development environment and operating environment of the corresponding product have been set up.
 
 ### Software Preparation
@@ -45,18 +46,17 @@ Before deploying this sample, ensure that:
 
       ```
      cd $HOME
-     unzip ascend-samples-master.zipt
+     unzip ascend-samples-master.zip
       ```
 #### 2. Obtain the model required by the application.
 
    Obtain the model used in the application by referring to the following table and save it to the project directory of a common user in the development environment.
 
-	cd $HOME/samples/python/contrib/crowdCount/model
+	cd $HOME/samples/python/contrib/edge_detection_picture/model
 
-| **Model Name**     | **Description**                      | **How to Obtain**                        |
-| ------------------ | ------------------------------------ | ---------------------------------------- |
-| count_person.caffe | People counting model based on Caffe | Download the model file and the corresponding CFG file by referring to "[Original Model](https://gitee.com/ascend/modelzoo/tree/master/contrib/TensorFlow/Research/cv/crowdCount/ATC_count_person_caffe_AE#%E5%8E%9F%E5%A7%8B%E6%A8%A1%E5%9E%8B)". |
-
+| **Model Name** | **Description**                     | **How to Obtain**                        |
+| -------------- | ----------------------------------- | ---------------------------------------- |
+| RCF            | Edge detection model based on Caffe | Download the model and weight files by referring to the [**readme.md**](https://gitee.com/ascend/modelzoo/tree/master/contrib/TensorFlow/Research/cv/edge_detection/ATC_RCF_Caffe_AE) file. |
 
 #### 3. Convert the original model to a Da Vinci model.
 
@@ -64,31 +64,32 @@ Before deploying this sample, ensure that:
 
    1. Set the ***LD_LIBRARY_PATH*** environment variable.
 
-      The ***LD_LIBRARY_PATH*** environment variable conflicts with the sample when Ascend Tensor Compiler (ATC) is used. Therefore, you need to set this environment variable separately in the command line to facilitate modification.    
+      The ***LD_LIBRARY_PATH*** environment variable conflicts with the sample when Ascend Tensor Compiler (ATC) is used. Therefore, you need to set this environment variable separately in the command line to facilitate modification.
 
          ```	
       export LD_LIBRARY_PATH=${install_path}/atc/lib64
          ```
 
    2. Run the following command to convert the model:    
-         ```atc --input_shape="blob1:1,3,800,1408" --weight="count_person.caffe.caffemodel" --input_format=NCHW --output="count_person.caffe" --soc_version=Ascend310 --insert_op_conf=insert_op.cfg --framework=0 --model="count_person.caffe.prototxt"```
-
-
+      ```
+      atc --model=rcf.prototxt --weight=./rcf_bsds.caffemodel --framework=0 --output=rcf --soc_version=Ascend310 --input_fp16_nodes=data --input_format=NCHW --output_type=FP32  
+      ```
 
 #### 4. Obtain the test image required by the sample.
 
 Run the following commands to go to the **data** folder of the sample and download the corresponding test image:
 
-    cd $HOME/samples/python/contrib/crowdCount/data
-    wget https://c7xcode.obs.cn-north-4.myhuaweicloud.com/models/crowdCount/crowd.jpg
+    cd $HOME/samples/python/contrib/edge_detection_picture/data
+    wget https://c7xcode.obs.cn-north-4.myhuaweicloud.com/models/rcf_edge_detection/ori.jpg
+
 
 ### Sample Running
 
 **Note: If the development environment and operating environment are set up on the same server, skip step 1 and go to step 2 directly.**
 
-1. Run the following commands to upload the **crowdCount** directory in the development environment to any directory in the operating environment, for example, **/home/HwHiAiUser**, and log in to the operating environment (host) as the running user (**HwHiAiUser**):
+1. Run the following commands to upload the **edge_detection_picture** directory in the development environment to any directory in the operating environment, for example, **/home/HwHiAiUser**, and log in to the operating environment (host) as the running user (**HwHiAiUser**):
       ```
-         scp -r $HOME/samples/python/contrib/crowdCount/  HwHiAiUser@xxx.xxx.xxx.xxx:/home/HwHiAiUser
+         scp -r $HOME/samples/python/contrib/edge_detection_picture/  HwHiAiUser@xxx.xxx.xxx.xxx:/home/HwHiAiUser
          scp -r $HOME/samples/python/common/atlas_utils/   HwHiAiUser@xxx.xxx.xxx.xxx:/home/HwHiAiUser
          ssh HwHiAiUser@xxx.xxx.xxx.xxx
       ```
@@ -105,18 +106,20 @@ Run the following commands to go to the **data** folder of the sample and downlo
      ```
      export LD_LIBRARY_PATH=
      source ~/.bashrc
-     cd $HOME/samples/python/contrib/crowdCount/src
-     python3 main.py ../data/
+     cd $HOME/samples/python/contrib/edge_detection_picture/src
+     python3 main.py
      ```
 
    - If the development environment and operating environment are set up on separate servers, run the following command to switch the directory:
 
      ```
-     cd $HOME/crowdCount/src
+     cd $HOME/python/edge_detection_picture/src
      ```
+
      Run the following command to run the sample:
+
      ```
-     python3.6 main.py ../data/
+     python3.6 main.py
      ```
 
 ### Result Checking
