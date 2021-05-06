@@ -71,7 +71,7 @@ Before deploying this sample, ensure that:
          ```
 
    2. Run the following command to convert the model:     
-      ```
+     ```
      atc --model=output_graph.pb --framework=3 --input_shape="t_image_input_to_DHGAN_generator:1,512,512,3" --output=deploy_vel --soc_version=Ascend310 --input_fp16_nodes="t_image_input_to_DHGAN_generator" --output_type= FP32  
      ```
 
