@@ -1,3 +1,5 @@
+English|[中文](README_CN.md)
+
 **This sample provides reference for you to learn the Ascend AI Software Stack and cannot be used for commercial purposes.**
 
 **This sample works with CANN 3.1.0 and later versions, and supports Atlas 800 (model: 9000) and Atlas 800 (model: 9010).**
