@@ -18,7 +18,7 @@ Output: the result JPG image
 
 Before deploying this sample, ensure that:
 
-- The environment has been set up by referring to [Environment Preparation and Dependency Installation](../../../environment).
+- The environment has been set up by referring to [Environment Preparation and Dependency Installation](../../environment).
 
 - The development environment and operating environment of the corresponding product have been set up.
 
