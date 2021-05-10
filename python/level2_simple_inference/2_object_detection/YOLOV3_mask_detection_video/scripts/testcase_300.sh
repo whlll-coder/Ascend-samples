@@ -31,6 +31,20 @@ function downloadDataWithVerifySource() {
 }
 
 
+function setRunEnv() {
+    # 设置模型转换时需要的环境变量
+    if [[ ${version} = "c76" ]] || [[ ${version} = "C76" ]];then
+        export install_path=$HOME/Ascend/ascend-toolkit/latest
+        export PATH=${install_path}/atc/ccec_compiler/bin:${install_path}/atc/bin:$PATH
+        export ASCEND_OPP_PATH=${install_path}/opp
+        export LD_LIBRARY_PATH=${install_path}/atc/lib64:$LD_LIBRARY_PATH
+        export PYTHONPATH=${install_path}/atc/python/site-packages:${install_path}/atc/python/site-packages/auto_tune.egg/auto_tune:${install_path}/atc/python/site-packages/schedule_search.egg:$PYTHONPATH
+        export PYTHONPATH=$HOME/Ascend/nnrt/latest/pyACL/python/site-packages/acl:$PYTHONPATH
+        export LD_LIBRARY_PATH=$HOME/ascend_ddk/x86/lib:$HOME/Ascend/nnrt/latest/acllib/lib64:$LD_LIBRARY_PATH
+    fi
+
+    return 0
+}
 
 function setAtcEnv() {
     # 设置模型转换时需要的环境变量
@@ -119,6 +133,11 @@ function main() {
     fi
 
     cd ${project_path}
+    setRunEnv
+    if [ $? -ne 0 ];then
+        echo "ERROR: set atc environment failed"
+        return ${inferenceError}
+    fi
 
     # 寮鍚痯resenter server
     bash ${script_path}/run_presenter_server.sh 
