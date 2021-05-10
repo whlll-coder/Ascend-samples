@@ -155,6 +155,6 @@
 
 临时模型文件为原始的 PyTorch 模型 BN 融合后导出的 ONNX 模型文件。
 
-ResNet101_deploy_model.onnx 为量化后的可在昇腾 AI 处理器部署的模型文件。
+resnet-101_deploy_model.onnx 为量化后的可在昇腾 AI 处理器部署的模型文件。
 
-ResNet101_fake_quant_model.onnx 为量化后的可在 ONNX 执行框架 ONNX Runtime 进行精度仿真的模型文件。
+resnet-101_fake_quant_model.onnx 为量化后的可在 ONNX 执行框架 ONNX Runtime 进行精度仿真的模型文件。

@@ -137,7 +137,7 @@ def main():
     skip_layers = []
     batch_num = 2
     print("..........start create quant config...............")
-    config_defination = os.path.join(PATH, 'src/nuq_files/nuq_quant.cfg')
+    config_defination = os.path.join(PATH, 'src/nuq_conf/nuq_quant.cfg')
     amct.create_quant_config(
         config_json_file, model, input_data, skip_layers, batch_num, config_defination=config_defination)
 
