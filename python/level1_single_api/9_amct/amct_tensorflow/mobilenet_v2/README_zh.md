@@ -1,4 +1,4 @@
-# 训练后量化
+# 量化
 
 ## 量化前提
 
@@ -7,7 +7,8 @@
   + 请下载 [MobileNetV2 QAT](https://modelzoo-train-atc.obs.cn-north-4.myhuaweicloud.com/003_Atc_Models/AE/ATC%20Model/mobilenetv2_convert_qat/mobilenetv2_qat.pb) 模型文件到 [model](./model/) 目录。
 
 + **数据集准备**  
-使用昇腾模型压缩工具对模型完成量化后，需要对模型进行推理，以测试量化数据的精度。推理过程中需要使用和模型相匹配的数据集。请下载测试图片 [classification.jpg](https://c7xcode.obs.cn-north-4.myhuaweicloud.com/models/mobilenet_v2_calibration/classification.jpg) 和 [convert_qat.jpg]()，并将该图片放到 [data](./data/) 目录下。
+  + 使用昇腾模型压缩工具对模型完成量化后，需要对模型进行推理，以测试量化数据的精度。推理过程中需要使用和模型相匹配的数据集。请下载测试图片 [classification.jpg](https://c7xcode.obs.cn-north-4.myhuaweicloud.com/models/mobilenet_v2_calibration/classification.jpg) 和 [convert_qat.jpg](https://modelzoo-train-atc.obs.cn-north-4.myhuaweicloud.com/003_Atc_Models/AE/ATC%20Model/mobilenetv2_convert_qat/convert_qat.jpg)，并将该图片放到 [data](./data/) 目录下。
+  + 自动量化回退过程中，需要不断的对模型进行校准和测试，因此需要用户准备数据集，本示例所采用的数据集为标准 TFRecord 格式的 ImageNet的 子集 ILSVRC-2012-CLS 的验证集，共有 50000 张图片，如果采用其他数据集，则需要用户自行修改 sample 文件中的数据预处理部分以匹配模型输入。
 
 + **校准集准备**  
 校准集用来产生量化因子，保证精度。  
@@ -21,14 +22,16 @@
   + [calibration/](./data/calibration/)
   + [classification.jpg](./data/classification.jpg)
   + [convert_qat.jpg](./data/convert_qat.jpg)
+  + [record_quantized.txt](./data/record_quantized.txt)
 + [model](./model/)
   + [mobilenetv2_qat.pb](./model/mobilenetv2_qat.pb)
   + [mobilenetv2_tf.pb](./model/mobilenetv2_tf.pb)
 + [src](./src/)
+  + [mobilenet_v2_accuracy_based_auto_calibration.py](./src/mobilenet_v2_accuracy_based_auto_calibration.py)
   + [mobilenet_v2_calibration.py](./src/mobilenet_v2_calibration.py)
+  + [mobilenet_v2_convert_model.py](./src/mobilenet_v2_convert_model.py)
   + [mobilenet_v2_convert_qat.py](./src/mobilenet_v2_convert_qat.py)
-
-并根据 requirements 安装必要的环境依赖。
+  + [mobilenet_v2_perf_based_auto_calibration.py](./src/mobilenet_v2_perf_based_auto_calibration.py)
 
 在当前目录执行如下命令运行示例程序：
 
@@ -38,11 +41,47 @@
   python ./src/mobilenet_v2_calibration.py
   ```
 
++ convert model 接口
+
+  ```none
+  python ./src/mobilenet_v2_convert_model.py
+  ```
+
 + QAT 模型转 Ascend 模型
 
   ```none
   python ./src/mobilenet_v2_convert_qat.py
   ```
+
++ 基于精度的自动量化回退
+
+  ```none
+  python ./src/mobilenet_v2_accuracy_based_auto_calibration.py --dataset DATASET
+  ```
+
+  上述命令只给出了常用的参数，不常用参数以及各个参数解释请参见如下表格：
+
+  | 参数 | 必填项 | 数据类型 | 默认值 | 参数解释 |
+  | :-- | :-: | :-: | :-: | :-- |
+  | -h | 否 | / | / | 显示帮助信息。 |
+  | --dataset | 是 | string | None | 标准 TFRecord 格式的 ImageNet 的子集 ILSVRC-2012-CLS 的验证部分。 |
+  | --num_parallel_reads | 否 | int | 4 | 用于读取数据集的线程数，根据硬件运算能力酌情调整。 |
+  | --batch_size | 否 | int | 32 | TensorFlow 运行一次所使用的样本数量，根据内存或显存大小酌情调整。 |
+  | --model | 否 | string | ./model/mobilenetv2_tf.pb | 自动量化回退时使用的原始模型。 |
+
++ 基于性能的自动量化回退
+
+  ```none
+  python ./src/mobilenet_v2_perf_based_auto_calibration.py
+  ```
+
+  上述命令只给出了常用的参数，不常用参数以及各个参数解释请参见如下表格：
+
+  | 参数 | 必填项 | 数据类型 | 默认值 | 参数解释 |
+  | :-- | :-: | :-: | :-: | :-- |
+  | -h | 否 | / | / | 显示帮助信息。 |
+  | --sampler_config_file | 否 | string | ./src/perf_conf/mobilenet_v2_sampler_config.cfg | 性能采样配置文件路径。 |
+  | --cfg_define | 否 | string | None | 建议配置文件路径。 |
 
 若出现如下信息则说明模型量化成功：
 
@@ -58,6 +97,18 @@
           category prob: 0.568
   ```
 
++ convert model 接口
+
+  ```none
+  INFO - [AMCT]:[save_model]: The model is saved in ./outputs/convert_model/mobilenet_v2_quantized.pb
+  Origin Model Prediction:
+          category index: 699
+          category prob: 0.560
+  Quantized Model Prediction:
+          category index: 699
+          category prob: 0.569
+  ```
+
 + QAT 模型转 Ascend 模型
 
   ```none
@@ -68,6 +119,29 @@
   Quantized Model Prediction:
           category index: 346
           category prob: 0.246
+  ```
+
++ 基于精度的自动量化回退
+
+  ```none
+  INFO - [AMCT]:[AMCT]: Accuracy of original model is         74.97
+  INFO - [AMCT]:[AMCT]: Accuracy of global quantized model is 73.974
+  INFO - [AMCT]:[AMCT]: Accuracy of saved model is            74.646
+  INFO - [AMCT]:[AMCT]: The generated model is stored in dir: ./outputs/accuracy_based_auto_calibration
+  INFO - [AMCT]:[AMCT]: The records is stored in dir: ./outputs/accuracy_based_auto_calibration
+  ```
+
++ 基于性能的自动量化回退
+
+  ```none
+  INFO - [AMCT]:[AMCT]: The generated model is stored in dir: ./outputs/perf_based_auto_calibration
+  INFO - [AMCT]:[AMCT]: The records is stored in dir: ./outputs/perf_based_auto_calibration
+  Origin Model Model Prediction:
+          category index: 699
+          category prob: 0.560
+  Quantized Model Model Prediction:
+          category index: 699
+          category prob: 0.595
   ```
 
 ## 量化结果
