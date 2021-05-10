@@ -34,7 +34,7 @@ function downloadDataWithVerifySource() {
 
 function setAtcEnv() {
     # 设置模型转换时需要的环境变量
-    if [[ ${version} = "c73" ]] || [[ ${version} = "C73" ]];then
+    if [[ ${version} = "c76" ]] || [[ ${version} = "C76" ]];then
         export install_path=$HOME/Ascend/ascend-toolkit/latest
         export PATH=${install_path}/atc/ccec_compiler/bin:${install_path}/atc/bin:$PATH
         export ASCEND_OPP_PATH=${install_path}/opp
