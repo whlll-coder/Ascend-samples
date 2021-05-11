@@ -42,8 +42,10 @@ class VggSsd(object):
     def __del__(self):
         print("Release yolov3 resource finished")
 
-
     def pre_process(self, image):
+        """
+        pre_process
+        """
         resized_image = self._dvpp.resize(image, self._model_width,
                                           self._model_height)
         if resized_image == None:
@@ -52,17 +54,26 @@ class VggSsd(object):
         return [resized_image,]
 
     def post_process(self, infer_output, origin_img):
+        """
+        post_process
+        """
         detection_result_list = self._analyze_inference_output(infer_output, 
                                                                origin_img)
         jpeg_image = self._dvpp.jpege(origin_img)
         return jpeg_image, detection_result_list
 
     def overlap(self, x1, x2, x3, x4):
+        """
+        overlap
+        """
         left = max(x1, x3)
         right = min(x2, x4)
         return right - left
     
     def cal_iou(self, box, truth):
+        """
+        cal_iou
+        """
         w = self.overlap(box[0], box[2], truth[0], truth[2])
         h = self.overlap(box[1], box[3], truth[1], truth[3])
         if w <= 0 or h <= 0:
@@ -72,6 +83,9 @@ class VggSsd(object):
         return inter_area * 1.0 / union_area
     
     def apply_nms(self, all_boxes, thres):
+        """
+        apply_nms
+        """
         res = []
     
         for cls in range(class_num):
@@ -98,6 +112,9 @@ class VggSsd(object):
         return res
     
     def decode_bbox(self, conv_output, anchors, img_w, img_h, x_scale, y_scale, shift_x_ratio, shift_y_ratio):
+        """
+        decode_bbox
+        """
         def _sigmoid(x):
             s = 1 / (1 + np.exp(-x))
             return s
@@ -134,6 +151,9 @@ class VggSsd(object):
         return all_boxes
     
     def convert_labels(self, label_list):
+        """
+        convert_labels
+        """
         if isinstance(label_list, np.ndarray):
             label_list = label_list.tolist()
             label_names = [labels[int(index)] for index in label_list]
@@ -141,10 +161,10 @@ class VggSsd(object):
     
 
     def _analyze_inference_output(self, infer_output, origin_img):
-
+        """
+        _analyze_inference_output
+        """
         result_return = dict()
-        #img_h = origin_img.size[1]
-        #img_w = origin_img.size[0]
         img_h = origin_img.height
         img_w = origin_img.width
         scale = min(float(MODEL_WIDTH) / float(img_w), float(MODEL_HEIGHT) / float(img_h))
