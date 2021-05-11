@@ -48,7 +48,7 @@ class VggSsd(object):
         """
         resized_image = self._dvpp.resize(image, self._model_width,
                                           self._model_height)
-        if resized_image == None:
+        if resized_image is None:
             print("Resize image failed")
             return None
         return [resized_image,]
@@ -159,7 +159,6 @@ class VggSsd(object):
             label_names = [labels[int(index)] for index in label_list]
         return label_names
     
-
     def _analyze_inference_output(self, infer_output, origin_img):
         """
         _analyze_inference_output
