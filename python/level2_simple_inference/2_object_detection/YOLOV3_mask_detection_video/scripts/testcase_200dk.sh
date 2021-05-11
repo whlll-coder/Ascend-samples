@@ -50,7 +50,7 @@ function setRunEnv() {
     if [[ ${version} = "c76" ]] || [[ ${version} = "C76" ]];then
         export LD_LIBRARY_PATH=
         export LD_LIBRARY_PATH=/home/HwHiAiUser/Ascend/acllib/lib64:/home/HwHiAiUser/ascend_ddk/arm/lib:${LD_LIBRARY_PATH}
-        export LD_LIBRARY_PATH=cd /home/HwHiAiUser/Ascend/ascend-toolkit/latest/acllib/lib64/:/home/HwHiAiUser/Ascend/ascend-toolkit/latest/atc/lib64:/home/HwHiAiUser/ascend_ddk/x86/lib:${LD_LIBRARY_PATH}
+        export LD_LIBRARY_PATH=/home/HwHiAiUser/Ascend/ascend-toolkit/latest/acllib/lib64/:/home/HwHiAiUser/Ascend/ascend-toolkit/latest/atc/lib64:/home/HwHiAiUser/ascend_ddk/x86/lib:${LD_LIBRARY_PATH}
         export PYTHONPATH=/home/HwHiAiUser/Ascend/ascend-toolkit/latest/arm64-linux_gcc7.3.0/pyACL/python/site-packages/acl:${PYTHONPATH}
     fi
 
