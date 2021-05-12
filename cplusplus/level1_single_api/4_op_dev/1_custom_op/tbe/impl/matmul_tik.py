@@ -1,5 +1,6 @@
-from te import tik
-from te.tik.common.util import reduce_mul, ceil_div, DTYPE_SIZE
+from impl.util.platform_adapter import tik
+from impl.util.util_tik_comm_fucc import ceil_div
+from te.tik.common.util import reduce_mul, DTYPE_SIZE
 from te.platform.cce_conf import te_set_l2_mode
 import numpy as np
 
