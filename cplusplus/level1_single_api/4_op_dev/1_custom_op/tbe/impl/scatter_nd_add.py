@@ -17,9 +17,9 @@ scatter_nd_add
 import math
 from functools import reduce as functools_reduce
 
-from te import tik
-from te import platform as tbe_platform
-from te.utils import para_check
+from impl.util.platform_adapter import tik
+from impl.util.platform_adapter import tbe_platform
+from impl.util.platform_adapter import para_check
 
 # neg two
 NEG_TWO = -2

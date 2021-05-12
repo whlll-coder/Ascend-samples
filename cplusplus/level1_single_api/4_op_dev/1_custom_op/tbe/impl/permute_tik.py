@@ -14,9 +14,9 @@ http://www.apache.org/licenses/LICENSE-2.0
 permute_tik
 """
 
-from te import tik
-from te import platform as tbe_platform
-from te.utils import para_check
+from impl.util.platform_adapter import tik
+from impl.util.platform_adapter import tbe_platform
+from impl.util.platform_adapter import para_check
 
 # available ub size
 UB_SIZE_B = tbe_platform.cce_conf.get_soc_spec(tbe_platform.cce_conf.UB_SIZE)

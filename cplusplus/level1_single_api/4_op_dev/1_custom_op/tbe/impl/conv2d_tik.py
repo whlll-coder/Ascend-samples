@@ -15,8 +15,9 @@ conv2d_tik
 """
 from __future__ import absolute_import
 import numpy as np
-from te import tik
-from te.tik.common.util import ceil_div, DTYPE_SIZE
+from impl.util.platform_adapter import tik
+from impl.util.util_tik_comm_fucc import ceil_div
+from te.tik.common.util import  DTYPE_SIZE
 from te.platform.cce_conf import te_set_l2_mode
 
 

@@ -17,19 +17,19 @@ add
 """
 from __future__ import absolute_import
 
-from functools import reduce
-from te import tvm
-from te.platform.fusion_manager import fusion_manager
-import te.lang.cce as tbe
-from te.utils import para_check
-from te.utils import shape_util
+from impl.util.platform_adapter import tvm
+from impl.util.platform_adapter import register_operator
+from impl.util.platform_adapter import register_operator_compute
+from impl.util.platform_adapter import tbe
+from impl.util.platform_adapter import para_check
+from impl.util.platform_adapter import shape_util
 
 # General limitation of the reduce size for input shape: 2**31
 SHAPE_SIZE_LIMIT = 2147483648
 
 
 # pylint: disable=locally-disabled,too-many-arguments,unused-argument
-@fusion_manager.register("add")
+@register_operator_compute("Add", op_mode="dynamic", support_fusion=True)
 def add_compute(input_x, input_y, output_z, kernel_name="add"):
     """
     calculating data's add, c = a + b
@@ -66,6 +66,7 @@ def add_compute(input_x, input_y, output_z, kernel_name="add"):
     return res
 
 
+@register_operator("Add")
 @para_check.check_op_params(para_check.REQUIRED_INPUT, para_check.REQUIRED_INPUT,
                             para_check.REQUIRED_OUTPUT, para_check.KERNEL_NAME)
 def add(input_x, input_y, output_z, kernel_name="add"):
