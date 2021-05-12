@@ -56,7 +56,7 @@ def main():
     BATCH_SIZE = 256
 
     # Prepare data
-    image_train, label_train, image_val, label_val = Mnist.load(
+    (image_train, label_train), (image_val, label_val) = Mnist.load(
         data_path, one_hot=True)
     train_dataset = Dataset(image_train, label_train, BATCH_SIZE)
 

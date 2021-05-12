@@ -108,8 +108,8 @@ class Mnist(object):
             one_hot: Whether to use ont-hot label or not.
 
         Returns:
-            (image_train, label_train, image_val, label_val): Images and labels
-                for training, images and labels for validation.
+            ((image_train, label_train), (image_val, label_val)): Images and
+                labels for training, images and labels for validation.
         """
         socket.setdefaulttimeout(5)  # data download time limit
         data_path = os.path.realpath(data_path)
@@ -127,4 +127,4 @@ class Mnist(object):
         label_val = label_train[-val_num:]
         image_train = image_train[:-val_num]
         label_train = label_train[:-val_num]
-        return image_train, label_train, image_val, label_val
+        return (image_train, label_train), (image_val, label_val)
