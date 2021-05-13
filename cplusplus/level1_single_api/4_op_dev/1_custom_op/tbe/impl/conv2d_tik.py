@@ -36,6 +36,11 @@ DTYPE_SIZE = {
 
 
 def conv2d_tik_compute(params):
+    """
+    conv2d tik compute
+    @param params: conv2d data
+    @return: tik instance
+    """
     tik_instance = tik.Tik()
 
     # get shape of feature map and weight
