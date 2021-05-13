@@ -1,5 +1,4 @@
-from impl.util.platform_adapter import tik
-from impl.util.util_tik_comm_fucc import ceil_div
+from tbe import tik
 
 DTYPE_SIZE = {
     'bool': 1,

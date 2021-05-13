@@ -15,8 +15,7 @@ conv2d_tik
 """
 from __future__ import absolute_import
 import numpy as np
-from impl.util.platform_adapter import tik
-from impl.util.util_tik_comm_fucc import ceil_div
+from tbe import tik
 
 DTYPE_SIZE = {
     'bool': 1,
@@ -53,7 +52,7 @@ def conv2d_tik_compute(params):
     kw_dilation = (kw - 1) * dilation_w + 1
     ho = int(np.ceil((h + pad_top + pad_bot - kh_dilation + 1) / stride_h)) 
     wo = int(np.ceil((w + pad_right + pad_left - kw_dilation + 1) / stride_w))
-    round_howo = ceil_div(ho * wo, 16) * 16 
+    round_howo = ((ho * wo + 16 - 1) // 16) * 16
 
     fm_gm = tik_instance.Tensor(params['fm_dtype'], (n, c1, h, w, c0),
                                 name='fm_gm', scope=tik.scope_gm)
