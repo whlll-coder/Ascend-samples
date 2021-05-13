@@ -28,7 +28,6 @@
     + [retrain.cfg](./src/retrain_conf/retrain.cfg)
   + [\_\_init__.py](./src/__init__.py)
   + [resnet-101_calibration.py](./src/resnet-101_calibration.py)
-  + [resnet-101_nuq.py](./src/resnet-101_nuq.py)
   + [resnet-101_retrain.py](./src/resnet101_retrain.py)
   + [resnet.py](./src/resnet.py)
 
@@ -46,7 +45,7 @@
   + 非均匀量化
 
     ```none
-    CUDA_VISIBLE_DEVICES=0 python ./src/resnet-101_nuq.py
+    CUDA_VISIBLE_DEVICES=0 python ./src/resnet-101_calibration.py --nuq
     ```
 
   > 其中 ```CUDA_VISIBLE_DEVICES``` 是必填参数，表示使用 CPU 还是 GPU 进行量化，参数取值为：
