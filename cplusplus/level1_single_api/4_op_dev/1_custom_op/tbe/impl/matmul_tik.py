@@ -19,6 +19,8 @@ DTYPE_SIZE = {
 
 
 def matmul_tik_compute(params, kernel_name):
+    """matmul_tik_compute"""
+
     tik_instance = tik.Tik()
     if not isinstance(params, dict):
         params = params.__dict__
