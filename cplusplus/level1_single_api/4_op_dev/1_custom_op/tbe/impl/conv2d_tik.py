@@ -16,16 +16,31 @@ conv2d_tik
 from __future__ import absolute_import
 import numpy as np
 from impl.util.platform_adapter import tik
-from impl.util.util_tik_comm_fucc import ceil_div
-from te.tik.common.util import  DTYPE_SIZE
-from te.platform.cce_conf import te_set_l2_mode
+
+DTYPE_SIZE = {
+    'bool': 1,
+    'uint8': 1,
+    'int8': 1,
+    'uint16': 2,
+    'int16': 2,
+    'int24': 3,
+    'uint32': 4,
+    'int32': 4,
+    'float16': 2,
+    'float32': 4,
+    'int48': 6,
+    'int64': 8,
+    'uint64': 8,
+    'float64':8
+
+}
+
+def ceil_div(a_val, b_val):
+    return (a_val + b_val - 1) // b_val
 
 
 def conv2d_tik_compute(params):
     tik_instance = tik.Tik()
-
-    # enable l2
-    te_set_l2_mode(1)
 
     # get shape of feature map and weight
     n, c1, h, w, c0 = params["fm_shape"]
@@ -102,7 +117,7 @@ def conv2d_tik_compute(params):
                                    "quantize_params": params["quantize_params"]})
 
     tik_instance.BuildCCE(kernel_name=params["kernel_name"],
-                          inputs=[fm_gm, weight_gm], outputs=[dst_gm])
+                          inputs=[fm_gm, weight_gm], outputs=[dst_gm], config={'l2_mode': 1})
 
     return tik_instance
 
