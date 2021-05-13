@@ -139,6 +139,7 @@ def conv2d_tik(inputs, weights, outputs, strides, pads, dilations, kernel_name="
         raise RuntimeError("dtype shape should be float16.")
     if weights.get("ori_format") != "NCHW":
         raise RuntimeError("format should be NCHW.")
+
     loc_dtype = "float32"
     quantize_params = {"mode": "fp322fp16", "mode_param": None}
     stride_list = [strides[2], strides[3]]
