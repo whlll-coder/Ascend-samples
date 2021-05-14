@@ -107,7 +107,7 @@
     INFO - [AMCT]:[Utils]: The model file is saved in ./outputs/nuq/resnet-101_deploy_model.onnx
     INFO - [AMCT]:[Utils]: The model file is saved in ./outputs/nuq/resnet-101_fake_quant_model.onnx
     [INFO] ResNet101 before quantize top1:    0.8875 top5:    0.9625
-    [INFO] ResNet101 after quantize  top1:    0.8625 top5:    0.9625
+    [INFO] ResNet101 after quantize  top1:   0.88125 top5:    0.9625
     ```
 
 + 量化感知训练
