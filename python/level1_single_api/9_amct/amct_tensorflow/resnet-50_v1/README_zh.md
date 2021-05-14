@@ -81,7 +81,13 @@
 + 非均匀量化
 
   ```none
-  
+  INFO - [AMCT]:[save_model]: The model is saved in ./outputs/nuq/resnet-50_v1_quantized.pb
+  Origin Model Prediction:
+          category index: 111
+          category prob: 0.118
+  Quantized Model Prediction:
+          category index: 111
+          category prob: 0.062
   ```
 
 + 量化感知训练
@@ -102,19 +108,25 @@
 
 记录了工具的日志信息，包括重训练过程的日志信息。
 
-+ [outputs/](./outputs/)
-  + 训练检查点 [checkpoint](./outputs/checkpoint)
-  + 量化配置文件 [config.json](./outputs/config.json)
-  + 训练记录 [events.out.tfevents.xxxxxxxxxx.xxx](./outputs/events.out.tfevents.xxxxxxxxxx.xxx)
-  + 量化因子记录文件 [record.txt](./outputs/record.txt)
-  + 训练后模型 [resnet_v1_50.pb](./outputs/resnet_v1_50.pb)
-  + 量化模型 [resnet_v1_50_quantized.pb](./results/resnet_v1_50_quantized.pb)
-  + [resnet_v1_50_retrain-0.data-00000-of-00001](./outputs/resnet_v1_50_retrain-0.data-00000-of-00001)
-  + [resnet_v1_50_retrain-0.index](./outputs/resnet_v1_50_retrain-0.index)
-  + [resnet_v1_50_retrain-0.meta](./outputs/resnet_v1_50_retrain-0.meta)
-  + [resnet_v1_50_retrain-100.data-00000-of-00001](./outputs/resnet_v1_50_retrain-1.data-00000-of-00001)
-  + [resnet_v1_50_retrain-100.index](./outputs/resnet_v1_50_retrain-1.index)
-  + [resnet_v1_50_retrain-100.meta](./outputs/resnet_v1_50_retrain-1.meta)
++ 非均匀量化 [nuq](./outputs/nuq/)
+  + NUQ 量化层 [amct_tensorflow_nuq_record.txt](./outputs/nuq/amct_tensorflow_nuq_record.txt)
+  + 量化配置文件 [config.json](./outputs/nuq/config.json)
+  + 量化因子记录文件 [record.txt](./outputs/nuq/record.txt)
+  + 量化信息文件 [resnet-50_v1_quant.json](./outputs/nuq/resnet-50_v1_quant.json)
+  + 量化模型 [resnet-50_v1_quantized.pb](./outputs/nuq/resnet-50_v1_quantized.pb)
++ 量化感知训练 [retrain](./outputs/retrain/)
+  + 训练检查点 [checkpoint](./outputs/retrain/checkpoint)
+  + 量化配置文件 [config.json](./outputs/retrain/config.json)
+  + 训练记录 [events.out.tfevents.xxxxxxxxxx.xxx](./outputs/retrain/events.out.tfevents.xxxxxxxxxx.xxx)
+  + 量化因子记录文件 [record.txt](./outputs/retrain/record.txt)
+  + 训练后模型 [resnet_v1_50.pb](./outputs/retrain/resnet_v1_50.pb)
+  + 量化模型 [resnet_v1_50_quantized.pb](./outputs/retrain/resnet_v1_50_quantized.pb)
+  + [resnet_v1_50_retrain-0.data-00000-of-00001](./outputs/retrain/resnet_v1_50_retrain-0.data-00000-of-00001)
+  + [resnet_v1_50_retrain-0.index](./outputs/retrain/resnet_v1_50_retrain-0.index)
+  + [resnet_v1_50_retrain-0.meta](./outputs/retrain/resnet_v1_50_retrain-0.meta)
+  + [resnet_v1_50_retrain-100.data-00000-of-00001](./outputs/retrain/resnet_v1_50_retrain-1.data-00000-of-00001)
+  + [resnet_v1_50_retrain-100.index](./outputs/retrain/resnet_v1_50_retrain-1.index)
+  + [resnet_v1_50_retrain-100.meta](./outputs/retrain/resnet_v1_50_retrain-1.meta)
 
 量化配置文件描述了如何对模型中的每一层进行重训练。如果重训练脚本所在目录下已经存在重训练配置文件，则再次调用 create_quant_retrain_config 接口时，如果新生成的重训练配置文件与已有的文件同名，则会覆盖已有的重训练配置文件，否则生成新的重训练配置文件。
 
@@ -122,6 +134,6 @@
 
 量化因子记录文件记录量化因子。关于该文件的原型定义请参见[量化因子记录文件说明](https://support.huaweicloud.com/content/dam/cloudbu-site/archive/china/zh-cn/support/docs/auxiliarydevtool-cann330alphaXinfer/atlasamcttf_16_0014.html)。
 
-量化模型即可在 TensorFlow 环境进行精度仿真并可在昇腾 AI 处理器部署的模型。
+量化模型即可在 TensorFlow 环境进行精度仿真并可在昇腾 AI 处理器部署。
 
 对该模型重新进行重训练时，上述结果文件将会被覆盖。
