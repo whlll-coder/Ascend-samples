@@ -70,7 +70,7 @@
     3. 执行以下命令使用atc命令进行模型转换。  
 
         **cd $HOME/samples/cplusplus/contrib/super_resolution/model**       
-        **atc --model=./SRCNN.prototxt --weight=./SRCNN.caffemodel --framework=0 --input_format=NCHW --input_shape="data: 1, 1, 840, 840" --output=./SRCNN_840_840 --soc_version=Ascend310 --output_type=FP32**   
+        **atc --model=./SRCNN.prototxt --weight=./SRCNN.caffemodel --framework=0 --input_format=NCHW --input_shape="data: 1, 1, 768, 768" --output=./SRCNN_768_768 --soc_version=Ascend310 --output_type=FP32**   
      
 
 3. 获取样例需要的测试图片。
