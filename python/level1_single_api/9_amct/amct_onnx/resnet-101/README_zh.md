@@ -33,8 +33,8 @@ python ./src/resnet-101_calibration.py
 ```none
 INFO - [AMCT]:[Utils]: The model file is saved in ./outputs/calibration/resnet-101_deploy_model.onnx
 INFO - [AMCT]:[Utils]: The model file is saved in ./outputs/calibration/resnet-101_fake_quant_model.onnx
-[INFO] ResNet101 before quantize top1:    0.8875 top5:    0.9625
-[INFO] ResNet101 after quantize  top1:     0.875 top5:    0.9625
+[INFO] ResNet101 before quantize top1:     0.775 top5:   0.91875
+[INFO] ResNet101 after quantize  top1:   0.76875 top5:     0.925
 ```
 
 ## 量化结果
