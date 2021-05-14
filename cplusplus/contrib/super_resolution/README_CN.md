@@ -51,6 +51,9 @@
 
     1.参考下表获取此应用中所用到的原始网络模型及其对应的权重文件，并将其存放到开发环境普通用户下该样例的model文件夹中，本例为：               $HOME/samples/cplusplus/contrib/super_resolution/model。
 
+    ![](https://images.gitee.com/uploads/images/2020/1106/160652_6146f6a4_5395865.gif "icon-note.gif") **说明：**  
+    > - 下表四个模型为同一功能，任选其一均可对输入图片进行图像超分辨率处理，四种模型均只支持分辨率为256*256的图片。
+
     
     |  **模型名称**  |  **模型说明**  |  **模型下载路径**  |
     |---|---|---|
@@ -69,8 +72,15 @@
 
     3. 执行以下命令使用atc命令进行模型转换。  
 
-        **cd $HOME/samples/cplusplus/contrib/super_resolution/model**       
-        **atc --model=./SRCNN.prototxt --weight=./SRCNN.caffemodel --framework=0 --input_format=NCHW --input_shape="data: 1, 1, 768, 768" --output=./SRCNN_768_768 --soc_version=Ascend310 --output_type=FP32**   
+        **cd $HOME/samples/cplusplus/contrib/super_resolution/model** 
+    - 使用SRCNN模型：     
+        **atc --model=./SRCNN.prototxt --weight=./SRCNN.caffemodel --framework=0 --input_format=NCHW --input_shape="data: 1, 1, 768, 768" --output=./SRCNN_768_768 --soc_version=Ascend310 --output_type=FP32**
+    - 使用FSRCNN模型：     
+        **atc --model=./FSRCNN.prototxt --weight=./FSRCNN.caffemodel --framework=0 --input_format=NCHW --input_shape="data: 1, 1, 256, 256" --output=./FSRCNN_256_256 --soc_version=Ascend310 --output_type=FP32**
+    - 使用ESPCN模型：     
+        **atc --model=./ESPCN.prototxt --weight=./ESPCN.caffemodel --framework=0 --input_format=NCHW --input_shape="data: 1, 1, 256, 256" --output=./ESPCN_256_256 --soc_version=Ascend310 --output_type=FP32**
+    - 使用VDSR模型：     
+        **atc --model=./VDSR.prototxt --weight=./VDSR.caffemodel --framework=0 --input_format=NCHW --input_shape="data: 1, 1, 768, 768" --output=./VDSR_768_768 --soc_version=Ascend310 --output_type=FP32**
      
 
 3. 获取样例需要的测试图片。
@@ -166,7 +176,14 @@
 
     切换目录后，执行以下命令运行样例。
 
-    **./main ../data**
+    - 使用SRCNN模型：     
+    **./main ../data 0**
+    - 使用FSRCNN模型：     
+    **./main ../data 1**
+    - 使用ESPCN模型：     
+    **./main ../data 2**
+    - 使用VDSR模型：     
+    **./main ../data 3**
 
 ### 查看结果
 
