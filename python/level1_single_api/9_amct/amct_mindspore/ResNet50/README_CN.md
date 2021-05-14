@@ -22,22 +22,21 @@ amct_mindspore 工具 sample 运行指导
 
 Dataset used: [CIFAR-10](http://www.cs.toronto.edu/~kriz/cifar.html)
 
-- Dataset size：60,000 32*32 colorful images in 10 classes
+- 数据集大小：60,000 32*32 10种类的彩色图片
   - Train：50,000 images
   - Test： 10,000 images
   
-- Data format：binary files
-  
-  - Note：Data will be processed in dataset.py
+- 数据集格式：二进制文件
+
   
 - 下载了 cifar-10 数据集后，进行一下的处理：
 
   ```shell
   tar -zxvf cifar-10-binary.tar.gz
   mkdir cifar-10-verify-bin
-  cp cifar-10-batches-bin/batches.meta.txt ../cifar-10-verify-bin/
-  cp cifar-10-batches-bin/readme.html ../cifar-10-verify-bin/
-  cp cifar-10-batches-bin/test_batch.bin ../cifar-10-verify-bin/
+  cp cifar-10-batches-bin/batches.meta.txt ./cifar-10-verify-bin/
+  cp cifar-10-batches-bin/readme.html ./cifar-10-verify-bin/
+  cp cifar-10-batches-bin/test_batch.bin ./cifar-10-verify-bin/
   ```
 
   处理后的文件目录结构如下：
