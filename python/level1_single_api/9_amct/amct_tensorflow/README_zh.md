@@ -1,11 +1,11 @@
 # AMCT TensorFlow
 
-AMCT TensorFlow 包含训练后量化，量化感知训练和张量分解功能，功能示例具体如下。
+AMCT TensorFlow 包含训练后量化，量化感知训练，QAT 模型转 Ascend 模型，自动量化回退和张量分解功能，功能示例具体如下。
 
 | 网络 | 演示功能 |
 | :-: | :-: |
-| [MobileNet V2](./mobilenet_v2/README_zh.md) | 训练后量化 |
-| [ResNet-50 V1](./resnet-50_v1/README_zh.md) | 量化感知训练 |
+| [MobileNet V2](./mobilenet_v2/README_zh.md) | 训练后量化，QAT 模型转 Ascend 模型，自动量化回退 |
+| [ResNet-50 V1](./resnet-50_v1/README_zh.md) | 量化感知训练，训练后量化 |
 | [YOLO V3](./yolo_v3/README_zh.md) | 训练后量化 |
 | [tensor_decompose](./tensor_decompose/README_zh.md) | 张量分解 |
 

@@ -19,8 +19,6 @@
 + [src](./src/)
   + [mobilenet_v2_convert_qat.py](./src/mobilenet_v2_convert_qat.py)
 
-并根据 requirements 安装必要的环境依赖。
-
 在当前目录执行如下命令运行示例程序：
 
 ```none

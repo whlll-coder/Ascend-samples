@@ -26,8 +26,6 @@
   + [yolo_quant.cfg](./src/yolo_quant.cfg)
   + [yolo_v3_calibration.py](./src/yolo_v3_calibration.py)
 
-并根据 requirements 安装必要的环境依赖。
-
 在当前目录执行如下命令运行示例程序：
 
 ```none
