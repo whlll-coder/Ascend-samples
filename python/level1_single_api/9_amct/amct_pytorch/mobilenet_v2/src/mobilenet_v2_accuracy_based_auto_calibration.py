@@ -34,10 +34,7 @@ LABLE_FILE = os.path.join(IMG_DIR, 'image_label.txt')
 PARSER = argparse.ArgumentParser(description='amct_pytorch mobilenet v2 accuracy based auto calibration sample.')
 ARGS = PARSER.parse_args()
 
-
-OUTPUTS = os.path.join(PATH, 'outputs/calibration')
-
-TMP = os.path.join(OUTPUTS, 'tmp')
+TMP = os.path.join(PATH, 'tmp')
 
 def get_labels_from_txt(label_file):
     """Read all images' name and label from label_file"""
@@ -185,7 +182,7 @@ def main():
 
     # 3. step3 using the accuracy_based_auto_calibration to quantized the model
     record_file = os.path.join(TMP, 'scale_offset_record.txt')
-    result_path = os.path.join(PATH, 'result')
+    result_path = os.path.join(PATH, 'result/mobilenet_v2')
     amct.accuracy_based_auto_calibration(
         model=model,
         model_evaluator=evaluator,

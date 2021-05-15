@@ -33,10 +33,7 @@ LABLE_FILE = os.path.join(IMG_DIR, 'image_label.txt')
 PARSER = argparse.ArgumentParser(description='amct_onnx mobilenet v2 accuracy based auto calibration sample.')
 ARGS = PARSER.parse_args()
 
-
-OUTPUTS = os.path.join(PATH, 'outputs/calibration')
-
-TMP = os.path.join(OUTPUTS, 'tmp')
+TMP = os.path.join(PATH, 'tmp')
 
 
 def get_labels_from_txt(label_file):
@@ -172,7 +169,7 @@ def main():
     # Phase1: do conv+bn fusion, weights calibration and generate
     #         calibration model
     scale_offset_record_file = os.path.join(TMP, 'record.txt')
-    result_path = os.path.join(OUTPUTS, 'mobilenetV2')
+    result_path = os.path.join(PATH, 'results/mobilenet_v2')
     evaluator = AutoCalibrationEvaluator(target_loss=0.5, batch_num=batch_num)
     amct.accuracy_based_auto_calibration(
         model_file=model_file,

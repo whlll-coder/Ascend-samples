@@ -84,4 +84,20 @@ Quantized Model Prediction:
 `python3 src/mobilenet_v2_accuracy_based_auto_calibration.py`
 
 ## 量化生成文件说明
+量化成功后会生成量化 fake quant 和 deploy 的 onnx 模型文件和量化层敏感度的信息文件, 量化因子记录文件等；
+
+文件的相关说明如下：
+
+| 目录     | 文件或目录                                        | 说明                                                         |
+| -------- | ------------------------------------------------- | ------------------------------------------------------------ |
+| amct_log | amct_onnx.log                                     | amct_onnx 工具在执行过程中相关日志文件                    |
+|          | accuracy_based_auto_calibration_record.json       | 基于精度的自动量化回退过程中的量化配置记录文件               |
+|          | tempxxxxx/ 目录                                   | 里面保存了隐藏层的 feature map 和其他临时性模型文件，当执行完毕后就可以删除 |
+| results  | mobilenet_v2_fake_quant_model.onnx                | 生成的 fake quant onnx 模型文件                              |
+|          | mobilenet_v2_deploy_model.onnx                    | 生成的 deploy onnx 模型文件                                  |
+|          | accuracy_based_auto_calibration_final_config.json | 基于精度的自动量化回退最终搜索得到的量化配置文件             |
+|          | accuracy_based_auto_calibration_ranking_info.json | 基于精度的自动量化回退过程中记录的每层量化敏感度信息文件     |
+| tmp      | config.json                                       | 量化过程中的量化配置文件                                     |
+|          | scale_offset_record.txt                           | 量化因子记录文件                                             |
+
 
