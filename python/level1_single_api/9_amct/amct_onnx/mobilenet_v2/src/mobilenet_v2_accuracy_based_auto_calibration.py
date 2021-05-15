@@ -168,7 +168,7 @@ def main():
         activation_offset=True, config_defination=None)
 
     # 1. step1 create quant config json file
-    scale_offset_record_file = os.path.join(TMP, 'record.txt')
+    scale_offset_record_file = os.path.join(TMP, 'scale_offset_record.txt')
     result_path = os.path.join(PATH, 'results/mobilenet_v2')
 
     # 2. step2 construct the instance of AutoCalibrationEvaluator
