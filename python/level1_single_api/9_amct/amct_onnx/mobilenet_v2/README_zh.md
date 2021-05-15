@@ -67,7 +67,7 @@ Quantized Model Prediction:
 
 
 + **模型准备**  
-+ 请下载 [ResNet-101](https://modelzoo-train-atc.obs.cn-north-4.myhuaweicloud.com/003_Atc_Models/AE/ATC%20Model/acc_based_auto_calibration/mobilenetv2_v11.onnx) 模型文件到 [model](./model/) 目录。
++ 请下载 [MobileNet-V2](https://modelzoo-train-atc.obs.cn-north-4.myhuaweicloud.com/003_Atc_Models/AE/ATC%20Model/acc_based_auto_calibration/mobilenetv2_v11.onnx) 模型文件到 [model](./model/) 目录。
 
 + **数据集准备**
 使用昇腾模型压缩工具对模型完成量化后，需要对模型进行推理，以测试量化数据的精度。推理过程中需要使用和模型相匹配的数据集。请下载[测试图片](https://modelzoo-train-atc.obs.cn-north-4.myhuaweicloud.com/003_Atc_Models/AE/ATC%20Model/resnet-101_nuq/images.zip)，解压后将 “images” 文件夹放到 [data](./data/) 目录下。

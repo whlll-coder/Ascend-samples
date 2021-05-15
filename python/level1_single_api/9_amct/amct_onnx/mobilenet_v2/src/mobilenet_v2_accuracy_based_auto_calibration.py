@@ -115,6 +115,7 @@ def onnx_forward(onnx_model, batch_size=1, iterations=160):
     return top1_total / iterations, top5_total / iterations
 
 
+# You need to implement the AutoCalibrationEvaluator's calibration(), evaluate() and metric_eval() funcs
 class AutoCalibrationEvaluator(AutoCalibrationEvaluatorBase):
     def __init__(self, target_loss, batch_num):
         super().__init__()
@@ -124,13 +125,13 @@ class AutoCalibrationEvaluator(AutoCalibrationEvaluatorBase):
     def calibration(self, model_file):
         """ implement the calibration function of AutoCalibrationEvaluatorBase
             calibration() need to finish the calibration inference procedure
-            so the inference batch num need to >= the batch num pass to create_quant_config
+            so the inference batch num need to >= the batch_num pass to create_quant_config
         """
         onnx_forward(onnx_model=model_file, batch_size=32, iterations=self.batch_num)
 
     def evaluate(self, model_file):
         """ implement the evaluate function of AutoCalibrationEvaluatorBase
-            params: model in torch.nn.module 
+            params: model_file in .onnx
             return: the accuracy of input model on the eval dataset, or other metric which
                     can describe the 'accuracy' of model
         """
@@ -166,11 +167,14 @@ def main():
         config_file=config_json_file, model_file=model_file, skip_layers=skip_layers, batch_num=batch_num,
         activation_offset=True, config_defination=None)
 
-    # Phase1: do conv+bn fusion, weights calibration and generate
-    #         calibration model
+    # 1. step1 create quant config json file
     scale_offset_record_file = os.path.join(TMP, 'record.txt')
     result_path = os.path.join(PATH, 'results/mobilenet_v2')
+
+    # 2. step2 construct the instance of AutoCalibrationEvaluator
     evaluator = AutoCalibrationEvaluator(target_loss=0.5, batch_num=batch_num)
+
+    # 3. step3 using the accuracy_based_auto_calibration to quantized the model
     amct.accuracy_based_auto_calibration(
         model_file=model_file,
         model_evaluator=evaluator,
@@ -181,7 +185,7 @@ def main():
         sensitivity='CosineSimilarity'
     )
 
-    # Phase4: run fake_quant model test
+    # 4. step4 run fake_quant model test
     print('[INFO] Do quantized model test:')
     quant_top1, quant_top5 = onnx_forward('%s_%s' % (result_path, 'fake_quant_model.onnx'), 32, 5)
     print('[INFO] MobileNet-V2 before quantize top1:{:>10} top5:{:>10}'.format(ori_top1, ori_top5))

@@ -115,6 +115,7 @@ def model_forward(model, batch_size=1, iterations=160):
     return top1_total / iterations, top5_total / iterations
 
 
+# You need to implement the AutoCalibrationEvaluator's calibration(), evaluate() and metric_eval() funcs
 class AutoCalibrationEvaluator(AutoCalibrationEvaluatorBase):
     def __init__(self, target_loss, batch_num):
         super().__init__()
@@ -124,7 +125,7 @@ class AutoCalibrationEvaluator(AutoCalibrationEvaluatorBase):
     def calibration(self, model):
         """ implement the calibration function of AutoCalibrationEvaluatorBase
             calibration() need to finish the calibration inference procedure
-            so the inference batch num need to >= the batch num pass to create_quant_config
+            so the inference batch num need to >= the batch_num pass to create_quant_config
         """
         model_forward(model=model, batch_size=32, iterations=self.batch_num)
 
@@ -175,10 +176,7 @@ def main():
     )
 
     # 2. step2 construct the instance of AutoCalibrationEvaluator
-    evaluator = AutoCalibrationEvaluator(
-        target_loss=0.5,
-        batch_num=batch_num
-    )
+    evaluator = AutoCalibrationEvaluator(target_loss=0.5, batch_num=batch_num)
 
     # 3. step3 using the accuracy_based_auto_calibration to quantized the model
     record_file = os.path.join(TMP, 'scale_offset_record.txt')
