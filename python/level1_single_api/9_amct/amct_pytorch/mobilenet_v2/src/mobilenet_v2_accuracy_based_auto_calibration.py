@@ -104,9 +104,10 @@ def model_forward(model, batch_size=1, iterations=160):
     top5_total = 0
     for i in range(iterations):
         input_batch = prepare_image_input(images[i * batch_size: (i + 1) * batch_size])
-
-        output = model(input_batch)
-        top1, top5 = img_postprocess(output[0], labels[i * batch_size: (i + 1) * batch_size])
+        input_batch = torch.tensor(input_batch)
+        with torch.no_grad():
+            output = model(input_batch)
+        top1, top5 = img_postprocess(output, labels[i * batch_size: (i + 1) * batch_size])
         top1_total += top1
         top5_total += top5
         print('****************iteration:{}*****************'.format(i))
@@ -119,7 +120,7 @@ def model_forward(model, batch_size=1, iterations=160):
 
 class AutoCalibrationEvaluator(AutoCalibrationEvaluatorBase):
     def __init__(self, target_loss, batch_num):
-        super.__init__()
+        super().__init__()
         self.target_loss = target_loss
         self.batch_num = batch_num
 

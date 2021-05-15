@@ -120,7 +120,7 @@ def onnx_forward(onnx_model, batch_size=1, iterations=160):
 
 class AutoCalibrationEvaluator(AutoCalibrationEvaluatorBase):
     def __init__(self, target_loss, batch_num):
-        super.__init__()
+        super().__init__()
         self.target_loss = target_loss
         self.batch_num = batch_num
 
