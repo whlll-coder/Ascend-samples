@@ -81,7 +81,7 @@ Quantized Model Prediction:
 确保已经完成 amct_onnx 工具以及相关依赖包的安装，模型准备和数据集准备工作。
 
 执行命令：
-`python3 mobilenet_v2_accuracy_based_auto_calibration.py`
+`python3 src/mobilenet_v2_accuracy_based_auto_calibration.py`
 
 ## 量化生成文件说明
 

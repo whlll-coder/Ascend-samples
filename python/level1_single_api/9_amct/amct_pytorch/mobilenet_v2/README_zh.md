@@ -21,7 +21,7 @@
 
 执行命令：
 
-`python3 mobilenet_v2_accuracy_based_auto_calibration.py`
+`python3 src/mobilenet_v2_accuracy_based_auto_calibration.py`
 
 ## 量化生成文件说明
 

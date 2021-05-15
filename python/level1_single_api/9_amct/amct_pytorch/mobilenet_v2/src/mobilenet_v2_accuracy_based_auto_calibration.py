@@ -28,7 +28,7 @@ from amct_pytorch.common.auto_calibration import AutoCalibrationEvaluatorBase
 
 
 PATH = os.path.realpath('./')
-IMG_DIR = os.path.join(PATH, 'data/images')
+IMG_DIR = os.path.join(PATH, './data/images')
 LABLE_FILE = os.path.join(IMG_DIR, 'image_label.txt')
 
 PARSER = argparse.ArgumentParser(description='amct_pytorch mobilenet v2 accuracy based auto calibration sample.')
