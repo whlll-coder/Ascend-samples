@@ -58,7 +58,7 @@
 
 ## 量化结果
 
-量化成功后，在当前目录会生成量化日志文件 [amct_onnx.log](./amct_log/amct_onnx.log) 和 [outputs](./outputs/) 文件夹，该文件夹内包含以下内容：
+量化成功后，在当前目录会生成量化日志文件 [./amct_log/amct_onnx.log](./amct_log/amct_onnx.log) 和 [outputs](./outputs/) 文件夹，该文件夹内包含以下内容：
 
 + 均匀量化 [calibration](./outputs/calibration/)
   + 临时文件夹 [tmp](./outputs/calibration/tmp/)

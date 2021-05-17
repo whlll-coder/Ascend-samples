@@ -104,7 +104,7 @@
 
 ## 量化结果
 
-量化成功后，在当前目录会生成量化日志文件 [amct_tensorflow.log](./amct_log/amct_tensorflow.log) 和 [outputs](./outputs/) 文件夹，该文件夹内包含以下内容：
+量化成功后，在当前目录会生成量化日志文件 [./amct_log/amct_tensorflow.log](./amct_log/amct_tensorflow.log) 和 [outputs](./outputs/) 文件夹，该文件夹内包含以下内容：
 
 记录了工具的日志信息，包括重训练过程的日志信息。
 
