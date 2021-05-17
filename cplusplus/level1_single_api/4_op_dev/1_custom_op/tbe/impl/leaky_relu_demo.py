@@ -16,15 +16,14 @@ http://www.apache.org/licenses/LICENSE-2.0
 cce extended operator builder wrapper
 """
 
-from impl.util.platform_adapter import tvm
-from impl.util.platform_adapter import tbe
-from impl.util.platform_adapter import register_operator
-from impl.util.platform_adapter import register_operator_compute
-from impl.util.platform_adapter import para_check
-from impl.util.platform_adapter import shape_util
+import tbe.dsl as tbe
+from tbe import tvm
+from tbe.common.register import register_op_compute
+from tbe.common.utils import para_check
+from tbe.common.utils import shape_util
 
 # pylint: disable=locally-disabled,unused-argument,invalid-name
-@register_operator_compute("leaky_relu", op_mode="dynamic", support_fusion=True)
+@register_op_compute("leaky_relu", op_mode="dynamic", support_fusion=True)
 def leaky_relu_demo_compute(x, y, negative_slope=0, kernel_name="leaky_relu"):
     """
     compute for caffe_relu_layer_cce
@@ -66,7 +65,6 @@ def leaky_relu_demo_compute(x, y, negative_slope=0, kernel_name="leaky_relu"):
     return res
 
 
-@register_operator("LeakyRelu")
 @para_check.check_op_params(para_check.REQUIRED_INPUT, para_check.REQUIRED_OUTPUT,
                             para_check.OPTION_ATTR_FLOAT, para_check.KERNEL_NAME)
 def leaky_relu_demo(x, y, negative_slope=0, kernel_name="leaky_relu"):
