@@ -23,7 +23,7 @@ from tbe.common.utils import para_check
 from tbe.common.utils import shape_util
 
 # pylint: disable=locally-disabled,unused-argument,invalid-name
-@register_op_compute("leaky_relu", op_mode="dynamic", support_fusion=True)
+@register_op_compute("LeakyReluDemo", op_mode="dynamic", support_fusion=True)
 def leaky_relu_demo_compute(x, y, negative_slope=0, kernel_name="leaky_relu"):
     """
     compute for caffe_relu_layer_cce
