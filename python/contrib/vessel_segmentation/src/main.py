@@ -86,7 +86,7 @@ def main():
             continue
   
         #read picture
-        pic_path = os.path.join(INPUT_DIR, pic)
+        pic_path = os.path.join(src_dir, pic)
         bgr_img = cv2.imread(pic_path)
 
         #get pic data
