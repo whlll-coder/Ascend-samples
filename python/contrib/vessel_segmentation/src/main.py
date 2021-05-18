@@ -86,8 +86,7 @@ def main():
             continue
   
         #read picture
-        pic_path = os.path.join(src_dir, pic)
-        bgr_img = cv2.imread(pic_path)
+        bgr_img = cv2.imread(pic)
 
         #get pic data
         orig_shape, test_img = pre_process(bgr_img)
