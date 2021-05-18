@@ -51,7 +51,7 @@ def post_process(infer_output, image_file):
 
     # Save the result
     resultimage=Image.fromarray(np.uint8(img))
-    output_path = os.path.join(os.path.join(SRC_PATH, "../outputs"), os.path.basename(image_file))
+    output_path = os.path.join(os.path.join(SRC_PATH, OUTPUT_DIR), os.path.basename(image_file))
     resultimage.save(output_path)
     print("result save success")    
     return 
