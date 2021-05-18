@@ -23,8 +23,8 @@ SRC_PATH = os.path.realpath(__file__).rsplit("/", 1)[0]
 MODEL_PATH = os.path.join(SRC_PATH, "../model/vessel.om")
 MODEL_WIDTH = 512
 MODEL_HEIGHT = 512
-INPUT_DIR = '../data/'
-OUTPUT_DIR = '../out/'
+INPUT_DIR = os.path.join(SRC_PATH, "../data/")
+OUTPUT_DIR = os.path.join(SRC_PATH, "../out/")
 def pre_process(bgr_img):
     """
     preprocess
@@ -51,7 +51,7 @@ def post_process(infer_output, image_file):
 
     # Save the result
     resultimage=Image.fromarray(np.uint8(img))
-    output_path = os.path.join(os.path.join(SRC_PATH, OUTPUT_DIR), os.path.basename(image_file))
+    output_path = os.path.join(OUTPUT_DIR, os.path.basename(image_file))
     resultimage.save(output_path)
     print("result save success")    
     return 
@@ -77,16 +77,16 @@ def main():
 
     #load model
     model = Model(MODEL_PATH)
-    src_dir = os.listdir(os.path.join(SRC_PATH, INPUT_DIR))
     #infer picture
-    for pic in src_dir:
+    for pic in INPUT_DIR:
         if not pic.lower().endswith(('.bmp', '.dib', '.png', '.jpg', 
                                     '.jpeg', '.pbm', '.pgm', '.ppm', '.tif', '.tiff')):
             print('it is not a picture, %s, ignore this file and continue,' % pic)
             continue
   
+        pic_path = os.path.join(INPUT_DIR, pic)
         #read picture
-        bgr_img = cv2.imread(pic)
+        bgr_img = cv2.imread(pic_path)
 
         #get pic data
         orig_shape, test_img = pre_process(bgr_img)
