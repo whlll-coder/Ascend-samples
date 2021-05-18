@@ -1,12 +1,12 @@
-mindspore_model="https://modelzoo-train-atc.obs.cn-north-4.myhuaweicloud.com:443/003_Atc_Models/AE/ATC%20Model/garbage/mobilenetv2.air"
-aipp_cfg="https://c7xcode.obs.cn-north-4.myhuaweicloud.com/models/garbage_picture/insert_op_yuv.cfg"
-model_name="garbage_yuv"
+caffe_model="https://modelzoo-train-atc.obs.cn-north-4.myhuaweicloud.com/003_Atc_Models/AE/ATC%20Model/retina-unet/vel_hw_iter_5000.caffemodel"
+caffe_prototxt="https://modelzoo-train-atc.obs.cn-north-4.myhuaweicloud.com/003_Atc_Models/AE/ATC%20Model/retina-unet/deploy_vel_ascend.prototxt"
+model_name="vessel"
 
 version=$1
 
-data_source="https://c7xcode.obs.cn-north-4.myhuaweicloud.com/models/garbage_picture/"
-verify_source="https://c7xcode.obs.cn-north-4.myhuaweicloud.com/models/garbage_picture/"
-project_name="garbage_picture"
+data_source="https://c7xcode.obs.cn-north-4.myhuaweicloud.com/models/vessel_segmentation/test_image/"
+verify_source="https://c7xcode.obs.cn-north-4.myhuaweicloud.com/models/vessel_segmentation/verify_image/"
+project_name="gesture_recognition_picture"
 
 script_path="$( cd "$(dirname $BASH_SOURCE)" ; pwd -P)"
 project_path=${script_path}/..
@@ -20,41 +20,41 @@ function downloadDataWithVerifySource() {
 
     mkdir -p ${project_path}/data/
 
-    wget -O ${project_path}/data/"dirtycloth.jpg"  ${data_source}"dirtycloth.jpg"  --no-check-certificate
+    wget -O ${project_path}/data/"test1.jpg"  ${data_source}"test1.jpg"  --no-check-certificate
     if [ $? -ne 0 ];then
-        echo "download dirtycloth.jpg failed, please check Network."
+        echo "download test1.jpg failed, please check Network."
         return 1
     fi
 
-    wget -O ${project_path}/data/"bottle.jpg"  ${data_source}"bottle.jpg"  --no-check-certificate
+    wget -O ${project_path}/data/"test2.jpg"  ${data_source}"test2.jpg"  --no-check-certificate
     if [ $? -ne 0 ];then
-        echo "download bottle.jpg failed, please check Network."
+        echo "download test2.jpg failed, please check Network."
         return 1
     fi
 
-    wget -O ${project_path}/data/"newspaper.jpg"  ${data_source}"newspaper.jpg"  --no-check-certificate
+    wget -O ${project_path}/data/"test3.jpg"  ${data_source}"test3.jpg"  --no-check-certificate
     if [ $? -ne 0 ];then
-        echo "download newspaper.jpg failed, please check Network."
+        echo "download test3.jpg failed, please check Network."
         return 1
     fi
 
     mkdir -p ${project_path}/verify_image/
 
-    wget -O ${project_path}/verify_image/out_dirtycloth.jpg ${verify_source}"out_dirtycloth.jpg" --no-check-certificate
+    wget -O ${project_path}/verify_image/verify_test1.jpg ${verify_source}"verify_test1.jpg" --no-check-certificate
     if [ $? -ne 0 ];then
-        echo "download out_dirtycloth.jpg failed, please check Network."
+        echo "download verify_test1.jpg failed, please check Network."
         return 1
     fi
 
-    wget -O ${project_path}/verify_image/out_bottle.jpg ${verify_source}"out_bottle.jpg" --no-check-certificate
+    wget -O ${project_path}/verify_image/verify_test2.jpg ${verify_source}"verify_test2.jpg" --no-check-certificate
     if [ $? -ne 0 ];then
-        echo "download out_bottle.jpg failed, please check Network."
+        echo "download verify_test2.jpg failed, please check Network."
         return 1
     fi
 
-    wget -O ${project_path}/verify_image/out_newspaper.jpg ${verify_source}"out_newspaper.jpg" --no-check-certificate
+    wget -O ${project_path}/verify_image/verify_test3.jpg ${verify_source}"verify_test3.jpg" --no-check-certificate
     if [ $? -ne 0 ];then
-        echo "download out_newspaper.jpg failed, please check Network."
+        echo "download verify_test3.jpg failed, please check Network."
         return 1
     fi
 
@@ -63,7 +63,7 @@ function downloadDataWithVerifySource() {
 
 
 function setAtcEnv() {
-    # 设置模型转换时需要的环境变量
+    
     if [[ ${version} = "c73" ]] || [[ ${version} = "C73" ]];then
         export install_path=/home/HwHiAiUser/Ascend/ascend-toolkit/latest
         export PATH=/usr/local/python3.7.5/bin:${install_path}/atc/ccec_compiler/bin:${install_path}/atc/bin:$PATH
@@ -85,13 +85,13 @@ function downloadOriginalModel() {
 
     mkdir -p ${project_path}/model/
 
-    wget -O ${project_path}/model/${mindspore_model##*/} ${mindspore_model} --no-check-certificate
+    wget -O ${project_path}/model/${caffe_prototxt##*/} ${caffe_prototxt} --no-check-certificate
     if [ $? -ne 0 ];then
-        echo "install mindspore_model failed, please check Network."
+        echo "install caffe_prototxt failed, please check Network."
         return 1
     fi
 
-    wget -O ${project_path}/model/${aipp_cfg##*/}  ${aipp_cfg} --no-check-certificate
+    wget -O ${project_path}/model/${caffe_model##*/} ${caffe_model} --no-check-certificate
     if [ $? -ne 0 ];then
         echo "install caffe_model failed, please check Network."
         return 1
@@ -107,7 +107,7 @@ function main() {
         return ${inferenceError}
     fi
 
-    # 下载测试集和验证集
+    # 下载测试集和验证�?    
     downloadDataWithVerifySource
     if [ $? -ne 0 ];then
         echo "ERROR: download test images or verify images failed"
@@ -123,16 +123,16 @@ function main() {
             return ${inferenceError}
         fi
 
-        # 设置模型转换的环境变量
+        # 设置模型转换的环境变�?        
         setAtcEnv
         if [ $? -ne 0 ];then
             echo "ERROR: set atc environment failed"
             return ${inferenceError}
         fi
 
-        # 转模型
+        # convert model     
         cd ${project_path}/model/
-        atc --model=${project_path}/model/${mindspore_model##*/} --framework=1 --output=${HOME}/models/${project_name}/${model_name} --soc_version=Ascend310 --insert_op_conf=${project_path}/model/${aipp_cfg##*/} --input_shape="data:1,3,224,224" --input_format=NCHW
+        atc --model=${project_path}/model/${caffe_prototxt##*/} --weight=${project_path}/model/${caffe_model##*/} --input_format=NCHW --input_fp16_nodes=data -output_type=FP32 --out_nodes=”output:0”
         if [ $? -ne 0 ];then
             echo "ERROR: convert model failed"
             return ${inferenceError}
@@ -153,19 +153,19 @@ function main() {
 
     cd ${project_path}
 
-    # 重新配置程序运行所需的环境变量
+    # 重新配置程序运行所需的环境变�?    
     export LD_LIBRARY_PATH=
     export LD_LIBRARY_PATH=/home/HwHiAiUser/Ascend/nnrt/latest/acllib/lib64:/home/HwHiAiUser/ascend_ddk/x86/lib:${LD_LIBRARY_PATH}
     export PYTHONPATH=/home/HwHiAiUser/Ascend/nnrt/latest/pyACL/python/site-packages/acl:${PYTHONPATH}
 
     # 运行程序
-    python3.6 ${project_path}/src/classify_test.py ${project_path}/data
+    python3.6 ${project_path}/src/main.py ${project_path}/data
     if [ $? -ne 0 ];then
         echo "ERROR: run failed. please check your project"
         return ${inferenceError}
     fi   
     
-    # 调用python脚本判断本工程推理结果是否正常
+    # 调用python脚本判断本工程推理结果是否正�?    
     for outimage in $(find ${project_path}/verify_image -name "*.jpg");do
         tmp=`basename $outimage`
         if [[ ! -d "${project_path}/outputs" ]];then
