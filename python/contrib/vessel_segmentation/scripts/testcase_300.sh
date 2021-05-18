@@ -132,7 +132,7 @@ function main() {
 
         # convert model     
         cd ${project_path}/model/
-        atc --model=${project_path}/model/${caffe_prototxt##*/} --weight=${project_path}/model/${caffe_model##*/} --input_format=NCHW --input_fp16_nodes=data -output_type=FP32 --out_nodes="output:0"
+        atc --model=${project_path}/model/${caffe_prototxt##*/} --weight=${project_path}/model/${caffe_model##*/}  --framework=0 --output=${HOME}/models/${project_name}/${model_name} --input_format=NCHW --input_fp16_nodes=data -output_type=FP32 --out_nodes="output:0"
         if [ $? -ne 0 ];then
             echo "ERROR: convert model failed"
             return ${inferenceError}
