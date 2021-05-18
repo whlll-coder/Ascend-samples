@@ -18,6 +18,7 @@ from atlas_utils.acl_model import Model
 from atlas_utils.acl_image import AclImage
 from atlas_utils.acl_resource import AclResource
 
+import cv2 
 SRC_PATH = os.path.realpath(__file__).rsplit("/", 1)[0]
 MODEL_PATH = os.path.join(SRC_PATH, "../model/vessel.om")
 MODEL_WIDTH = 512
