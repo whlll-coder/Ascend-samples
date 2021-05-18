@@ -84,11 +84,11 @@ Before deploying this sample, ensure that:
 
     **cd $HOME/samples/python/contrib/vessel_segmentation/data**
 
-    **wget https://c7xcode.obs.cn-north-4.myhuaweicloud.com/models/vessel_segmentation/test_image/test1.jpg**
+    **wget https://c7xcode.obs.cn-north-4.myhuaweicloud.com/models/vessel_segmentation/test_image/test1.png**
 
-    **wget https://c7xcode.obs.cn-north-4.myhuaweicloud.com/models/vessel_segmentation/test_image/test2.jpg**       
+    **wget https://c7xcode.obs.cn-north-4.myhuaweicloud.com/models/vessel_segmentation/test_image/test2.png**       
 
-    **wget https://c7xcode.obs.cn-north-4.myhuaweicloud.com/models/vessel_segmentation/test_image/test3.jpg** 
+    **wget https://c7xcode.obs.cn-north-4.myhuaweicloud.com/models/vessel_segmentation/test_image/test3.png** 
 
 
 ### Sample Running

@@ -73,7 +73,7 @@
 
     2. 执行以下atc命令进行模型转换。
 
-        **atc --model=caffe_model/deploy_vel_ascend.prototxt --weight=caffe_model/vel_hw_iter_5000.caffemodel --framework=0 --output=model/vessel --soc_version=Ascend310 --input_format=NCHW --input_fp16_nodes=data -output_type=FP32 **
+        **atc --model=caffe_model/deploy_vel_ascend.prototxt --weight=caffe_model/vel_hw_iter_5000.caffemodel --framework=0 --output=model/vessel --soc_version=Ascend310 --input_format=NCHW --input_fp16_nodes=data -output_type=FP32**
 
     3. 执行以下命令将转换好的模型复制到样例中model文件夹中。
 
@@ -85,13 +85,11 @@
 
     **cd $HOME/samples/python/contrib/gesture_recognition_picture/data**
 
-    **wget https://c7xcode.obs.cn-north-4.myhuaweicloud.com/models/vessel_segmentation/test_image/test1.jpg**
+    **wget https://c7xcode.obs.cn-north-4.myhuaweicloud.com/models/vessel_segmentation/test_image/test1.png**
 
-    **wget https://c7xcode.obs.cn-north-4.myhuaweicloud.com/models/vessel_segmentation/test_image/test2.jpg**       
+    **wget https://c7xcode.obs.cn-north-4.myhuaweicloud.com/models/vessel_segmentation/test_image/test2.png**       
     
-    **wget https://c7xcode.obs.cn-north-4.myhuaweicloud.com/models/vessel_segmentation/test_image/test3.jpg** 
-
-
+    **wget https://c7xcode.obs.cn-north-4.myhuaweicloud.com/models/vessel_segmentation/test_image/test3.png** 
 
 ### 样例运行
 
