@@ -31,8 +31,12 @@ else ()
     message(STATUS "env LIB_PATH: ${LIB_PATH}")
 endif()
 
+add_definitions(-DENABLE_DVPP_INTERFACE)
+
 if (${CMAKE_CXX_COMPILER} MATCHES "aarch")
     set(ARCH "arm")
+    #list(APPEND COMMON_DEPEND_LIB media_mini)
+    #add_definitions(-DENABLE_BOARD_CAMARE)
 else ()
     set(ARCH "x86")
 endif()
@@ -57,15 +61,15 @@ link_directories(
 )
 
 add_executable(main
-        utils.cpp
-        model_process.cpp
         classify_process.cpp
         main.cpp)
+
+list(APPEND COMMON_DEPEND_LIB atlasutil avcodec avformat avdevice avutil swresample avfilter swscale)        
 
 if(target STREQUAL "Simulator_Function")
     target_link_libraries(main funcsim)
 else()
-    target_link_libraries(main ascendcl acl_dvpp stdc++ opencv_core opencv_imgproc opencv_imgcodecs dl rt)
+    target_link_libraries(main ascendcl acl_dvpp stdc++ ${COMMON_DEPEND_LIB} opencv_core opencv_imgproc opencv_imgcodecs dl rt)
 endif()
 
 install(TARGETS main DESTINATION ${CMAKE_RUNTIME_OUTPUT_DIRECTORY})
