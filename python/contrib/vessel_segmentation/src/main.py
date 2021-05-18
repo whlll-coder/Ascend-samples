@@ -45,7 +45,7 @@ def pre_process(bgr_img):
     
     # save memory C_CONTIGUOUS mode
     if not test_img.flags['C_CONTIGUOUS']:
-        test_img = np.ascontiguousarray(gray_img)
+        test_img = np.ascontiguousarray(test_img)
 
     return orig_shape, test_img
 
