@@ -24,7 +24,7 @@ MODEL_WIDTH = 512
 MODEL_HEIGHT = 512
 
 def pre_process(bgr_img):
-   """
+    """
     preprocess
     """
     #get img shape
