@@ -77,7 +77,7 @@ def main():
 
     #load model
     model = Model(MODEL_PATH)
-    src_dir = os.listdir(INPUT_DIR)
+    src_dir = os.listdir(os.path.join(SRC_PATH, INPUT_DIR))
     #infer picture
     for pic in src_dir:
         if not pic.lower().endswith(('.bmp', '.dib', '.png', '.jpg', 
