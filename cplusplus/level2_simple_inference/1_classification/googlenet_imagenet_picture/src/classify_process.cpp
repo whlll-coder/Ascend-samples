@@ -136,8 +136,9 @@ AtlasError ClassifyProcess::Postprocess(const string& origImageFile,
                                     std::vector<InferenceOutput>& inferOutputs){
     uint32_t dataSize = inferOutputs[kOutputDataBufId].size;
     void* data = (void *)inferOutputs[kOutputDataBufId].data.get();
-    if (data == nullptr) return ATLAS_ERROR;
-
+    if (data == nullptr) {
+        return ATLAS_ERROR;
+    }
     float* outData = NULL;
     outData = reinterpret_cast<float*>(data);
     map<float, unsigned int, greater<float> > resultMap;
@@ -192,7 +193,7 @@ void ClassifyProcess::LabelClassToImage(int classIdx, const string& origImagePat
     int fontFace = 0;
     double fontScale = 1;
     int thickness = 2;
-    int baseline;
+    //int baseline;
     cv::Point origin;
     origin.x = 10;
     origin.y = 50;
