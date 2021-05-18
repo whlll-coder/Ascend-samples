@@ -1,3 +1,9 @@
+"""
+Copyright (R) @huawei.com, all rights reserved
+-*- coding:utf-8 -*-
+CREATED:  2021-01-20 20:12:13
+MODIFIED: 2021-01-29 14:04:45
+"""
 #!/usr/bin/env python
 # encoding: utf-8
 import sys
@@ -43,11 +49,15 @@ def pre_process(bgr_img):
 
     return orig_shape, test_img
 
+
 def post_process(infer_output, image_file):
+    """
+    post_process
+    """
     print("post process")
     data = infer_output[0]
     
-    img = np.reshape(data*255,(512,512))
+    img = np.reshape(data * 255, (512, 512))
 
     # Save the result
     resultimage=Image.fromarray(np.uint8(img))
@@ -56,12 +66,6 @@ def post_process(infer_output, image_file):
     print("result save success")    
     return 
 
-def construct_image_info():
-    """construct image info"""
-    image_info = np.array([MODEL_WIDTH, MODEL_HEIGHT, 
-                           MODEL_WIDTH, MODEL_HEIGHT], 
-                           dtype = np.float32) 
-    return image_info
 
 def main():   
     """
