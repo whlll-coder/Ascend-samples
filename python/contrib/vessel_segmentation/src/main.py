@@ -88,13 +88,13 @@ def main():
         bgr_img = cv2.imread(pic_path)
 
         #get pic data
-        orig_shape, test_img = preprocess(bgr_img)
+        orig_shape, test_img = pre_process(bgr_img)
 
         #inference
         result_list = model.execute([test_img, ])    
 
-        #postprocess
-        postprocess(result_list, pic)
+        #post_process
+        post_process(result_list, pic)
 if __name__ == '__main__':
     main()
 
