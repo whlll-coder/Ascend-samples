@@ -77,8 +77,9 @@ def main():
 
     #load model
     model = Model(MODEL_PATH)
+    src_dir = os.listdir(INPUT_DIR)
     #infer picture
-    for pic in INPUT_DIR:
+    for pic in src_dir:
         if not pic.lower().endswith(('.bmp', '.dib', '.png', '.jpg', 
                                     '.jpeg', '.pbm', '.pgm', '.ppm', '.tif', '.tiff')):
             print('it is not a picture, %s, ignore this file and continue,' % pic)
