@@ -30,12 +30,9 @@ import operator
 import functools 
 from PIL import Image
 
-"""
-Copyright (R) @huawei.com, all rights reserved
--*- coding:utf-8 -*-
-CREATED:  2020-12-11 10:12:13
-MODIFIED: 2020-12-11 14:04:45
-"""
+# Copyright (R) @huawei.com, all rights reserved
+# -*- coding:utf-8 -*-
+# CREATED:  2020-12-11 10:12:13
 def image_contrast(image1, image2):
     """
     Verify that the pictures are the same
@@ -47,7 +44,8 @@ def image_contrast(image1, image2):
     ret = math.sqrt(functools.reduce(operator.add, list(map(lambda a, b: (a - b) ** 2, h1, h2))) / len(h1))
     return ret
 
-def test(opt):
+
+def test(args):
     # Step 1: initialize ACL and ACL runtime 
     acl_resource = AclResource()
 
@@ -57,10 +55,10 @@ def test(opt):
     # Step 2: Load models 
     mot_model = Model('../model/mot_v2.om')
 
-    dataloader = LoadImages(opt.test_img)
+    dataloader = LoadImages(args.test_img)
 
     # initialize tracker
-    tracker = JDETracker(opt, mot_model, frame_rate=30)
+    tracker = JDETracker(args, mot_model, frame_rate=30)
     timer = Timer()
     results = []
     
@@ -83,7 +81,7 @@ def test(opt):
             tlwh = t.tlwh
             tid = t.track_id
             vertical = tlwh[2] / tlwh[3] > 1.6
-            if tlwh[2] * tlwh[3] > opt.min_box_area and not vertical:
+            if tlwh[2] * tlwh[3] > args.min_box_area and not vertical:
                 online_tlwhs.append(tlwh)
                 online_ids.append(tid)
         timer.toc()
@@ -94,7 +92,7 @@ def test(opt):
         cv2.imwrite(os.path.join('../data', 'test_output.jpg'), online_im)
 
     # verify if result is expected
-    result = image_contrast('../data/test_output.jpg', opt.verify_img)
+    result = image_contrast('../data/test_output.jpg', args.verify_img)
     print(result)
     if (result > 420 or result < 0):
         print("Similarity Test Fail!")
@@ -113,10 +111,10 @@ if __name__ == '__main__':
     parser.add_argument('--test_img', type=str, default='../data/test.jpg', help='path to the test image')
     parser.add_argument('--verify_img', type=str, default='../data/verify.jpg', help='path to the expected output image')
 
-    opt = parser.parse_args()
-    opt.mean = [0.408, 0.447, 0.470]
-    opt.std = [0.289, 0.274, 0.278]
-    opt.down_ratio = 4
-    opt.num_classes = 1
+    args = parser.parse_args()
+    args.mean = [0.408, 0.447, 0.470]
+    args.std = [0.289, 0.274, 0.278]
+    args.down_ratio = 4
+    args.num_classes = 1
 
-    test(opt) 
+    test(args) 

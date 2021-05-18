@@ -1,8 +1,14 @@
+"""
+BaseTrack Structure Definition 
+"""
 import numpy as np
 from collections import OrderedDict
 
 
 class TrackState(object):
+    '''
+    State Definition
+    '''
     New = 0
     Tracked = 1
     Lost = 2
@@ -10,6 +16,10 @@ class TrackState(object):
 
 
 class BaseTrack(object):
+    '''
+    Define Basic Track Structure
+    '''
+    
     _count = 0
 
     track_id = 0
@@ -29,10 +39,16 @@ class BaseTrack(object):
 
     @property
     def end_frame(self):
+        '''
+        return frame id
+        '''
         return self.frame_id
 
     @staticmethod
     def next_id():
+        '''
+        return number count
+        '''
         BaseTrack._count += 1
         return BaseTrack._count
 

@@ -1,17 +1,19 @@
-# Copyright 2020 Huawei Technologies Co., Ltd.
-# Copyright (c) 2020 YifuZhang
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# You may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#     http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
+'''
+Copyright 2020 Huawei Technologies Co., Ltd.
+Copyright (c) 2020 YifuZhang
+
+Licensed under the Apache License, Version 2.0 (the "License");
+You may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+'''
 
 from __future__ import absolute_import
 from __future__ import division
@@ -35,10 +37,17 @@ from atlas_utils.acl_model import Model
 from atlas_utils.acl_resource import AclResource 
 
 def mkdir_if_missing(d):
+    '''
+    create directory if not exist
+    '''
     if not os.path.exists(d):
         os.makedirs(d)
 
-def main(opt):
+
+def main(args):
+    '''
+    main
+    '''
     # Step 1: initialize ACL and ACL runtime 
     acl_resource = AclResource()
 
@@ -49,24 +58,24 @@ def main(opt):
     mot_model = Model('../model/mot_v2.om')
 
     # Create output dir if not exist; default outputs
-    result_root = opt.output_root if opt.output_root != '' else '.'
+    result_root = args.output_root if args.output_root != '' else '.'
     mkdir_if_missing(result_root)
 
-    video_name = os.path.basename(opt.input_video).replace(' ', '_').split('.')[0]
+    video_name = os.path.basename(args.input_video).replace(' ', '_').split('.')[0]
 
     # setup dataloader, use LoadVideo or LoadImages
-    dataloader = LoadVideo(opt.input_video, (1088, 608))
+    dataloader = LoadVideo(args.input_video, (1088, 608))
     # result_filename = os.path.join(result_root, 'results.txt')
     frame_rate = dataloader.frame_rate
 
     # dir for output images; default: outputs/'VideoFileName'
     save_dir = os.path.join(result_root, video_name)    
-    if save_dir and os.path.exists(save_dir) and opt.rm_prev:
+    if save_dir and os.path.exists(save_dir) and args.rm_prev:
         shutil.rmtree(save_dir) 
     mkdir_if_missing(save_dir)
 
     # initialize tracker
-    tracker = JDETracker(opt, mot_model, frame_rate=frame_rate)
+    tracker = JDETracker(args, mot_model, frame_rate=frame_rate)
     timer = Timer()
     results = []
     
@@ -90,7 +99,7 @@ def main(opt):
             tlwh = t.tlwh
             tid = t.track_id
             vertical = tlwh[2] / tlwh[3] > 1.6
-            if tlwh[2] * tlwh[3] > opt.min_box_area and not vertical:
+            if tlwh[2] * tlwh[3] > args.min_box_area and not vertical:
                 online_tlwhs.append(tlwh)
                 online_ids.append(tid)
         timer.toc()
@@ -101,8 +110,8 @@ def main(opt):
         cv2.imwrite(os.path.join(save_dir, '{:05d}.jpg'.format(frame_id)), online_im)
 
 
-    if opt.output_type == 'video':
-        output_video_path = os.path.join(result_root, os.path.basename(opt.input_video).replace(' ', '_'))
+    if args.output_type == 'video':
+        output_video_path = os.path.join(result_root, os.path.basename(args.input_video).replace(' ', '_'))
         cmd_str = 'ffmpeg -f image2 -i {}/%05d.jpg -b 5000k -c:v mpeg4 {}'.format(save_dir, output_video_path)
         os.system(cmd_str)
 
@@ -120,10 +129,10 @@ if __name__ == '__main__':
 
     parser.add_argument('--rm_prev', action="store_true", help='remove previous save dir ( rm -rf outputs/video_name )')
     
-    opt = parser.parse_args()
-    opt.mean = [0.408, 0.447, 0.470]
-    opt.std = [0.289, 0.274, 0.278]
-    opt.down_ratio = 4
-    opt.num_classes = 1
+    args = parser.parse_args()
+    args.mean = [0.408, 0.447, 0.470]
+    args.std = [0.289, 0.274, 0.278]
+    args.down_ratio = 4
+    args.num_classes = 1
 
-    main(opt) 
+    main(args) 

@@ -9,14 +9,14 @@ from tracking_utils import kalman_filter
 import time
 
 def merge_matches(m1, m2, shape):
-    O,P,Q = shape
+    O, P, Q = shape
     m1 = np.asarray(m1)
     m2 = np.asarray(m2)
 
     M1 = scipy.sparse.coo_matrix((np.ones(len(m1)), (m1[:, 0], m1[:, 1])), shape=(O, P))
     M2 = scipy.sparse.coo_matrix((np.ones(len(m2)), (m2[:, 0], m2[:, 1])), shape=(P, Q))
 
-    mask = M1*M2
+    mask = M1 * M2
     match = mask.nonzero()
     match = list(zip(match[0], match[1]))
     unmatched_O = tuple(set(range(O)) - set([i for i, j in match]))
@@ -56,18 +56,18 @@ def ious(atlbrs, btlbrs):
     :type atlbrs: list[tlbr] | np.ndarray
     :type atlbrs: list[tlbr] | np.ndarray
 
-    :rtype ious np.ndarray
+    :rtype _ious np.ndarray
     """
-    ious = np.zeros((len(atlbrs), len(btlbrs)), dtype=np.float)
-    if ious.size == 0:
-        return ious
+    _ious = np.zeros((len(atlbrs), len(btlbrs)), dtype=np.float)
+    if _ious.size == 0:
+        return _ious
 
-    ious = bbox_ious(
+    _ious = bbox_ious(
         np.ascontiguousarray(atlbrs, dtype=np.float),
         np.ascontiguousarray(btlbrs, dtype=np.float)
     )
 
-    return ious
+    return _ious
 
 
 def iou_distance(atracks, btracks):
@@ -79,7 +79,8 @@ def iou_distance(atracks, btracks):
     :rtype cost_matrix np.ndarray
     """
 
-    if (len(atracks)>0 and isinstance(atracks[0], np.ndarray)) or (len(btracks) > 0 and isinstance(btracks[0], np.ndarray)):
+    if (len(atracks)>0 and isinstance(atracks[0], np.ndarray)) \
+        or (len(btracks) > 0 and isinstance(btracks[0], np.ndarray)):
         atlbrs = atracks
         btlbrs = btracks
     else:
