@@ -42,7 +42,7 @@ quantize.png save successfully!
 
 ## 量化结果
 
-量化成功后，在当前目录会生成量化日志文件 [amct_tensorflow.log](./amct_log/amct_tensorflow.log) 和 [outputs](./outputs/) 文件夹，该文件夹内包含以下内容：
+量化成功后，在当前目录会生成量化日志文件 [./amct_log/amct_tensorflow.log](./amct_log/amct_tensorflow.log) 和 [outputs](./outputs/) 文件夹，该文件夹内包含以下内容：
 
 + 量化配置文件 [config.json](./outputs/config.json)
 + 量化因子记录文件 [record.txt](./outputs/record.txt)

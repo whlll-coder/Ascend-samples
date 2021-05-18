@@ -40,7 +40,7 @@ Quantized Model Prediction:
 
 ## 量化结果
 
-量化成功后，在当前目录会生成量化日志文件 [amct_onnx.log](./amct_log/amct_onnx.log) 和 [outputs](./outputs/) 文件夹，该文件夹内包含以下内容：
+量化成功后，在当前目录会生成量化日志文件 [./amct_log/amct_onnx.log](./amct_log/amct_onnx.log) 和 [outputs](./outputs/) 文件夹，该文件夹内包含以下内容：
 
 + QAT 模型转 Ascend 模型 [convert_qat](./outputs/convert_qat/)
   + 量化因子记录文件 [record.txt](./outputs/convert_qat/record.txt)
