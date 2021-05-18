@@ -1,9 +1,9 @@
-############################################################################
-# TEST one sinle image
-# This script uses one sinle image as input, generate bounding box with id
-# To test on video, please use main.py
-############################################################################
 
+"""
+TEST one sinle image
+This script uses one sinle image as input, generate bounding box with id
+To test on video, please use main.py
+"""
 from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function

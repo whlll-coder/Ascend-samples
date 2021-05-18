@@ -1,3 +1,6 @@
+"""
+log.py
+"""
 import logging
 
 
@@ -9,10 +12,10 @@ def get_logger(name='root'):
     handler = logging.StreamHandler()
     handler.setFormatter(formatter)
 
-    logger = logging.getLogger(name)
-    logger.setLevel(logging.DEBUG)
-    logger.addHandler(handler)
-    return logger
+    _logger = logging.getLogger(name)
+    _logger.setLevel(logging.DEBUG)
+    _logger.addHandler(handler)
+    return _logger
 
 
 logger = get_logger('root')

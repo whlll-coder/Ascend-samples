@@ -1,3 +1,6 @@
+"""
+io.py
+"""
 import os
 from typing import Dict
 import numpy as np
@@ -5,7 +8,7 @@ import numpy as np
 from .log import logger
 
 
-def write_results(filename, results_dict: Dict, data_type: str):
+def write_results(filename, results_dict, data_type):
     if not filename:
         return
     path = os.path.dirname(filename)

@@ -1,5 +1,5 @@
-'''
-Copyright 2020 Huawei Technologies Co., Ltd.
+"""
+Copyright 2021 Huawei Technologies Co., Ltd.
 Copyright (c) 2020 YifuZhang
 
 Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,7 +13,7 @@ distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
-'''
+"""
 
 from __future__ import absolute_import
 from __future__ import division
@@ -36,17 +36,17 @@ from atlas_utils.acl_model import Model
 from atlas_utils.acl_resource import AclResource 
 
 def mkdir_if_missing(d):
-    '''
+    """
     create directory if not exist
-    '''
+    """
     if not os.path.exists(d):
         os.makedirs(d)
 
 
 def main(args):
-    '''
+    """
     main
-    '''
+    """
     # Step 1: initialize ACL and ACL runtime 
     acl_resource = AclResource()
 

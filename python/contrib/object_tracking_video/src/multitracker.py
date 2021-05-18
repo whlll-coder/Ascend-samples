@@ -1,3 +1,19 @@
+"""
+Copyright 2021 Huawei Technologies Co., Ltd.
+Copyright (c) 2020 YifuZhang
+
+Licensed under the Apache License, Version 2.0 (the "License");
+You may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+"""
 import numpy as np
 
 from collections import deque
@@ -18,6 +34,9 @@ from utils.post_process import ctdet_post_process
 from utils.image import get_affine_transform
 
 class STrack(BaseTrack):
+    """
+    One STrack object represents one detection, containing bounding box, confidence precentage, id feature, fused id feature, etc 
+    """
     shared_kalman = KalmanFilter()
     def __init__(self, tlwh, score, temp_feat, buffer_size=30):
 
@@ -38,9 +57,9 @@ class STrack(BaseTrack):
         self.alpha = 0.9
 
     def update_features(self, feat):
-        '''
+        """
         fuse and update the id feature vector for next comparison 
-        '''
+        """
         feat /= np.linalg.norm(feat)
         self.curr_feat = feat
 
@@ -62,9 +81,9 @@ class STrack(BaseTrack):
 
     @staticmethod
     def multi_predict(stracks):
-        '''
+        """
         Apply kalman filter predictions to all stracks
-        '''
+        """
         if len(stracks) > 0:
             multi_mean = np.asarray([st.mean.copy() for st in stracks])
             multi_covariance = np.asarray([st.covariance for st in stracks])
@@ -91,6 +110,9 @@ class STrack(BaseTrack):
         self.start_frame = frame_id
 
     def re_activate(self, new_track, frame_id, new_id=False):
+        """
+        Update the state and set to activate
+        """
         self.mean, self.covariance = self.kalman_filter.update(
             self.mean, self.covariance, self.tlwh_to_xyah(new_track.tlwh)
         )
@@ -159,14 +181,17 @@ class STrack(BaseTrack):
         return ret
 
     def to_xyah(self):
+        """Convert bounding box to format `(center x, center y, aspect ratio,
+        height)`, where the aspect ratio is `width / height`.
+        """
         return self.tlwh_to_xyah(self.tlwh)
 
     @staticmethod
     # @jit(nopython=True)
     def tlbr_to_tlwh(tlbr):
-        '''
-        bbox def change: (top_left + bottom_right) to (top_left + width_height)
-        '''
+        """
+        change bbox def from (top_left + bottom_right) to (top_left + width_height)
+        """
         ret = np.asarray(tlbr).copy()
         ret[2:] -= ret[:2]
         return ret
@@ -174,9 +199,9 @@ class STrack(BaseTrack):
     @staticmethod
     # @jit(nopython=True)
     def tlwh_to_tlbr(tlwh):
-        '''
-        bbox def change: (top_left + width_height) to (top_left + bottom_right)
-        '''
+        """
+        change bbox def from (top_left + width_height) to (top_left + bottom_right)
+        """
         ret = np.asarray(tlwh).copy()
         ret[2:] += ret[:2]
         return ret
@@ -186,9 +211,9 @@ class STrack(BaseTrack):
 
 
 class JDETracker(object):
-    '''
+    """
     Tracking manager to detect and track, return the bbox with id
-    '''
+    """
     def __init__(self, opt, model, frame_rate=30):
         self.opt = opt
         print('Creating model...')
@@ -209,9 +234,9 @@ class JDETracker(object):
         self.kalman_filter = KalmanFilter()
 
     def post_process(self, dets, meta):
-        '''
+        """
         change detection coordinate based on original image size
-        '''
+        """
         dets = dets.reshape(1, -1, dets.shape[-1])
         dets = ctdet_post_process(
             dets.copy(), [meta['c']], [meta['s']],
@@ -221,9 +246,9 @@ class JDETracker(object):
         return dets[0]
 
     def merge_outputs(self, detections):
-        '''
+        """
         Assume at most K people per image, keep the highest K detections and remove the rest
-        '''
+        """
         results = {}
         for j in range(1, self.opt.num_classes + 1):
             results[j] = np.concatenate(
@@ -240,13 +265,13 @@ class JDETracker(object):
         return results
 
     def update(self, im_blob, img0):
-        '''
+        """
         1. Run model for detection and id_feature extraction.
         2. Bounding boxes association using Kalman Filter, IoU, embedding
         
         im_blob: network input (1, 3, 608, 1088)
         img0: original image (608, 1088, 3)
-        '''
+        """
 
         self.frame_id += 1
         activated_starcks = []
@@ -264,7 +289,7 @@ class JDETracker(object):
                 'out_height': inp_height // self.opt.down_ratio,
                 'out_width': inp_width // self.opt.down_ratio}
 
-        # ''' Step 1: Network forward, get detections & embeddings '''
+        # """ Step 1: Network forward, get detections & embeddings """
         # Please verify using shape
         id_feature, reg, wh, hm = self.model.execute(im_blob)
 
@@ -281,12 +306,11 @@ class JDETracker(object):
         if len(dets) > 0:
             # Detections
             # dets[:, :5]: bboxes (4), score (1)
-            detections = [STrack(STrack.tlbr_to_tlwh(tlbrs[:4]), tlbrs[4], f, 30) for
-                          (tlbrs, f) in zip(dets[:, :5], id_feature)]
+            detections = [STrack(STrack.tlbr_to_tlwh(tlbrs[:4]), tlbrs[4], f, 30) for (tlbrs, f) in zip(dets[:, :5], id_feature)]
         else:
             detections = []
 
-        # ''' Add newly detected tracklets to tracked_stracks'''
+        # """ Add newly detected tracklets to tracked_stracks"""
         unconfirmed = []
         tracked_stracks = []  # type: list[STrack]
         for track in self.tracked_stracks:
@@ -295,7 +319,7 @@ class JDETracker(object):
             else:
                 tracked_stracks.append(track)
 
-        # ''' Step 2: First association, with embedding'''
+        # """ Step 2: First association, with embedding"""
         strack_pool = joint_stracks(tracked_stracks, self.lost_stracks)
 
         # Predict the current location with KF
@@ -308,9 +332,6 @@ class JDETracker(object):
         #dists = matching.iou_distance(strack_pool, detections)
         dists = matching.fuse_motion(self.kalman_filter, dists, strack_pool, detections)
 
-        # matches:      [idx of tracked_stracks, idx of detections]
-        # u_track:      [index of undefined track]
-        # u_detection:  [index of undefined detection]
         matches, u_track, u_detection = matching.linear_assignment(dists, thresh=0.4)
 
         for itracked, idet in matches:
@@ -323,7 +344,7 @@ class JDETracker(object):
                 track.re_activate(det, self.frame_id, new_id=False)
                 refind_stracks.append(track)
         
-        # ''' Step 3: Second association, with IOU'''
+        # """ Step 3: Second association, with IOU"""
         detections = [detections[i] for i in u_detection]
         r_tracked_stracks = [strack_pool[i] for i in u_track if strack_pool[i].state == TrackState.Tracked]
         dists = matching.iou_distance(r_tracked_stracks, detections)
@@ -346,7 +367,7 @@ class JDETracker(object):
                 lost_stracks.append(track)
 
 
-        # ''' Deal with unconfirmed tracks, usually tracks with only one beginning frame '''
+        # """ Deal with unconfirmed tracks, usually tracks with only one beginning frame """
         detections = [detections[i] for i in u_detection]
         dists = matching.iou_distance(unconfirmed, detections)
         matches, u_unconfirmed, u_detection = matching.linear_assignment(dists, thresh=0.7)
@@ -358,14 +379,14 @@ class JDETracker(object):
             track.mark_removed()
             removed_stracks.append(track)
 
-        # ''' Step 4: Init new stracks '''
+        # """ Step 4: Init new stracks """
         for inew in u_detection:
             track = detections[inew]
             if track.score < self.det_thresh:
                 continue
             track.activate(self.kalman_filter, self.frame_id)
             activated_starcks.append(track)
-        # ''' Step 5: Update state '''
+        # """ Step 5: Update state """
         for track in self.lost_stracks:
             if self.frame_id - track.end_frame > self.max_time_lost:
                 track.mark_removed()
@@ -387,10 +408,10 @@ class JDETracker(object):
         return output_stracks
 
 def joint_stracks(tlista, tlistb):
-    '''
+    """
     tlista, tlistb: list of STrack
     return Union of tlista + tlistb
-    '''
+    """
     exists = {}
     res = []
     for t in tlista:
@@ -405,10 +426,10 @@ def joint_stracks(tlista, tlistb):
 
 
 def sub_stracks(tlista, tlistb):
-    '''
+    """
     tlista, tlistb: list of STrack
     return tlista - tlistb
-    '''
+    """
     stracks = {}
     for t in tlista:
         stracks[t.track_id] = t
@@ -420,6 +441,10 @@ def sub_stracks(tlista, tlistb):
 
 
 def remove_duplicate_stracks(stracksa, stracksb):
+    """
+    If Tracklets A contains some items that's `same` as in Tracklets B, 
+    remove them from Tracklets B
+    """
     pdist = matching.iou_distance(stracksa, stracksb)
     pairs = np.where(pdist < 0.15)
     dupa, dupb = list(), list()
