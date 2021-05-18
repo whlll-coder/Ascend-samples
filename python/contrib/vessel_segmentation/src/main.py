@@ -32,7 +32,9 @@ def pre_process(bgr_img):
     #get img shape
     orig_shape = bgr_img.shape[:2]
     #resize img
-    test_img = cv2.resize(bgr_img, (MODEL_WIDTH, MODEL_HEIGHT)).astype(np.float16)
+    test_img = cv2.resize(bgr_img, (MODEL_WIDTH, MODEL_HEIGHT)).astype(np.float16)    
+    shape = test_img.shape
+    test_img = test_img.reshape([1] + list(shape))
     test_img = test_img.transpose([0, 3, 1, 2]).copy()
     
     # save memory C_CONTIGUOUS mode
