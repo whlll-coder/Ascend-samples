@@ -22,7 +22,7 @@ from __future__ import print_function
 import sys
 import os
 import cv2
-import shutil
+# import shutil
 import argparse
 import numpy as np
 
@@ -70,8 +70,8 @@ def main(args):
 
     # dir for output images; default: outputs/'VideoFileName'
     save_dir = os.path.join(result_root, video_name)    
-    if save_dir and os.path.exists(save_dir) and args.rm_prev:
-        shutil.rmtree(save_dir) 
+    # if save_dir and os.path.exists(save_dir) and args.rm_prev:
+    #     shutil.rmtree(save_dir) 
     mkdir_if_missing(save_dir)
 
     # initialize tracker
@@ -127,7 +127,7 @@ if __name__ == '__main__':
     parser.add_argument('--output_root', type=str, default='../outputs', help='expected output root path')
     parser.add_argument('--output_type', type=str, default='images', help='images or video (require `ffmpeg`)')
 
-    parser.add_argument('--rm_prev', action="store_true", help='remove previous save dir ( rm -rf outputs/video_name )')
+    # parser.add_argument('--rm_prev', action="store_true", help='remove previous save dir ( rm -rf outputs/video_name )')
     
     args = parser.parse_args()
     args.mean = [0.408, 0.447, 0.470]
