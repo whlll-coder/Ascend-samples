@@ -40,19 +40,19 @@ function downloadDataWithVerifySource() {
 
     mkdir -p ${project_path}/verify_image/
 
-    wget -O ${project_path}/verify_image/verify_test1.jpg ${verify_source}"verify_test1.png" --no-check-certificate
+    wget -O ${project_path}/verify_image/verify_test1.jpg ${verify_source}"verify_test1.jpg" --no-check-certificate
     if [ $? -ne 0 ];then
         echo "download verify_test1.jpg failed, please check Network."
         return 1
     fi
 
-    wget -O ${project_path}/verify_image/verify_test2.jpg ${verify_source}"verify_test2.png" --no-check-certificate
+    wget -O ${project_path}/verify_image/verify_test2.jpg ${verify_source}"verify_test2.jpg" --no-check-certificate
     if [ $? -ne 0 ];then
         echo "download verify_test2.jpg failed, please check Network."
         return 1
     fi
 
-    wget -O ${project_path}/verify_image/verify_test3.jpg ${verify_source}"verify_test3.png" --no-check-certificate
+    wget -O ${project_path}/verify_image/verify_test3.jpg ${verify_source}"verify_test3.jpg" --no-check-certificate
     if [ $? -ne 0 ];then
         echo "download verify_test3.jpg failed, please check Network."
         return 1
@@ -107,7 +107,7 @@ function main() {
         return ${inferenceError}
     fi
 
-    # 下载测试集和验证�?    
+       
     downloadDataWithVerifySource
     if [ $? -ne 0 ];then
         echo "ERROR: download test images or verify images failed"
@@ -116,14 +116,14 @@ function main() {
 
     mkdir -p ${HOME}/models/${project_name}     
     if [[ $(find ${HOME}/models/${project_name} -name ${model_name}".om")"x" = "x" ]];then 
-        # 下载原始模型文件[aipp_cfg文件]
+        
         downloadOriginalModel
         if [ $? -ne 0 ];then
             echo "ERROR: download original model failed"
             return ${inferenceError}
         fi
 
-        # 设置模型转换的环境变�?        
+                
         setAtcEnv
         if [ $? -ne 0 ];then
             echo "ERROR: set atc environment failed"

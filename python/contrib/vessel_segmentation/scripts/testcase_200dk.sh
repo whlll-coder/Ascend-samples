@@ -40,19 +40,19 @@ function downloadDataWithVerifySource() {
 
     mkdir -p ${project_path}/verify_image/
 
-    wget -O ${project_path}/verify_image/verify_test1.jpg ${verify_source}"verify_test1.png" --no-check-certificate
+    wget -O ${project_path}/verify_image/verify_test1.jpg ${verify_source}"verify_test1.jpg" --no-check-certificate
     if [ $? -ne 0 ];then
         echo "download verify_test1.jpg failed, please check Network."
         return 1
     fi
 
-    wget -O ${project_path}/verify_image/verify_test2.jpg ${verify_source}"verify_test2.png" --no-check-certificate
+    wget -O ${project_path}/verify_image/verify_test2.jpg ${verify_source}"verify_test2.jpg" --no-check-certificate
     if [ $? -ne 0 ];then
         echo "download verify_test2.jpg failed, please check Network."
         return 1
     fi
 
-    wget -O ${project_path}/verify_image/verify_test3.jpg ${verify_source}"verify_test3.png" --no-check-certificate
+    wget -O ${project_path}/verify_image/verify_test3.jpg ${verify_source}"verify_test3.jpg" --no-check-certificate
     if [ $? -ne 0 ];then
         echo "download verify_test3.jpg failed, please check Network."
         return 1
@@ -146,7 +146,7 @@ function main() {
             return ${inferenceError}
         fi
 
-                
+        # convert model     
         cd ${project_path}/model/
         atc --model=${project_path}/model/${caffe_prototxt##*/} --weight=${project_path}/model/${caffe_model##*/}  --framework=0 --output=${HOME}/models/${project_name}/${model_name} --soc_version=Ascend310 --input_format=NCHW --input_fp16_nodes=data -output_type=FP32 
         if [ $? -ne 0 ];then
