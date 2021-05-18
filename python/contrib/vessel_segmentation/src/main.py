@@ -22,7 +22,8 @@ SRC_PATH = os.path.realpath(__file__).rsplit("/", 1)[0]
 MODEL_PATH = os.path.join(SRC_PATH, "../model/vessel.om")
 MODEL_WIDTH = 512
 MODEL_HEIGHT = 512
-
+INPUT_DIR = '../data/'
+OUTPUT_DIR = '../out/'
 def pre_process(bgr_img):
     """
     preprocess
