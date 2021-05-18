@@ -40,8 +40,8 @@ def get_labels_from_txt(label_file):
     """Read all images' name and label from label_file"""
     images = []
     labels = []
-    with open(label_file, 'r') as file:
-        lines = file.readlines()
+    with open(label_file, 'r') as mfile:
+        lines = mfile.readlines()
         for line in lines:
             images.append(line.split(' ')[0])
             labels.append(int(line.split(' ')[1]))
@@ -49,8 +49,10 @@ def get_labels_from_txt(label_file):
 
 
 def prepare_image_input(
-    images, height=256, width=256, crop_size=224, mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]):
+    images, height=256, width=256, crop_size=224):
     """Read image files to blobs [batch_size, 3, 224, 224]"""
+    mean=[0.485, 0.456, 0.406]
+    std=[0.229, 0.224, 0.225]
     input_tensor = np.zeros((len(images), 3, crop_size, crop_size), np.float32)
 
     imgs = np.zeros((len(images), 3, height, width), np.float32)
@@ -117,8 +119,9 @@ def onnx_forward(onnx_model, batch_size=1, iterations=160):
 
 # You need to implement the AutoCalibrationEvaluator's calibration(), evaluate() and metric_eval() funcs
 class AutoCalibrationEvaluator(AutoCalibrationEvaluatorBase):
+    """ subclass of AutoCalibrationEvaluatorBase"""
     def __init__(self, target_loss, batch_num):
-        super().__init__()
+        super(AutoCalibrationEvaluator, self).__init__()
         self.target_loss = target_loss
         self.batch_num = batch_num
 
@@ -155,7 +158,7 @@ class AutoCalibrationEvaluator(AutoCalibrationEvaluatorBase):
 
 
 def main():
-    """main"""
+    """ the main procedure of auto calibration"""
     model_file = './model/mobilenetv2_v11.onnx'
     print('[INFO] Do original model test:')
     ori_top1, ori_top5 = onnx_forward(model_file, 32, 5)
