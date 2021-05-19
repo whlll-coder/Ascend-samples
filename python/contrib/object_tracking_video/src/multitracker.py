@@ -24,10 +24,7 @@ import time
 import cv2
 
 from decode import mot_decode
-# from tracking_utils.utils import *
-from tracking_utils.log import logger
 from tracking_utils.kalman_filter import KalmanFilter
-# from models import *
 import matching
 from basetrack import BaseTrack, TrackState
 from utils.post_process import ctdet_post_process
