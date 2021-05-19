@@ -1,15 +1,15 @@
 **This sample provides reference for you to learn the Ascend AI Software Stack and cannot be used for commercial purposes.**
 
-**This sample works with CANN 3.0.0 and later versions, and supports Atlas 200 DK and Atlas 300.**
+**This sample works with CANN 3.3.0 and later versions, and supports Atlas 200 DK and Atlas 300.**
 
 **This readme file provides only guidance for running the sample in the command line. For details about how to run the sample in MindStudio, see [Running Image Samples in MindStudio](https://gitee.com/ascend/samples/wikis/Running%20Image%20Samples%20in%20MindStudio?sort_id=3736297).**
 
 ## Sample of Multi-Object Tracking with Object_Tracking_Video
 Function: tracks multiple pedestrians in a scene with the **mot_v2.om** model.
 
-Input: a crowd image
+Input: a crowd video or image
 
-Output: an image with bounding box and ID for each person in the scene
+Output: images or video with bounding box and ID for each person in the scene
 
 ### Prerequisites
 
@@ -21,29 +21,11 @@ Before deploying this sample, ensure that:
 ### Software Preparation
 
 #### 1. Obtain the source package.
-
-  You can download the source code in either of the following ways:
-
-   - Command line (The download takes a long time, but the procedure is simple.)
-
-     In the development environment, run the following commands as a non-root user to download the source repository:
-        ```
-     cd $HOME
-     git clone https://gitee.com/ascend/samples.git
-        ```
-   - Compressed package (The download takes a short time, but the procedure is complex.)
-
-     1. Click **Clone or download** in the upper right corner of the samples repository and click **Download ZIP**.
-
-     2. Upload the .zip package to the home directory of a common user in the development environment, for example, **$HOME/ascend-samples-master.zip**.
-
-     3. In the development environment, run the following commands to unzip the package:
-
-      ```
-     cd $HOME
-     unzip ascend-samples-master.zip
-      ```
-#### 2. Obtain the model required by the application.
+```
+cd $HOME
+git clone https://gitee.com/ascend/samples.git
+```
+#### 2. Obtain the Offline Model (om) or Convert ONNX to om in [Step 3](#3-Convert-the-original-model-to-a-DaVinci-model).
 
    Ensure you are in the project directory (`object_tracking_video/`) and run one of the following commands in the table to obtain the pedestrian tracking model used in the application.
 
@@ -80,12 +62,6 @@ Before deploying this sample, ensure that:
 
           atc --input_shape="input.1:1,3,608,1088" --check_report=./network_analysis.report --input_format=NCHW --output=model/mot_v2 --soc_version=Ascend310 --framework=5 --model=model/mot_v2.onnx
 
-#### 4. Obtain the test image required by the sample.
-
-Navigate to the following project directory and then run the get data script to download test images.
-
-    cd $HOME/samples/python/contrib/object_tracking_video/get_sample_data.sh
-
 
 ### Sample Running
 
@@ -93,8 +69,7 @@ Navigate to the following project directory and then run the get data script to 
 
 1. Run the following commands to upload the **object_tracking_video** directory in the development environment to any directory in the operating environment, for example, **/home/HwHiAiUser**, and log in to the operating environment (host) as the running user (**HwHiAiUser**):
       ```
-      scp -r $HOME/samples/python/contrib/object_tracking_video/  HwHiAiUser@xxx.xxx.xxx.xxx:/home/HwHiAiUser
-      scp -r $HOME/samples/python/common/atlas_utils/   HwHiAiUser@xxx.xxx.xxx.xxx:/home/HwHiAiUser
+      scp -r $HOME/samples  HwHiAiUser@xxx.xxx.xxx.xxx:/home/HwHiAiUser
       ssh HwHiAiUser@xxx.xxx.xxx.xxx
       ```
 
@@ -104,31 +79,32 @@ Navigate to the following project directory and then run the get data script to 
 
 
 2. Run the executable file.
-
-   - If the development environment and operating environment are set up on the same server, run the following commands to set the operating environment variable and switch the directory:
-
+   - Simple Run on test video (london.mp4)
      ```
-     export LD_LIBRARY_PATH=
-     source ~/.bashrc
+     cd $HOME/samples/python/contrib/object_tracking_video/scripts
+     bash run_demo.sh
+     ```
+   - Run on your own video
+     ```
      cd $HOME/samples/python/contrib/object_tracking_video/src
-     python3 main.py ../data/
+     python3 main.py --input_video "\Path to video"
      ```
-
-   - If the development environment and operating environment are set up on separate servers, run the following command to switch the directory:
-
+   - Run on single test image (test.jpg)
      ```
-     cd $HOME/object_tracking_video/src
+     cd $HOME/samples/python/contrib/object_tracking_video/scripts
+     bash get_sample_data.sh
+     cd $HOME/samples/python/contrib/object_tracking_video/src
+     python3 test.py --test_img ../data/test.jpg --verify_img ../data/verify.jpg
      ```
-     Run the following command to run the sample:
-     ```
-     python3 main.py 
-     ```
+     See test_output.jpg in `data` folder
 
 ### Result Checking
 
 
-After the execution is complete, find the JPG image the inference results in `object_tracking_video/src/output/`.
+After the execution is complete, find the JPG image the inference results in `object_tracking_video/outputs/`.
 
+## Train
+This model is a dlav0 version of [FairMOT](https://github.com/ifzhang/FairMOT), you can follow their guide to setup the training environment, then use this [script](https://github.com/HardysJin/FairMOT-dlav0/blob/master/src/convert.py) to convert to ONNX.
 
 <!-- Pedestrian Detection and Tracking on Atlas 200DK, a dlav0 version of [FairMOT](https://github.com/ifzhang/FairMOT).
 
