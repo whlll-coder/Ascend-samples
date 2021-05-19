@@ -24,7 +24,7 @@ import lap
 from scipy.spatial.distance import cdist
 
 from cython_bbox import bbox_overlaps as bbox_ious
-from tracking_utils import kalman_filter
+from utils import kalman_filter
 import time
 
 def linear_assignment(cost_matrix, thresh):

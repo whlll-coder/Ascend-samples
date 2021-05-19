@@ -31,10 +31,10 @@ import numpy as np
 
 sys.path.append("../../../common/")
 
-from dataloader import LoadVideo, LoadImages
+import utils.dataloader as loader # LoadVideo, LoadImages
 from multitracker import JDETracker
-from tracking_utils.timer import Timer
-from tracking_utils import visualization as vis
+from utils.timer import Timer
+from utils import visualization as vis
 
 from atlas_utils.acl_model import Model
 from atlas_utils.acl_resource import AclResource 
@@ -69,7 +69,7 @@ def test(args):
     # Step 2: Load models 
     mot_model = Model('../model/mot_v2.om')
 
-    dataloader = LoadImages(args.test_img)
+    dataloader = loader.LoadImages(args.test_img)
 
     # initialize tracker
     tracker = JDETracker(args, mot_model, frame_rate=30)

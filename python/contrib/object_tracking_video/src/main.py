@@ -27,10 +27,10 @@ import numpy as np
 
 sys.path.append("../../../common/")
 
-from dataloader import LoadVideo, LoadImages
+from utils.dataloader import LoadVideo, LoadImages
 from multitracker import JDETracker
-from tracking_utils.timer import Timer
-from tracking_utils import visualization as vis
+from utils.timer import Timer
+from utils import visualization as vis
 
 from atlas_utils.acl_model import Model
 from atlas_utils.acl_resource import AclResource 
@@ -44,9 +44,7 @@ def mkdir_if_missing(d):
 
 
 def main(args):
-    """
-    main
-    """
+    """main"""
     # Step 1: initialize ACL and ACL runtime 
     acl_resource = AclResource()
 

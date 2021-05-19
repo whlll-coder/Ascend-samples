@@ -23,10 +23,10 @@ import os.path as osp
 import time
 import cv2
 
-from decode import mot_decode
-from tracking_utils.kalman_filter import KalmanFilter
-import matching
-from basetrack import BaseTrack, TrackState
+from utils.decode import mot_decode
+from utils.kalman_filter import KalmanFilter
+import utils.matching as matching
+from utils.basetrack import BaseTrack, TrackState
 from utils.post_process import ctdet_post_process
 from utils.image import get_affine_transform
 
@@ -71,6 +71,7 @@ class STrack(BaseTrack):
         self.smooth_feat /= np.linalg.norm(self.smooth_feat)
 
     def predict(self):
+        """Kalman filter priori estimate"""
         mean_state = self.mean.copy()
         if self.state != TrackState.Tracked:
             mean_state[7] = 0
@@ -107,9 +108,7 @@ class STrack(BaseTrack):
         self.start_frame = frame_id
 
     def re_activate(self, new_track, frame_id, new_id=False):
-        """
-        Update the state and set to activate
-        """
+        """Update the state and set to activate"""
         self.mean, self.covariance = self.kalman_filter.update(
             self.mean, self.covariance, self.tlwh_to_xyah(new_track.tlwh)
         )
@@ -196,8 +195,7 @@ class STrack(BaseTrack):
     @staticmethod
     # @jit(nopython=True)
     def tlwh_to_tlbr(tlwh):
-        """
-        change bbox def from (top_left + width_height) to (top_left + bottom_right)
+        """change bbox def from (top_left + width_height) to (top_left + bottom_right)
         """
         ret = np.asarray(tlwh).copy()
         ret[2:] += ret[:2]
@@ -208,9 +206,7 @@ class STrack(BaseTrack):
 
 
 class JDETracker(object):
-    """
-    Tracking manager to detect and track, return the bbox with id
-    """
+    """Tracking manager to detect and track, return the bbox with id"""
     def __init__(self, opt, model, frame_rate=30):
         self.opt = opt
         print('Creating model...')
