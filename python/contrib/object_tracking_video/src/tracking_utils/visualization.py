@@ -6,6 +6,7 @@ import cv2
 
 
 def tlwhs_to_tlbrs(tlwhs):
+    """change bboxes def from (top_left + width_height) to (top_left + bottom_right)"""
     tlbrs = np.copy(tlwhs)
     if len(tlbrs) == 0:
         return tlbrs
@@ -15,6 +16,7 @@ def tlwhs_to_tlbrs(tlwhs):
 
 
 def get_color(idx):
+    """get color based on index and make chromatic aberration big"""
     idx = idx * 3
     color = ((37 * idx) % 255, (17 * idx) % 255, (29 * idx) % 255)
 
@@ -22,6 +24,7 @@ def get_color(idx):
 
 
 def resize_image(image, max_size=800):
+    """resize image"""
     if max(image.shape[:2]) > max_size:
         scale = float(max_size) / max(image.shape[:2])
         image = cv2.resize(image, None, fx=scale, fy=scale)
@@ -29,6 +32,7 @@ def resize_image(image, max_size=800):
 
 
 def plot_tracking(image, tlwhs, obj_ids, frame_id=0, fps=0., ids2=None):
+    """plot bbox and id to image"""
     im = np.ascontiguousarray(np.copy(image))
     im_h, im_w = im.shape[:2]
 
@@ -38,7 +42,7 @@ def plot_tracking(image, tlwhs, obj_ids, frame_id=0, fps=0., ids2=None):
     text_thickness = 2
     line_thickness = max(1, int(image.shape[1] / 500.))
 
-    radius = max(5, int(im_w/140.))
+    radius = max(5, int(im_w / 140.))
     cv2.putText(im, 'frame: %d fps: %.2f num: %d' % (frame_id, fps, len(tlwhs)),
                 (0, int(15 * text_scale)), cv2.FONT_HERSHEY_PLAIN, text_scale, (0, 0, 255), thickness=2)
 
@@ -58,6 +62,7 @@ def plot_tracking(image, tlwhs, obj_ids, frame_id=0, fps=0., ids2=None):
 
 
 def plot_trajectory(image, tlwhs, track_ids):
+    """plot the trajectory of each object's motion"""
     image = image.copy()
     for one_tlwhs, track_id in zip(tlwhs, track_ids):
         color = get_color(int(track_id))
@@ -69,6 +74,7 @@ def plot_trajectory(image, tlwhs, track_ids):
 
 
 def plot_detections(image, tlbrs, scores=None, color=(255, 0, 0), ids=None):
+    """plot bbox and confidence score to image"""
     im = np.copy(image)
     text_scale = max(1, image.shape[1] / 800.)
     thickness = 2 if text_scale > 1.3 else 1

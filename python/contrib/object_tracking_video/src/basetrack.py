@@ -53,16 +53,21 @@ class BaseTrack(object):
         return BaseTrack._count
 
     def activate(self, *args):
+        """activate"""
         raise NotImplementedError
 
     def predict(self):
+        """predict"""
         raise NotImplementedError
 
     def update(self, *args, **kwargs):
+        """update"""
         raise NotImplementedError
 
     def mark_lost(self):
+        """mark_lost"""
         self.state = TrackState.Lost
 
     def mark_removed(self):
+        """mark_removed"""
         self.state = TrackState.Removed

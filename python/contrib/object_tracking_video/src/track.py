@@ -23,6 +23,9 @@ from opts import opts
 
 
 def write_results(filename, results, data_type):
+    """
+    write the result (bbox, id, etc) to a txt file for evaluation 
+    """
     if data_type == 'mot':
         save_format = '{frame},{id},{x1},{y1},{w},{h},1,-1,-1,-1\n'
     elif data_type == 'kitti':
@@ -44,6 +47,9 @@ def write_results(filename, results, data_type):
     logger.info('save results to {}'.format(filename))
 
 def write_results_score(filename, results, data_type):
+    """
+    write the result (bbox, id, etc) to a txt file for evaluation 
+    """
     if data_type == 'mot':
         save_format = '{frame},{id},{x1},{y1},{w},{h},{s},1,-1,-1,-1\n'
     elif data_type == 'kitti':
@@ -65,6 +71,9 @@ def write_results_score(filename, results, data_type):
     logger.info('save results to {}'.format(filename))
 
 def eval_seq(opt, dataloader, model, data_type, result_filename, save_dir=None, show_image=True, frame_rate=30):
+    """
+    Loop the dataloader's images and run tracking on the sequence, then write the results 
+    """
     if save_dir:
         mkdir_if_missing(save_dir)
     tracker = JDETracker(opt, model, frame_rate=frame_rate)

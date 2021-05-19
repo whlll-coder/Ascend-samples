@@ -23,11 +23,13 @@ class Timer(object):
         self.duration = 0.
 
     def tic(self):
+        """start timer"""
         # using time.time instead of time.clock because time time.clock
         # does not normalize for multithreading
         self.start_time = time.time()
 
     def toc(self, average=True):
+        """stop timer and calcaulate duration"""
         self.diff = time.time() - self.start_time
         self.total_time += self.diff
         self.calls += 1
@@ -39,6 +41,7 @@ class Timer(object):
         return self.duration
 
     def clear(self):
+        """clear all timer info"""
         self.total_time = 0.
         self.calls = 0
         self.start_time = 0.

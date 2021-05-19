@@ -23,8 +23,12 @@ from .image import transform_preds
 
 
 def ctdet_post_process(dets, c, s, h, w, num_classes):
-  # dets: batch x max_dets x dim
-  # return 1-based class det dict
+    """
+    change detection coordinate based on original image size
+
+    dets: batch x max_dets x dim
+    return 1-based class det dict
+    """
     ret = []
     for i in range(dets.shape[0]):
         top_preds = {}
