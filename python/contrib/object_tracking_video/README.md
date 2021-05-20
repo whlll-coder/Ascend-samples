@@ -1,31 +1,45 @@
 **This sample provides reference for you to learn the Ascend AI Software Stack and cannot be used for commercial purposes.**
 
-**This sample works with CANN 3.3.0 and later versions, and supports Atlas 200 DK and Atlas 300.**
+This sample works with CANN 3.3.0 and later versions, and supports Atlas 200 DK and Atlas 300.
 
-**This readme file provides only guidance for running the sample in the command line. For details about how to run the sample in MindStudio, see [Running Image Samples in MindStudio](https://gitee.com/ascend/samples/wikis/Running%20Image%20Samples%20in%20MindStudio?sort_id=3736297).**
+# Sample of Multi-Object Tracking in Video
+**Function**: tracks multiple pedestrians in a scene with the **mot_v2.om** model.
 
-## Sample of Multi-Object Tracking with Object_Tracking_Video
-Function: tracks multiple pedestrians in a scene with the **mot_v2.om** model.
+**Input**: a crowd video or image
 
-Input: a crowd video or image
+**Output**: images or video with bounding box and ID for each person in the scene
 
-Output: images or video with bounding box and ID for each person in the scene
+**Preformance and Result**: **~8 fps** depending on how crowd the video is; see result at https://github.com/HardysJin/atlas-track 
 
-### Prerequisites
+## Prerequisites
 
 Before deploying this sample, ensure that:
 
 - The environment has been set up by referring to [Environment Preparation and Dependency Installation](https://gitee.com/ascend/samples/blob/master/python/environment/README.md).
 - The development environment and operating environment of the corresponding product have been set up.
 
-### Software Preparation
+## Software Preparation
+* Make sure you log in to the operating environment (**HwHiAiUser**)
+    ```
+    ssh HwHiAiUser@xxx.xxx.xxx.xxx
+    ```
+    ![Icon-note.gif](https://images.gitee.com/uploads/images/2020/1106/160652_6146f6a4_5395865.gif) **NOTE**
 
-#### 1. Obtain the source package.
+    > Replace ***xxx.xxx.xxx.xxx*** with the IP address of the operating environment. The IP address of Atlas 200 DK is **192.168.1.2** when it is connected over the USB port, and that of Atlas 300 is the corresponding public network IP address.
+
+### 1. Obtain the source package.
 ```
 cd $HOME
 git clone https://gitee.com/ascend/samples.git
 ```
-#### 2. Obtain the Offline Model (om) or Convert ONNX to om in [Step 3](#3-Convert-the-original-model-to-a-DaVinci-model).
+
+### 2. Install Dependencies 
+```
+cd $HOME/samples/python/contrib/object_tracking_video/
+pip3 install -r requirements.txt
+```
+
+### 3. Obtain the Offline Model (om) or Convert ONNX to om in [Step 3](#4-Convert-the-original-model-to-a-DaVinci-model).
 
    Ensure you are in the project directory (`object_tracking_video/`) and run one of the following commands in the table to obtain the pedestrian tracking model used in the application.
 
@@ -33,8 +47,8 @@ git clone https://gitee.com/ascend/samples.git
 
 | **Model**  |  **How to Obtain** |
 | ---------- |  ----------------- |
-| mot_v2.om | `wget --no-check-certificate 'https://docs.google.com/uc?export=download&id=1RU1UBVH5EBbVV4CVAPuNokSzpfx9A3Ug' -O model/mot_v2.om`  |
-| mot_v2.onnx | `wget --no-check-certificate 'https://docs.google.com/uc?export=download&id=1Esjf7Mj-CTh-VQGNHEcpX2uwJlQEnrJD' -O model/mot_v2.onnx`  |
+| mot_v2.om | `wget -nc --no-check-certificate 'https://modelzoo-train-atc.obs.cn-north-4.myhuaweicloud.com/003_Atc_Models/AE/ATC%20Model/object_tracking_video/mot_v2.om' -O model/mot_v2.om`  |
+| mot_v2.onnx | `wget -nc --no-check-certificate 'https://modelzoo-train-atc.obs.cn-north-4.myhuaweicloud.com/003_Atc_Models/AE/ATC%20Model/object_tracking_video/mot_v2.om' -O model/mot_v2.onnx`  |
 
    ![Icon-note.gif](https://images.gitee.com/uploads/images/2020/1106/160652_6146f6a4_5395865.gif) **NOTE**
    >- `mot_v2.om` offline model you can use out-of-the-box without model conversion. If you use this then you can skip the next step on model conversion.
@@ -46,7 +60,7 @@ git clone https://gitee.com/ascend/samples.git
    cd $HOME/samples/python/contrib/object_tracking_video/script/
    bash get_sample_data.sh
    ```
-#### 3. Convert the original model to a DaVinci model.
+### 4. Convert the original model to a DaVinci model.
 
    **Note: Ensure that the environment variables have been configured in [Environment Preparation and Dependency Installation](https://gitee.com/ascend/samples/tree/master/python/environment).**
 
@@ -63,45 +77,29 @@ git clone https://gitee.com/ascend/samples.git
           atc --input_shape="input.1:1,3,608,1088" --check_report=./network_analysis.report --input_format=NCHW --output=model/mot_v2 --soc_version=Ascend310 --framework=5 --model=model/mot_v2.onnx
 
 
-### Sample Running
+## Sample Running
 
-**Note: If the development environment and operating environment are set up on the same server, skip step 1 and go to step 2 directly.**
-
-1. Run the following commands to upload the **object_tracking_video** directory in the development environment to any directory in the operating environment, for example, **/home/HwHiAiUser**, and log in to the operating environment (host) as the running user (**HwHiAiUser**):
-      ```
-      scp -r $HOME/samples  HwHiAiUser@xxx.xxx.xxx.xxx:/home/HwHiAiUser
-      ssh HwHiAiUser@xxx.xxx.xxx.xxx
-      ```
-
-   ![Icon-note.gif](https://images.gitee.com/uploads/images/2020/1106/160652_6146f6a4_5395865.gif) **NOTE**
-
-   > - Replace ***xxx.xxx.xxx.xxx*** with the IP address of the operating environment. The IP address of Atlas 200 DK is **192.168.1.2** when it is connected over the USB port, and that of Atlas 300 is the corresponding public network IP address.
-
-
-2. Run the executable file.
-   - Simple Run on test video (london.mp4)
+   - ### Simple & Quick Run on test video ([london.mp4](https://drive.google.com/file/d/1ntbudc1JB8HzEw38pwZKPXukrgADiKdS/view))
      ```
      cd $HOME/samples/python/contrib/object_tracking_video/scripts
      bash run_demo.sh
      ```
-   - Run on your own video
+     See result in `object_tracking_video/outputs/london`
+
+   - ### Run on your own video
      ```
      cd $HOME/samples/python/contrib/object_tracking_video/src
      python3 main.py --input_video "\Path to video"
      ```
-   - Run on single test image (test.jpg)
+     See result in `object_tracking_video/outputs/VIDEO_NAME`
+
+   - ### Run on single test image (test.jpg)
      ```
-     cd $HOME/samples/python/contrib/object_tracking_video/scripts
-     bash get_sample_data.sh
      cd $HOME/samples/python/contrib/object_tracking_video/src
      python3 test.py --test_img ../data/test.jpg --verify_img ../data/verify.jpg
      ```
-     See test_output.jpg in `data` folder
+     See `data/test_output.jpg`
 
-### Result Checking
-
-
-After the execution is complete, find the JPG image the inference results in `object_tracking_video/outputs/`.
 
 ## Train
 This model is a dlav0 version of [FairMOT](https://github.com/ifzhang/FairMOT), you can follow their guide to setup the training environment, then use this [script](https://github.com/HardysJin/FairMOT-dlav0/blob/master/src/convert.py) to convert to ONNX.

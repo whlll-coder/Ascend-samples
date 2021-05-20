@@ -1,10 +1,13 @@
 #!/bin/bash
 om_model='https://docs.google.com/uc?export=download&id=1RU1UBVH5EBbVV4CVAPuNokSzpfx9A3Ug'
 onnx_model='https://docs.google.com/uc?export=download&id=1Esjf7Mj-CTh-VQGNHEcpX2uwJlQEnrJD'
+onnx_model2='https://modelzoo-train-atc.obs.cn-north-4.myhuaweicloud.com/003_Atc_Models/AE/ATC%20Model/object_tracking_video/mot_v2.onnx'
 model_name="mot_v2"
 version=$1
 test_img_link='https://docs.google.com/uc?export=download&id=1WWNPkZ9jIfbufZ8SzpUqQiuPTHo_h-lA'
+test_img_link2='https://modelzoo-train-atc.obs.cn-north-4.myhuaweicloud.com/003_Atc_Models/AE/ATC%20Model/object_tracking_video/test.jpg'
 verify_img_link='https://docs.google.com/uc?export=download&id=1g9XOWpkZzCZxtUUCj4PvzAgjesBs-jJJ'
+verify_img_link2='https://modelzoo-train-atc.obs.cn-north-4.myhuaweicloud.com/003_Atc_Models/AE/ATC%20Model/object_tracking_video/verify.jpg'
 project_name="object_tracking_video"
 script_path="$( cd "$(dirname $BASH_SOURCE)" ; pwd -P)"
 project_path=${script_path}/..
@@ -53,8 +56,14 @@ function downloadOriginalModel() {
     wget --no-check-certificate ${onnx_model} -O ${project_path}/model/${model_name}.onnx
 
     if [ $? -ne 0 ];then
-        echo "Download mot_v2.onnx failed, please check Network"
-        return 1
+
+        echo "Download mot_v2.onnx failed from Google Drive, Retrying from HuaweiCloud."
+        wget --no-check-certificate ${onnx_model2} -O ${project_path}/model/${model_name}.onnx
+
+        if [ $? -ne 0 ];then
+            echo "Download mot_v2.onnx failed, please check Network."
+            return 1
+        fi
     fi
 
     return 0
@@ -120,13 +129,21 @@ function main() {
     mkdir -p ${project_path}/data/
     wget -O ${project_path}/data/"test.jpg"  ${test_img_link} --no-check-certificate
     if [ $? -ne 0 ];then
-        echo "download test.jpg failed, please check Network."
-        return 1
+        echo "Download test.jpg failed from Google Drive, Retrying from HuaweiCloud."
+        wget -O ${project_path}/data/"test.jpg"  ${test_img_link2} --no-check-certificate
+        if [ $? -ne 0 ];then
+            echo "Download test.jpg failed, please check Network."
+            return 1
+        fi
     fi
     wget -O ${project_path}/data/"verify.jpg"  ${verify_img_link} --no-check-certificate
     if [ $? -ne 0 ];then
-        echo "download verify.jpg failed, please check Network."
-        return 1
+        echo "Download verify.jpg failed from Google Drive, Retrying from HuaweiCloud."
+        wget -O ${project_path}/data/"verify.jpg"  ${verify_img_link} --no-check-certificate
+        if [ $? -ne 0 ];then
+            echo "Download verify.jpg failed, please check Network."
+            return 1
+        fi
     fi
 
     #*** change paths to images ***
