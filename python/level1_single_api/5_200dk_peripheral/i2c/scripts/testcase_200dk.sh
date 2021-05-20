@@ -1,5 +1,4 @@
 version=$1
-
 script_path="$( cd "$(dirname $BASH_SOURCE)" ; pwd -P)"
 project_path=${script_path}/..
 
