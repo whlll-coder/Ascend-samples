@@ -153,7 +153,6 @@ label:9  confidence: 0.022686, class: 9
 label:8  confidence: 0.006465, class: 8
 label:3  confidence: 0.005904, class: 3
 label:1  confidence: 0.002834, class: 1
-it is not a picture, .keep, ignore this file and continue,
 (32, 32)
 post process
 images:test1.png
