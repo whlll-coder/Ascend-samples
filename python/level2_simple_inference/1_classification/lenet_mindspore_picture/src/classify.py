@@ -69,7 +69,7 @@ def postprocess(infer_output, image_file):
     (filename, extension) = os.path.splitext(tempfilename)
     output_path = os.path.join(os.path.join(SRC_PATH, "../outputs"), filename + ".txt")	
     with open(output_path, "w", encoding="utf-8") as fp:
-        fp.write(get_image_net_class(top_k[0]))
+        fp.write(image_net_classes.get_image_net_class(top_k[0]))
         
 
 SRC_PATH = os.path.realpath(__file__).rsplit("/", 1)[0]
