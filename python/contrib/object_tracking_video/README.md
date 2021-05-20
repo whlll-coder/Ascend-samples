@@ -39,7 +39,7 @@ cd $HOME/samples/python/contrib/object_tracking_video/
 pip3 install -r requirements.txt
 ```
 
-### 3. Obtain the Offline Model (om) or Convert ONNX to om in [Step 3](#4-Convert-the-original-model-to-a-DaVinci-model).
+### 3. Obtain the Offline Model (om) or Convert ONNX to om in [Step 4](#4-Convert-the-original-model-to-a-DaVinci-model).
 
    Ensure you are in the project directory (`object_tracking_video/`) and run one of the following commands in the table to obtain the pedestrian tracking model used in the application.
 
