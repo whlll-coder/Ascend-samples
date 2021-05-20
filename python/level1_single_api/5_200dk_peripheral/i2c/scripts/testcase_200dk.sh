@@ -1,9 +1,6 @@
-
 version=$1
-
 script_path="$( cd "$(dirname $BASH_SOURCE)" ; pwd -P)"
 project_path=${script_path}/..
-
 function setRunEnv() { 
     if [[ ${version} = "c75" ]] || [[ ${version} = "C75" ]];then
         export LD_LIBRARY_PATH=
