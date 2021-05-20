@@ -4,9 +4,7 @@ version=$1
 script_path="$( cd "$(dirname $BASH_SOURCE)" ; pwd -P)"
 project_path=${script_path}/..
 
-function setRunEnv() {
-
-    
+function setRunEnv() { 
     if [[ ${version} = "c75" ]] || [[ ${version} = "C75" ]];then
         export LD_LIBRARY_PATH=
         export LD_LIBRARY_PATH=/home/HwHiAiUser/Ascend/acllib/lib64:/home/HwHiAiUser/ascend_ddk/arm/lib:${LD_LIBRARY_PATH}
