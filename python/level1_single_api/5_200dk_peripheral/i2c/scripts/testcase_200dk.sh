@@ -9,6 +9,7 @@ function setRunEnv() {
     fi
     return 0
 }
+
 function main() {
     if [[ ${version}"x" = "x" ]];then
     
