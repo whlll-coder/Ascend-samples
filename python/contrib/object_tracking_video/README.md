@@ -60,7 +60,7 @@ pip3 install -r requirements.txt
    cd $HOME/samples/python/contrib/object_tracking_video/script/
    bash get_sample_data.sh
    ```
-### 4. Convert the original model to a DaVinci model.
+### 4. Convert the original model to a DaVinci model. (OPTIONAL)
 
    **Note: Ensure that the environment variables have been configured in [Environment Preparation and Dependency Installation](https://gitee.com/ascend/samples/tree/master/python/environment).**
 
