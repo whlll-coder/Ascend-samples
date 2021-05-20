@@ -11,6 +11,7 @@ function setRunEnv() {
 }
 function main() {
     if [[ ${version}"x" = "x" ]];then
+    
         echo "ERROR: version is invalid"
         return ${inferenceError}
     fi
