@@ -14,7 +14,8 @@
 
 样例输出：图片中的数字。
 
-训练过程参考 [lennet mindspore训练](https://gitee.com/ascend/modelzoo/tree/master/built-in/MindSpore/Official/cv/image_classification/LeNet_for_MindSpore)
+训练过程参考 [lennet mindspore训练](https://gitee.com/ascend/modelzoo/tree/master/built-in/MindSpore/Official/cv/image_classification/LeNet_for_MindSpore)；
+ 在Ascend910环境， 使用scripts/convert.py 脚本将训练好的checkpoint_lenet-1_1875.ckpt 转换为mnist.air模型文件
 
 
 ### 前提条件
@@ -73,7 +74,7 @@
 
     2. 执行以下atc命令进行模型转换。
 
-        **cd $HOME/models/lenet_mindspore  **
+        **cd $HOME/models/lenet_mindspore**
 
         **atc --framework=1 --model=mnist.air  --output=mnist --soc_version=Ascend310**
 
@@ -116,7 +117,7 @@
 
       **source ~/.bashrc**
       
-      **cd $HOME/samples/python/level2_simple_inference/1_classification/lenet_mindspore_picture//src**     
+      **cd $HOME/samples/python/level2_simple_inference/1_classification/lenet_mindspore_picture/src**     
 
     
 
@@ -125,4 +126,48 @@
     **python3.6 src/classify.py ./data/**
 ### 查看结果
 
-运行完成后，会在outputs目录下生成带推理结果的jpg图片。
+运行时，会打印推理结果
+```
+init resource stage:
+Init resource success
+Init model resource start...
+[Model] create model output dataset:
+malloc output 0, size 40
+Create model output dataset success
+Init model resource success
+(32, 32)
+post process
+images:test2.png
+======== top5 inference results: =============
+label:9  confidence: 0.991472, class: 9
+label:7  confidence: 0.003693, class: 7
+label:8  confidence: 0.001775, class: 8
+label:3  confidence: 0.001515, class: 3
+label:4  confidence: 0.000880, class: 4
+(32, 32)
+post process
+images:test3.png
+======== top5 inference results: =============
+label:7  confidence: 0.958997, class: 7
+label:9  confidence: 0.022686, class: 9
+label:8  confidence: 0.006465, class: 8
+label:3  confidence: 0.005904, class: 3
+label:1  confidence: 0.002834, class: 1
+it is not a picture, .keep, ignore this file and continue,
+(32, 32)
+post process
+images:test1.png
+======== top5 inference results: =============
+label:1  confidence: 0.993403, class: 1
+label:9  confidence: 0.001830, class: 9
+label:8  confidence: 0.001219, class: 8
+label:4  confidence: 0.001122, class: 4
+label:7  confidence: 0.000977, class: 7
+acl resource release all resource
+Model release source success
+acl resource release stream
+acl resource release context
+Reset acl device  0
+Release acl resource success
+run success
+```

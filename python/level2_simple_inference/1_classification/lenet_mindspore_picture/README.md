@@ -8,13 +8,14 @@ English|[中文](README_CN.md)
 
 ## Garbage Sorting Sample
 
-Function: classifies input images by using the MobileNetV2 model.
+Function: classifies input images by using the lenet model.
 
 Input: JPG images to be inferred
 
-Output: JPG images after inference
+Output: the number of JPG images after inference
 
-For details about the training, see [Waste Sorting with MobileNetV2](https://gitee.com/ascend/samples/wikis/MobileNetV2%E5%9E%83%E5%9C%BE%E5%88%86%E7%B1%BB?sort_id=3404387).
+For details about the training, see [mnist Sorting with lenet](https://gitee.com/ascend/modelzoo/tree/master/built-in/MindSpore/Official/cv/image_classification/LeNet_for_MindSpore).
+In Ascend910 ， use scripts/convert.py convert checkpoint_lenet-1_1875.ckpt to mnist.air
 
 
 ### Prerequisites
@@ -57,11 +58,9 @@ Before deploying this sample, ensure that:
 
     | **Model Name** | **Description**                          | **How to Obtain**                        |
     | -------------- | ---------------------------------------- | ---------------------------------------- |
-    | mobilenetV2    | Image classification inference model. It is a MobileNetV2 model based on MindSpore. | Download the model and weight files by referring to the **README.md** file in [https://gitee.com/ascend/modelzoo/tree/master/contrib/TensorFlow/Research/cv/garbage_classification/ATC_mobilenetv2_mindspore_AE](https://gitee.com/ascend/modelzoo/tree/master/contrib/TensorFlow/Research/cv/garbage_classification/ATC_mobilenetv2_mindspore_AE). |
+    | mnist    | Image classification inference model. It is a lenet model based on MindSpore. | https://modelzoo-train-atc.obs.cn-north-4.myhuaweicloud.com/003_Atc_Models/AE/ATC%20Model/lenet/mnist.air |
 
-    ![](https://images.gitee.com/uploads/images/2020/1106/160652_6146f6a4_5395865.gif "icon-note.gif") **NOTE**  
 
-    > - The converted OM model provided by ModelZoo does not match the current sample. Therefore, you need to download the original model and weight files, and convert the model by yourself.
 
 3. Convert the original model to a Da Vinci model.
 
@@ -75,29 +74,27 @@ Before deploying this sample, ensure that:
 
         **export LD_LIBRARY_PATH=\\${install_path}/atc/lib64**  
 
-    2. Run the following commands to download the AIPP configuration file and convert the model:
+    2. Run the following commands to  convert the model:
 
-        **cd $HOME/models/googlenet_imagenet_picture**  
+        **cd $HOME/models/lenet_mindspore**
 
-        **https://c7xcode.obs.cn-north-4.myhuaweicloud.com/models/garbage_picture/insert_op_yuv.cfg**
-
-        **atc --model=./mobilenetv2.air --framework=1 --output=garbage_yuv --soc_version=Ascend310 --insert_op_conf=./insert_op_yuv.cfg --input_shape="data:1,3,224,224" --input_format=NCHW**
+        **atc --framework=1 --model=mnist.air  --output=mnist --soc_version=Ascend310**
 
     3. Run the following command to copy the converted model to the **model** folder of the sample:
 
-        **cp ./garbage_yuv.om $HOME/samples/python/contrib/garbage_picture/model/**
+        **cp ./mnist.om $HOME/samples/python/level2_simple_inference/1_classification/lenet_mindspore_picture/model/**
 
 4. Obtain the test images required by the sample.
 
     Run the following commands to go to the **data** folder of the sample and download the corresponding test images:
 
-    **cd $HOME/samples/python/contrib/garbage_picture/data**
+    **cd $HOME/samples/python/level2_simple_inference/1_classification/lenet_mindspore_picture/data**
 
-    **https://c7xcode.obs.cn-north-4.myhuaweicloud.com/models/garbage_picture/newspaper.jpg**
+    **https://c7xcode.obs.cn-north-4.myhuaweicloud.com/models/lenet_mindspore/test_image/test1.png**
 
-    **https://c7xcode.obs.cn-north-4.myhuaweicloud.com/models/garbage_picture/bottle.jpg**    
-
-    **https://c7xcode.obs.cn-north-4.myhuaweicloud.com/models/garbage_picture/dirtycloth.jpg**    
+    **https://c7xcode.obs.cn-north-4.myhuaweicloud.com/models/lenet_mindspore/test_image/test2.png** 
+    
+    **https://c7xcode.obs.cn-north-4.myhuaweicloud.com/models/lenet_mindspore/test_image/test3.png**      
 
 
 
@@ -105,9 +102,9 @@ Before deploying this sample, ensure that:
 
 **Note: If the development environment and operating environment are set up on the same server, skip step 1 and go to [step 2](#step_2) directly.**   
 
-1. Run the following commands to upload the **garbage_picture** directory in the development environment to any directory in the operating environment, for example, **/home/HwHiAiUser**, and log in to the operating environment (host) as the **HwHiAiUser** user:
+1. Run the following commands to upload the **samples** directory in the development environment to any directory in the operating environment, for example, **/home/HwHiAiUser**, and log in to the operating environment (host) as the **HwHiAiUser** user:
 
-    **scp -r $HOME/samples/python/contrib/garbage_picture  HwHiAiUser@xxx.xxx.xxx.xxx:/home/HwHiAiUser**
+    **scp -r $HOME/samples/  HwHiAiUser@xxx.xxx.xxx.xxx:/home/HwHiAiUser**
 
     **ssh HwHiAiUser@xxx.xxx.xxx.xxx**    
 
@@ -117,21 +114,61 @@ Before deploying this sample, ensure that:
 
 2. Run the executable file.
 
-    - If the development environment and operating environment are set up on the same server, run the following commands to set the operating environment variables and switch the directory:
-
       **export LD_LIBRARY_PATH=**
 
       **source ~/.bashrc**
 
-      **cd $HOME/samples/python/contrib/garbage_picture/**     
-
-    - If the development environment and operating environment are set up on separate servers, run the following command to switch the directory:
-
-      **cd $HOME/garbage_picture/**      
+      **cd $HOME/samples/python/level2_simple_inference/1_classification/lenet_mindspore_picture/src/**     
 
     Run the following command to run the sample:
 
-    **python3.6 src/classify_test.py ./data/**
+    **python3.6 src/classify.py ./data/**
 ### Result Checking
 
-After the execution is complete, find the JPG images with inference results in the **outputs** directory.
+After the execution is complete, it will display:
+
+```
+init resource stage:
+Init resource success
+Init model resource start...
+[Model] create model output dataset:
+malloc output 0, size 40
+Create model output dataset success
+Init model resource success
+(32, 32)
+post process
+images:test2.png
+======== top5 inference results: =============
+label:9  confidence: 0.991472, class: 9
+label:7  confidence: 0.003693, class: 7
+label:8  confidence: 0.001775, class: 8
+label:3  confidence: 0.001515, class: 3
+label:4  confidence: 0.000880, class: 4
+(32, 32)
+post process
+images:test3.png
+======== top5 inference results: =============
+label:7  confidence: 0.958997, class: 7
+label:9  confidence: 0.022686, class: 9
+label:8  confidence: 0.006465, class: 8
+label:3  confidence: 0.005904, class: 3
+label:1  confidence: 0.002834, class: 1
+it is not a picture, .keep, ignore this file and continue,
+(32, 32)
+post process
+images:test1.png
+======== top5 inference results: =============
+label:1  confidence: 0.993403, class: 1
+label:9  confidence: 0.001830, class: 9
+label:8  confidence: 0.001219, class: 8
+label:4  confidence: 0.001122, class: 4
+label:7  confidence: 0.000977, class: 7
+acl resource release all resource
+Model release source success
+acl resource release stream
+acl resource release context
+Reset acl device  0
+Release acl resource success
+run success
+```
+
