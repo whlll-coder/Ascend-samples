@@ -1,4 +1,4 @@
-English|[中文](READNE_CN.md)
+English|[中文](README_CN.md)
 
 **This sample provides reference for you to learn the Ascend AI Software Stack and cannot be used for commercial purposes.**
 
@@ -24,7 +24,7 @@ Before deploying this sample, ensure that:
 
 ### Software Preparation
 
-1. Obtain the source package.
+1. Obtain the source code package.
 
    You can download the source code in either of the following ways:
 

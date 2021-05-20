@@ -19,41 +19,41 @@ function downloadDataWithVerifySource() {
 
     mkdir -p ${project_path}/data/
 
-    wget -O ${project_path}/data/"test1.jpg"  ${data_source}"test1.png"  --no-check-certificate
+    wget -O ${project_path}/data/"test1.png"  ${data_source}"test1.png"  --no-check-certificate
     if [ $? -ne 0 ];then
-        echo "download test1.jpg failed, please check Network."
+        echo "download test1.png failed, please check Network."
         return 1
     fi
 
-    wget -O ${project_path}/data/"test2.jpg"  ${data_source}"test2.png"  --no-check-certificate
+    wget -O ${project_path}/data/"test2.png"  ${data_source}"test2.png"  --no-check-certificate
     if [ $? -ne 0 ];then
-        echo "download test2.jpg failed, please check Network."
+        echo "download test2.png failed, please check Network."
         return 1
     fi
 
-    wget -O ${project_path}/data/"test3.jpg"  ${data_source}"test3.png"  --no-check-certificate
+    wget -O ${project_path}/data/"test3.png"  ${data_source}"test3.png"  --no-check-certificate
     if [ $? -ne 0 ];then
-        echo "download test3.jpg failed, please check Network."
+        echo "download test3.png failed, please check Network."
         return 1
     fi
 
     mkdir -p ${project_path}/verify_image/
 
-    wget -O ${project_path}/verify_image/verify_test1.jpg ${verify_source}"verify_test1.txt" --no-check-certificate
+    wget -O ${project_path}/verify_image/verify_test1.txt ${verify_source}"verify_test1.txt" --no-check-certificate
     if [ $? -ne 0 ];then
-        echo "download verify_test1.jpg failed, please check Network."
+        echo "download verify_test1.txt failed, please check Network."
         return 1
     fi
 
-    wget -O ${project_path}/verify_image/verify_test2.jpg ${verify_source}"verify_test2.txt" --no-check-certificate
+    wget -O ${project_path}/verify_image/verify_test2.txt ${verify_source}"verify_test2.txt" --no-check-certificate
     if [ $? -ne 0 ];then
-        echo "download verify_test2.jpg failed, please check Network."
+        echo "download verify_test2.txt failed, please check Network."
         return 1
     fi
 
-    wget -O ${project_path}/verify_image/verify_test3.jpg ${verify_source}"verify_test3.txt" --no-check-certificate
+    wget -O ${project_path}/verify_image/verify_test3.txt ${verify_source}"verify_test3.txt" --no-check-certificate
     if [ $? -ne 0 ];then
-        echo "download verify_test3.jpg failed, please check Network."
+        echo "download verify_test3.txt failed, please check Network."
         return 1
     fi
 
