@@ -144,7 +144,7 @@ function main() {
 
         # convert model     
         cd ${project_path}/model/
-		atc --model=${project_path}/model/${air_model##*/} --framework=5 --output=${HOME}/models/${project_name}/${model_name} --soc_version=Ascend310  --input_shape="actual_input_1:1,1,32,32" --input_format=NCHW
+		atc --model=${project_path}/model/${air_model##*/} --framework=1 --output=${HOME}/models/${project_name}/${model_name} --soc_version=Ascend310 
         if [ $? -ne 0 ];then
             echo "ERROR: convert model failed"
             return ${inferenceError}
