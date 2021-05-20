@@ -34,8 +34,8 @@ def preprocess(bgr_img):
     gray_img = cv2.cvtColor(bgr_img, cv2.COLOR_BGR2GRAY)
     #normalization
     gray_img = gray_img / 255.0
-    gray_img = gray_img/ 0.3081
-    gray_img = gray_img-1 * 0.1307 / 0.3081
+    gray_img = gray_img / 0.3081
+    gray_img = gray_img - 1 * 0.1307 / 0.3081
     #resize img
     gray_img = cv2.resize(gray_img, (MODEL_WIDTH, MODEL_HEIGHT)).astype(np.float32)
     print(gray_img.shape)
@@ -46,6 +46,7 @@ def preprocess(bgr_img):
 
     return orig_shape, gray_img
 
+
 def postprocess(infer_output, image_file):
     """
     post_process
@@ -54,7 +55,7 @@ def postprocess(infer_output, image_file):
     data = infer_output[0]
     vals = data.flatten()
     max_val=np.max(vals)
-    vals = np.exp(vals-max_val)
+    vals = np.exp(vals - max_val)
     sum_val = np.sum(vals) 
     vals /= sum_val
 
