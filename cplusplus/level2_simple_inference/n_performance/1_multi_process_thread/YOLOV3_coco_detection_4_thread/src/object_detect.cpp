@@ -110,14 +110,8 @@ AtlasError ObjectDetect::Inference(std::vector<InferenceOutput>& inferenceOutput
         ATLAS_LOG_ERROR("Copy resized image data to device failed.");
         return ATLAS_ERROR;
     }
-    //struct timespec time1 = {0, 0};
-    //struct timespec time2 = {0, 0};
-    //clock_gettime(CLOCK_REALTIME, &time1);
     //Perform reasoning
     ret = model_.Execute(inferenceOutput);
-    
-    //clock_gettime(CLOCK_REALTIME, &time2);
-    //cout << "Execute time passed is: " << (time2.tv_sec - time1.tv_sec)*1000 + (time2.tv_nsec - time1.tv_nsec)/1000000 << "ms" << endl;
     if (ret != ATLAS_OK) {
         ATLAS_LOG_ERROR("Execute model inference failed");
         return ATLAS_ERROR;

@@ -2,8 +2,6 @@ caffe_model="https://modelzoo-train-atc.obs.cn-north-4.myhuaweicloud.com/003_Atc
 caffe_prototxt="https://modelzoo-train-atc.obs.cn-north-4.myhuaweicloud.com/003_Atc_Models/AE/ATC%20Model/Yolov3/yolov3.prototxt"
 aipp_cfg="https://c7xcode.obs.cn-north-4.myhuaweicloud.com/models/YOLOV3_coco_detection_multi_thread_VENC/aipp_bgr.cfg"
 model_name="yolov3"
-
-
 data_source="https://c7xcode.obs.cn-north-4.myhuaweicloud.com/models/YOLOV3_coco_detection_multi_thread_VENC/test_image"
 project_name="cplusplus_YOLOV3_coco_detection_4_thread"
 
@@ -16,12 +14,9 @@ declare -i success=0
 declare -i inferenceError=1
 declare -i verifyResError=2
 
-
-
 function downloadData() {
 
     mkdir -p ${project_path}/data/
-
     wget -O ${project_path}/data/"video1.mp4"  ${data_source}/video1.mp4  --no-check-certificate
     if [ $? -ne 0 ];then
         echo "download test1.jpg failed, please check Network."
@@ -51,13 +46,7 @@ function downloadData() {
 
 function setAtcEnv() {
     # 设置模型转换时需要的环境变量
-    if [[ ${version} = "c73" ]] || [[ ${version} = "C73" ]];then
-        export install_path=/home/HwHiAiUser/Ascend/ascend-toolkit/latest
-        export PATH=/usr/local/python3.7.5/bin:${install_path}/atc/ccec_compiler/bin:${install_path}/atc/bin:$PATH
-        export PYTHONPATH=${install_path}/atc/python/site-packages/te:${install_path}/atc/python/site-packages/topi:$PYTHONPATH
-        export ASCEND_OPP_PATH=${install_path}/opp
-        export LD_LIBRARY_PATH=${install_path}/atc/lib64:${LD_LIBRARY_PATH}
-    elif [[ ${version} = "c75" ]] || [[ ${version} = "C75" ]];then
+    if [[ ${version} = "c76" ]] || [[ ${version} = "C76" ]];then
         export install_path=$HOME/Ascend/ascend-toolkit/latest
         export PATH=/usr/local/python3.7.5/bin:${install_path}/atc/ccec_compiler/bin:${install_path}/atc/bin:$PATH
         export ASCEND_OPP_PATH=${install_path}/opp
@@ -70,10 +59,7 @@ function setAtcEnv() {
 
 function setBuildEnv() {
     # 设置代码编译时需要的环境变量
-    if [[ ${version} = "c73" ]] || [[ ${version} = "C73" ]];then
-        export DDK_PATH=/home/HwHiAiUser/Ascend/ascend-toolkit/latest/x86_64-linux_gcc7.3.0
-        export NPU_HOST_LIB=${DDK_PATH}/acllib/lib64/stub
-    elif [[ ${version} = "c75" ]] || [[ ${version} = "C75" ]];then
+    if [[ ${version} = "c76" ]] || [[ ${version} = "C76" ]];then
         export DDK_PATH=/home/HwHiAiUser/Ascend/ascend-toolkit/latest/x86_64-linux
         export NPU_HOST_LIB=${DDK_PATH}/acllib/lib64/stub
     fi
@@ -210,7 +196,6 @@ function main() {
     export LD_LIBRARY_PATH=
     export LD_LIBRARY_PATH=/home/HwHiAiUser/Ascend/nnrt/latest/acllib/lib64:/home/HwHiAiUser/ascend_ddk/x86/lib:${LD_LIBRARY_PATH}
 
-
     # 运行程序
     mv main ${project_name}
 
@@ -228,7 +213,6 @@ function main() {
         echo "ERROR: verify failed. please check your project"
         return ${verifyResError}
     fi
- 
     echo "run success"
 
     return ${success}

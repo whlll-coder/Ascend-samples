@@ -29,7 +29,7 @@
 * ObjectDetect
 */
 class ObjectDetect {
-    public:
+public:
     ObjectDetect(const char* modelPath, uint32_t modelWidth,
     uint32_t modelHeight);
 
@@ -41,9 +41,8 @@ class ObjectDetect {
 
     void DestroyResource();
 
-    private:
+private:
     AtlasError CreateInput();
-
     AtlasModel model_;
     const char* modelPath_;
     uint32_t modelWidth_;

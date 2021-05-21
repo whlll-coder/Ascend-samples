@@ -82,8 +82,7 @@ void Preprocess(cv::VideoCapture capture, aclrtContext context,
     while(1){
         clock_gettime(CLOCK_REALTIME, &time1);
         cv::Mat frame;
-        if (!capture.read(frame))
-        {
+        if (!capture.read(frame)){
             ATLAS_LOG_ERROR("Video capture return false");
             break;
         }
@@ -105,9 +104,10 @@ void Preprocess(cv::VideoCapture capture, aclrtContext context,
         }
         usleep(1000);
         clock_gettime(CLOCK_REALTIME, &time2);
-        cout << "pre time passed is: " << (time2.tv_sec - time1.tv_sec)*1000 + (time2.tv_nsec - time1.tv_nsec)/1000000 << "ms" << endl;
-
+        cout << "pre time passed is: " << (time2.tv_sec - time1.tv_sec)*1000
+            + (time2.tv_nsec - time1.tv_nsec)/1000000 << "ms" << endl;
     }
+
     premsg.number = -1;
     while(1) {
         if (queue_pre->Push(premsg) != 0) {
@@ -127,18 +127,16 @@ void Postprocess(cv::VideoWriter& outputVideo, aclrtContext context, BlockingQue
     float* detectData = nullptr;
     aclrtSetCurrentContext(context);
 
-    while(1)
-    {
+    while(1) {
         clock_gettime(CLOCK_REALTIME, &time1);
-        if(queue_post->Pop(postmsg) != 0)
-        {
+        if(queue_post->Pop(postmsg) != 0) {
             usleep(1000);
             continue;
         }
 
         if (postmsg.number == -1){
             break;
-    }
+        }
         cv::Mat frame = postmsg.frame;
         detectData = (float*)postmsg.detectData.get();
         boxNum = (uint32_t*)postmsg.boxNum.get();
@@ -166,17 +164,16 @@ void Postprocess(cv::VideoWriter& outputVideo, aclrtContext context, BlockingQue
             detectResults.emplace_back(boundBox);
         }
 
-        cout<< "this frame's coordinates is :" <<endl;
+        cout << "this frame's coordinates is :" << endl;
         for (int i = 0; i < detectResults.size(); ++i) {
-            cout<< detectResults[i].rect.ltX <<"     "<< detectResults[i].rect.ltY <<endl;
-            cout<< detectResults[i].rect.rbX <<"     "<< detectResults[i].rect.rbY <<endl;
-            cout<< detectResults[i].text <<endl;
+            cout << detectResults[i].rect.ltX << "     " << detectResults[i].rect.ltY << endl;
+            cout << detectResults[i].rect.rbX << "     " << detectResults[i].rect.rbY << endl;
+            cout << detectResults[i].text << endl;
         }
     }
     gPostEnd++;
     outputVideo.release();
     ATLAS_LOG_INFO("postprocess end");
-
 }
 
 int main(int argc, char *argv[]) {
@@ -208,19 +205,17 @@ int main(int argc, char *argv[]) {
     cv::VideoCapture capture3(videoFile3);
     cv::VideoCapture capture4(videoFile4);
 
-    if (!capture1.isOpened() || !capture2.isOpened() || !capture3.isOpened() || !capture4.isOpened())
-    {
+    if (!capture1.isOpened() || !capture2.isOpened() || !capture3.isOpened() || !capture4.isOpened()) {
         ATLAS_LOG_ERROR("Movie open Error");
         return 1;
     }
     long totalFrameNumber1 = capture1.get(cv::CAP_PROP_FRAME_COUNT);
-    cout<<"totalFrameNumber1 is :"<<totalFrameNumber1<<endl;
-    //long totalFrameNumber2 = capture2.get(cv::CAP_PROP_FRAME_COUNT);
+    cout << "totalFrameNumber1 is :" << totalFrameNumber1 << endl;
     int rate1 = capture1.get(cv::CAP_PROP_FPS);
     int rate2 = capture2.get(cv::CAP_PROP_FPS);
     int rate3 = capture3.get(cv::CAP_PROP_FPS);
     int rate4 = capture4.get(cv::CAP_PROP_FPS);
-    cout<<"CAP_PROP_FPS is :"<<rate1<<endl;
+    cout << "CAP_PROP_FPS is :" << rate1 << endl;
     int height1 = static_cast<int>(capture1.get(cv::CAP_PROP_FRAME_HEIGHT));
     int height2 = static_cast<int>(capture2.get(cv::CAP_PROP_FRAME_HEIGHT));
     int height3 = static_cast<int>(capture3.get(cv::CAP_PROP_FRAME_HEIGHT));
@@ -278,8 +273,7 @@ int main(int argc, char *argv[]) {
     
     clock_gettime(CLOCK_REALTIME, &time3);
     while(1) {
-        if(queue_pre1.Pop(premsg) != 0)
-        {
+        if(queue_pre1.Pop(premsg) != 0) {
             usleep(1000);
             continue;
         }
@@ -308,8 +302,7 @@ int main(int argc, char *argv[]) {
             }
         }
 
-        if(queue_pre2.Pop(premsg) != 0)
-        {
+        if(queue_pre2.Pop(premsg) != 0) {
             usleep(1000);
             continue;
         }
@@ -367,8 +360,7 @@ int main(int argc, char *argv[]) {
             }
         }
         
-        if(queue_pre4.Pop(premsg) != 0)
-        {
+        if(queue_pre4.Pop(premsg) != 0) {
             usleep(1000);
             continue;
         }
@@ -397,7 +389,8 @@ int main(int argc, char *argv[]) {
         }
     }
     clock_gettime(CLOCK_REALTIME, &time4);
-    cout << "Execute time passed is: " << (time4.tv_sec - time3.tv_sec)*1000 + (time4.tv_nsec - time3.tv_nsec)/1000000 << "ms" << endl;
+    cout << "Execute time passed is: " << (time4.tv_sec - time3.tv_sec)*1000 
+            + (time4.tv_nsec - time3.tv_nsec)/1000000 << "ms" << endl;
     while (1) {
         if (queue_post1.Push(msg) != 0) {
             usleep(1000);
