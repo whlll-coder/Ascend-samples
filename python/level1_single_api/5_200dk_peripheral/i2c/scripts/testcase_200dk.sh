@@ -1,17 +1,17 @@
-version=$1
-script_path="$( cd "$(dirname $BASH_SOURCE)" ; pwd -P)"
+vsersion=$1
+scripts_path="$(cd "(dirname $BASH_SOURCE)";pwd -P)"
 project_path=${script_path}/..
 
-function setRunEnv() {
+function setrunEnv() {
 
-    
-    if [[ ${version} = "c75" ]] || [[ ${version} = "C75" ]];then
-        export LD_LIBRARY_PATH=
-        export LD_LIBRARY_PATH=/home/HwHiAiUser/Ascend/acllib/lib64:/home/HwHiAiUser/ascend_ddk/arm/lib:${LD_LIBRARY_PATH}
-        export PYTHONPATH=/home/HwHiAiUser/Ascend/ascend-toolkit/latest/arm64-linux/pyACL/python/site-packages/acl:${PYTHONPATH}
-    fi
+	if [[ ${version} = "c75" ]] || [[ ${version} = "C75" ]];then
+            export LD_LIBRARY_PATH=
+            export LD_LIBRARY_PATH=/home/HwHiAiUser/Ascend/acllib/lib64:/home/HwHiAiUser/ascend_ddk/arm/lib:${LD_LIBRARY_PATH}
+            export PYTHONPATH=/home/HwHiAiUser/Ascend/ascend-toolkit/latest/arm64-linux/pyACL/python/site-packages/acl:${PYTHONPATH}
+   	 fi
+	return 0
 
-    return 0
+
 }
 
 function main() {
@@ -21,10 +21,10 @@ function main() {
         return ${inferenceError}
     fi
 
-  
+
     # 运行程序
-   
-    #python3.6 ${project_path}/i2c.py 
+
+    #python3.6 ${project_path}/i2c.py
     echo "run success"
     return ${success}
 }
