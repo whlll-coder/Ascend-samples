@@ -68,6 +68,8 @@ link_directories(
     ${LIB_PATH}
     $ENV{HOME}/ascend_ddk/${ARCH}/lib/
     ${INC_PATH}/atc/lib64
+    $ENV{HOME}/Ascend/driver
+
 )
 
 add_executable(main
