@@ -43,10 +43,10 @@ public:
     AtlasError Preprocess(ImageData& resizedImage, ImageData& srcImage, aclrtRunMode RunMode);
     AtlasError Inference(std::vector<InferenceOutput>& inferenceOutput, ImageData& resizedImage);
     AtlasError Postprocess(ImageData& image, std::vector<InferenceOutput>& modelOutput,
-                       const string& origImagePath);
+                       const std::string& origImagePath);
 private:
-    void DrawBoundBoxToImage(vector<BBox>& detectionResults,
-                             const string& origImagePath);
+    void DrawBoundBoxToImage(std::vector<BBox>& detectionResults,
+                             const std::string& origImagePath);
     void DestroyResource();
 
 private:
