@@ -164,13 +164,13 @@ AtlasError ObjectDetect::Postprocess(ImageData& image, std::vector<InferenceOutp
                                  const string& origImagePath) {
     std::vector<BoundingBox> binfo;
 
-    for (uint ImgIndex = 0; ImgIndex < kOutputTensorSize; ImgIndex ++) {
+    for (uint ImgIndex = 0; ImgIndex < kOutputTensorSize; ImgIndex++) {
         uint gridSize = kGridSize[ImgIndex];
         uint32_t dataSize = 0;
         float* detectData = (float *)modelOutput[kOutputTensorSize - ImgIndex - 1].data.get();
         // float* detectData = (float *)GetInferenceOutputItem(dataSize, modelOutput,
         // (kOutputTensorSize - ImgIndex - 1));
-        for ( uint cx = 0; cx < gridSize; cx++)
+        for (uint cx = 0; cx < gridSize; cx++)
         {
             for(uint cy = 0; cy < gridSize; cy++)
             {

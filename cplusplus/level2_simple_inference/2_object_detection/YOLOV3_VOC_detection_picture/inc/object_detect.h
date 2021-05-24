@@ -21,12 +21,10 @@
 #include <memory>
 #include "atlasutil/atlas_model.h"
 #include "atlasutil/dvpp_process.h"
-using namespace std;
 
 /**
 * ClassifyProcess
 */
-
 
 struct BoundingBox {
     uint32_t lt_x;
@@ -37,26 +35,19 @@ struct BoundingBox {
     float score;
 };
 
-
 class ObjectDetect {
 public:
     ObjectDetect();
     ~ObjectDetect();
-
     AtlasError Init();
     AtlasError Preprocess(ImageData& resizedImage, ImageData& srcImage, aclrtRunMode RunMode);
     AtlasError Inference(std::vector<InferenceOutput>& inferenceOutput, ImageData& resizedImage);
     AtlasError Postprocess(ImageData& image, std::vector<InferenceOutput>& modelOutput,
                        const string& origImagePath);
 private:
-    AtlasError InitModel(const char* omModelPath);
-    void* GetInferenceOutputItem(uint32_t& itemDataSize,
-                                 aclmdlDataset* inferenceOutput,
-                                 uint32_t idx);
     void DrawBoundBoxToImage(vector<BBox>& detectionResults,
                              const string& origImagePath);
     void DestroyResource();
-
 
 private:
     uint32_t imageInfoSize_;
