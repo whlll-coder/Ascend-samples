@@ -55,15 +55,9 @@ endif()
 include_directories(
 	$ENV{HOME}/ascend_ddk/${ARCH}/include/
 	$ENV{HOME}/ascend_ddk/${ARCH}/include/opencv4
-    #/home/HwHiAiUser/opencv/include
-    #/home/HwHiAiUser/ascend_ddk/arm/include
-    #/home/HwHiAiUser/ascend_ddk/arm/include/opencv4
     ${INC_PATH}/acllib/include/
     ../inc/
 )
-
-MESSAGE("include ARCH: "${ARCH})
-MESSAGE("include home: "$ENV{HOME})
 
 if(target STREQUAL "Simulator_Function")
     add_compile_options(-DFUNC_SIM)
@@ -73,7 +67,6 @@ endif()
 link_directories(
     ${LIB_PATH}
     $ENV{HOME}/ascend_ddk/${ARCH}/lib/
-    #/home/HwHiAiUser/ascend_ddk/arm/lib/
     ${INC_PATH}/atc/lib64
 )
 
