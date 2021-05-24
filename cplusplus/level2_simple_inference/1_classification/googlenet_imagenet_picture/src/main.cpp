@@ -27,12 +27,6 @@
 #include "atlasutil/acl_device.h"
 using namespace std;
 
-namespace {
-uint32_t kModelWidth = 224;
-uint32_t kModelHeight = 224;
-const char* kModelPath = "../model/googlenet.om";
-}
-
 int main(int argc, char *argv[]) {
 
     if((argc < 2) || (argv[1] == nullptr)){

@@ -52,7 +52,7 @@ ClassifyProcess::~ClassifyProcess() {
 
 AtlasError ClassifyProcess::Init() {
     if (isInited_) {
-        ATLAS_LOG_INFO("Face detection is initied already");
+        ATLAS_LOG_INFO("Classify process is initied already");
         return ATLAS_OK;
     }
 
