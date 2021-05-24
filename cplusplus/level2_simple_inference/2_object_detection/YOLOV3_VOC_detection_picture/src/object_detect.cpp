@@ -174,7 +174,7 @@ AtlasError ObjectDetect::Postprocess(ImageData& image, std::vector<InferenceOutp
         {
             for(uint cy = 0; cy < gridSize; cy++)
             {
-                float tx, ty, tw, th, cf;
+                float tx = 0, ty = 0, tw = 0, th = 0, cf = 0;
 
                 for (uint i = 0; i  < numBBoxes; ++i)
                 {
