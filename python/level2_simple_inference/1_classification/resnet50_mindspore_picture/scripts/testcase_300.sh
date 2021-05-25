@@ -1,5 +1,5 @@
 mindspore_model="https://c7xcode.obs.cn-north-4.myhuaweicloud.com/models/resnet50_mindspore/resnet-90_1875.air"
-model_name="resnet50_mindspore"
+model_name="resnet50"
 
 version=$1
 
@@ -54,7 +54,7 @@ function setRunEnv() {
 
     if [[ ${version} = "c76" ]] || [[ ${version} = "C76" ]];then
         export LD_LIBRARY_PATH=
-        export LD_LIBRARY_PATH=/home/HwHiAiUser/Ascend/nnrt/latest/acllib/lib64:/home/HwHiAiUser/ascend_ddk/x86/lib:${LD_LIBRARY_PATH}
+        export LD_LIBRARY_PATH=/home/HwHiAiUser/Ascend/nnrt/latest/acllib/lib64:/home/HwHiAiUser/Ascend/ascend-toolkit/latest/atc/lib64:/home/HwHiAiUser/ascend_ddk/x86/lib:${LD_LIBRARY_PATH}
         export PYTHONPATH=/home/HwHiAiUser/Ascend/nnrt/latest/pyACL/python/site-packages/acl:${PYTHONPATH}
     fi
 
