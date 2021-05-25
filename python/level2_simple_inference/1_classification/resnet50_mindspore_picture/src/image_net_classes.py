@@ -1,4 +1,5 @@
-image_net_classes = [
+"""resnet50 classes"""
+resnet50_classes = [
 "airplane",
 "automobile",
 "bird",
@@ -11,8 +12,9 @@ image_net_classes = [
 "truck"
 ]
 
-def get_image_net_class(id):
-    if id >= len(image_net_classes):
+def get_resnet50_class(id):
+    """get resnet50 classes"""
+    if id >= len(resnet50_classes):
         return "unknown"
     else:
-        return image_net_classes[id]
+        return resnet50_classes[id]

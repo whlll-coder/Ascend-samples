@@ -1,3 +1,4 @@
+"""classify.py"""
 import sys
 import os
 import acl
@@ -9,37 +10,40 @@ sys.path.append(os.path.join(path, "../../../../common/"))
 sys.path.append(os.path.join(path, "../../../../common/atlas_utils"))
 
 from constants import ACL_MEM_MALLOC_HUGE_FIRST, ACL_MEMCPY_DEVICE_TO_DEVICE, IMG_EXT
-from acl_dvpp import Dvpp
 from acl_model import Model
 from acl_image import AclImage
 from acl_resource import AclResource
-from image_net_classes import get_image_net_class
+from image_net_classes import get_resnet50_class
 from PIL import Image, ImageDraw, ImageFont
 import numpy as np
 
+SRC_PATH = os.path.realpath(__file__).rsplit("/", 1)[0]
+MODEL_PATH = os.path.join(SRC_PATH, "../model/resnet50.om")
+MODEL_WIDTH = 224
+MODEL_HEIGHT = 224
+
 class Classify(object):
+    """classify"""
     def __init__(self, acl_resource, model_path, model_width, model_height):
         self._model_path = model_path
         self._model_width = model_width
         self._model_height = model_height
-        self._dvpp = Dvpp(acl_resource)
         self._model = Model(model_path)
 
     def __del__(self):
-        if self._dvpp:
-            del self._dvpp
         print("[Sample] class Samle release source success")
 
     def pre_process(self, image):
+        """preprocess"""
         input_image = Image.open(image)
         input_image = input_image.resize((224, 224))
         # hwc
         img = np.array(input_image)
         height = img.shape[0]
         width = img.shape[1]
-        h_off = int((height-224)/2)
-        w_off = int((width-224)/2)
-        crop_img = img[h_off:height-h_off, w_off:width-w_off, :]
+        h_off = int((height - 224) / 2)
+        w_off = int((width - 224) / 2)
+        crop_img = img[h_off:height - h_off, w_off:width - w_off, :]
         # rgb to bgr
         print("crop shape = ", crop_img.shape)
         img = crop_img[:, :, ::-1]
@@ -61,9 +65,11 @@ class Classify(object):
         return result
 
     def inference(self, resized_image):
+        """classify"""
         return self._model.execute([resized_image, ])
 
     def post_process(self, infer_output, image_file):
+        """postprocess"""
         print("post process")
         data = infer_output[0]
         print("data shape = ", data.shape)
@@ -83,12 +89,12 @@ class Classify(object):
         print("images:{}".format(image_file))
         print("======== top5 inference results: =============")
         for n in top_k:
-            object_class = get_image_net_class(n)
+            object_class = get_resnet50_class(n)
             print("label:%d  confidence: %f, class: %s" % (n, vals[n], object_class))
         
         #using pillow, the category with the highest confidence is written on the image and saved locally
         if len(top_k):
-            object_class = get_image_net_class(top_k[0])
+            object_class = get_resnet50_class(top_k[0])
             output_path = os.path.join(os.path.join(SRC_PATH, "../outputs"), os.path.basename(image_file))
             origin_img = Image.open(image_file)
             draw = ImageDraw.Draw(origin_img)
@@ -96,14 +102,8 @@ class Classify(object):
             draw.text((10, 50), object_class, font=font, fill=255)
             origin_img.save(output_path)
 
-SRC_PATH = os.path.realpath(__file__).rsplit("/", 1)[0]
-MODEL_PATH = os.path.join(SRC_PATH, "../model/resnet50.om")
-MODEL_WIDTH = 224
-MODEL_HEIGHT = 224
-
 
 def main():
-
     """
     Program execution with picture directory parameters
     """
