@@ -47,7 +47,6 @@ class Classify(object):
         # rgb to bgr
         print("crop shape = ", crop_img.shape)
         img = crop_img[:, :, ::-1]
-        #img = input_image
         shape = img.shape
         print("img shape = ", shape)
         img = img.astype("float32")
@@ -61,6 +60,7 @@ class Classify(object):
         img[:, :, 2] -= 0.4465
         img[:, :, 2] = img[:, :, 2] / 0.2010
         img = img.reshape([1] + list(shape))
+        # nhwc -> nchw
         result = img.transpose([0, 3, 1, 2]).copy()
         return result
 
@@ -108,7 +108,7 @@ def main():
     Program execution with picture directory parameters
     """
     if (len(sys.argv) != 2):
-        print("The App arg is invalid")
+        print("The App arg is invalid, eg: python3.6 classify.py ../data/")
         exit(1)
     acl_resource = AclResource()
     acl_resource.init()

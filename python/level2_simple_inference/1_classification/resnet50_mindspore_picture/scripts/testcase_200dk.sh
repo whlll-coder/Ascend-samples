@@ -39,7 +39,19 @@ function downloadDataWithVerifySource() {
 
 function setAtcEnv() {
     # 设置模型转换时需要的环境变量
-    if [[ ${version} = "c76" ]] || [[ ${version} = "C76" ]];then
+    if [[ ${version} = "c73" ]] || [[ ${version} = "C73" ]];then
+        export install_path=/home/HwHiAiUser/Ascend/ascend-toolkit/latest
+        export PATH=/usr/local/python3.7.5/bin:${install_path}/atc/ccec_compiler/bin:${install_path}/atc/bin:$PATH
+        export PYTHONPATH=${install_path}/atc/python/site-packages/te:${install_path}/atc/python/site-packages/topi:$PYTHONPATH
+        export ASCEND_OPP_PATH=${install_path}/opp
+        export LD_LIBRARY_PATH=${install_path}/atc/lib64:${LD_LIBRARY_PATH}
+    elif [[ ${version} = "c75" ]] || [[ ${version} = "C75" ]];then
+        export install_path=$HOME/Ascend/ascend-toolkit/latest
+        export PATH=/usr/local/python3.7.5/bin:${install_path}/atc/ccec_compiler/bin:${install_path}/atc/bin:$PATH
+        export ASCEND_OPP_PATH=${install_path}/opp
+        export PYTHONPATH=${install_path}/atc/python/site-packages:${install_path}/atc/python/site-packages/auto_tune.egg/auto_tune:${install_path}/atc/python/site-packages/schedule_search.egg:$PYTHONPATH
+        export LD_LIBRARY_PATH=${install_path}/atc/lib64:${LD_LIBRARY_PATH}
+    elif [[ ${version} = "c76" ]] || [[ ${version} = "C76" ]];then
         export install_path=$HOME/Ascend/ascend-toolkit/latest
         export PATH=/usr/local/python3.7.5/bin:${install_path}/atc/ccec_compiler/bin:${install_path}/atc/bin:$PATH
         export ASCEND_OPP_PATH=${install_path}/opp
@@ -51,8 +63,15 @@ function setAtcEnv() {
 }
 
 function setRunEnv() {
-
-    if [[ ${version} = "c76" ]] || [[ ${version} = "C76" ]];then
+    if [[ ${version} = "c73" ]] || [[ ${version} = "C73" ]];then
+        export LD_LIBRARY_PATH=
+        export LD_LIBRARY_PATH=/home/HwHiAiUser/Ascend/acllib/lib64:/home/HwHiAiUser/ascend_ddk/arm/lib:${LD_LIBRARY_PATH}
+        export PYTHONPATH=/home/HwHiAiUser/Ascend/ascend-toolkit/latest/arm64-linux_gcc7.3.0/pyACL/python/site-packages/acl:${PYTHONPATH}
+    elif [[ ${version} = "c75" ]] || [[ ${version} = "C75" ]];then
+        export LD_LIBRARY_PATH=
+        export LD_LIBRARY_PATH=/home/HwHiAiUser/Ascend/acllib/lib64:/home/HwHiAiUser/ascend_ddk/arm/lib:${LD_LIBRARY_PATH}
+        export PYTHONPATH=/home/HwHiAiUser/Ascend/ascend-toolkit/latest/arm64-linux/pyACL/python/site-packages/acl:${PYTHONPATH}
+    elif [[ ${version} = "c76" ]] || [[ ${version} = "C76" ]];then
         export LD_LIBRARY_PATH=/home/HwHiAiUser/Ascend/acllib/lib64:/home/HwHiAiUser/Ascend/ascend-toolkit/latest/atc/lib64:/home/HwHiAiUser/ascend_ddk/arm/lib:${LD_LIBRARY_PATH}
         export PYTHONPATH=/home/HwHiAiUser/Ascend/ascend-toolkit/latest/arm64-linux/pyACL/python/site-packages/acl:${PYTHONPATH}
     fi
