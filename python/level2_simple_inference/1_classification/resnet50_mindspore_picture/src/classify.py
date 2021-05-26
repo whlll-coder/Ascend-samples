@@ -13,7 +13,7 @@ from constants import ACL_MEM_MALLOC_HUGE_FIRST, ACL_MEMCPY_DEVICE_TO_DEVICE, IM
 from acl_model import Model
 from acl_image import AclImage
 from acl_resource import AclResource
-from image_net_classes import get_resnet50_class
+from resnet50_classes import get_resnet50_class
 from PIL import Image, ImageDraw, ImageFont
 import numpy as np
 
