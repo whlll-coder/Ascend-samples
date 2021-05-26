@@ -23,6 +23,14 @@
 
   ffmpeg -i aaa.mp4 -codec copy -bsf: h264_mp4toannexb -f h264 aaa.h264
 
+- 为保证h264文件的profile level满足atals utils接口要求，原始视频文件需要使用ffmpeg命令设置 profile & level：
+
+  ffmpeg -i input.mp4 -profile:v baseline -level 5.1 output.mp4    #BP
+
+  ffmpeg -i input.mp4 -profile:v main -level 5.1 output.mp4    #MP
+
+  ffmpeg -i input.mp4 -profile:v high -level 5.1 output.mp4    #HP
+
 - 本样例最多支持6路视频
 ### 工程准备
 
