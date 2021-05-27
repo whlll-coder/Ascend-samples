@@ -13,7 +13,7 @@ from constants import ACL_MEM_MALLOC_HUGE_FIRST, ACL_MEMCPY_DEVICE_TO_DEVICE, IM
 from acl_model import Model
 from acl_image import AclImage
 from acl_resource import AclResource
-from image_net_classes import get_resnet50_class
+from resnet50_classes import get_resnet50_class
 from PIL import Image, ImageDraw, ImageFont
 import numpy as np
 
@@ -24,7 +24,7 @@ MODEL_HEIGHT = 224
 
 class Classify(object):
     """classify"""
-    def __init__(self, acl_resource, model_path, model_width, model_height):
+    def __init__(self, model_path, model_width, model_height):
         self._model_path = model_path
         self._model_width = model_width
         self._model_height = model_height
@@ -65,7 +65,7 @@ class Classify(object):
         return result
 
     def inference(self, resized_image):
-        """classify"""
+        """inference"""
         return self._model.execute([resized_image, ])
 
     def post_process(self, infer_output, image_file):
@@ -113,7 +113,7 @@ def main():
     acl_resource = AclResource()
     acl_resource.init()
     #Instantiation classification detection, incoming om model path, model input width and height parameters
-    classify = Classify(acl_resource, MODEL_PATH, MODEL_WIDTH, MODEL_HEIGHT)
+    classify = Classify(MODEL_PATH, MODEL_WIDTH, MODEL_HEIGHT)
     
     #Get the picture storage directory from the parameters, and infer picture by picture
     image_dir = sys.argv[1]

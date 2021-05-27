@@ -85,17 +85,18 @@
 
     **cd $HOME/samples/python/level2_simple_inference/1_classification/resnet50_mindspore_picture/data**
 
-    **https://modelart-xuyetao.obs.cn-north-4.myhuaweicloud.com/resnet50/airplane.jpg**
-    **https://modelart-xuyetao.obs.cn-north-4.myhuaweicloud.com/resnet50/car.jpg**
+    **wget https://modelart-xuyetao.obs.cn-north-4.myhuaweicloud.com/resnet50/airplane.jpg** 
+
+    **wget https://modelart-xuyetao.obs.cn-north-4.myhuaweicloud.com/resnet50/car.jpg**
 
 
 ### 样例运行
 
 **注：开发环境与运行环境合一部署，请跳过步骤1，直接执行[步骤2](#step_2)即可。**   
 
-1. 执行以下命令,将开发环境的 **resnet50_mindspore_picture** 目录上传到运行环境中，例如 **/home/HwHiAiUser**，并以HwHiAiUser（运行用户）登录运行环境（Host）。
+1. 执行以下命令,由于样例使用了公共库中的接口，所以这里需要把公共库的文件也拷贝到开发板，这里将开发环境的 **samples** 目录上传到运行环境中，例如 **/home/HwHiAiUser**，并以HwHiAiUser（运行用户）登录运行环境（Host）。
 
-    **scp -r $HOME/samples/python/level2_simple_inference/1_classification/resnet50_mindspore_picture HwHiAiUser@xxx.xxx.xxx.xxx:/home/HwHiAiUser**
+    **scp -r $HOME/samples HwHiAiUser@xxx.xxx.xxx.xxx:/home/HwHiAiUser**
 
     **ssh HwHiAiUser@xxx.xxx.xxx.xxx**    
 
@@ -114,7 +115,7 @@
 
     - 如果是开发环境与运行环境分离部署，执行以下命令切换目录。
     
-      **cd $HOME/resnet50_mindspore_picture/**      
+      **cd $HOME/samples/python/level2_simple_inference/1_classification/resnet50_mindspore_picture/src**      
 
     切换目录后，执行以下命令运行样例。
 
