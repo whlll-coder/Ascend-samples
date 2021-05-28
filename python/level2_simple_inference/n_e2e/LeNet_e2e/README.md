@@ -171,38 +171,31 @@ source /home/ma-user/miniconda3/bin/activate Mindspore-python3.7-aarch64
 由于部分代码经过windows上传会出现格式变化，这里可以执行以下命令做一些格式处理
 
 ```
-cd ResNet50_for_MindSpore/scripts/
-sed -i 's/\r//g' run_standalone_train.sh
+sed -i 's/\r//g' train.py
 ```
 
 执行以下命令开始训练
 
 ```
-bash run_standalone_train.sh resnet50 cifar10 /home/ma-user/work/cifar-10-batches-bin/
+python train.py
 ```
 
-可以在当前路径下的train目录执行命令看到log
-
-```
-cd train
-tail -f log
-```
 
 执行流程如图
 
-
-![输入图片说明](https://images.gitee.com/uploads/images/2021/0528/093200_80a88229_5403304.png "05.png")
-
-
-当看到epoch = 90时，说明训练完成了。
+![输入图片说明](https://images.gitee.com/uploads/images/2021/0528/142147_9f9fae0c_5578318.png "屏幕截图.png")
 
 
-![输入图片说明](https://images.gitee.com/uploads/images/2021/0528/093224_2c0d183a_5403304.png "8.png")
+
+当看到epoch = 10时，说明训练完成了。
+
+![输入图片说明](https://images.gitee.com/uploads/images/2021/0528/142226_e69767ae_5578318.png "屏幕截图.png")
+
 
 
 - **导出AIR格式模型**
 
-这时候我们看到当前train目录下生成了ckpt文件，取生成的最后一个即resnet-90_1875.ckpt，通过网络定义和CheckPoint生成AIR格式模型文件。
+这时候我们看到当前output目录下生成了ckpt文件，取生成的第一个即checkpoint_lenet-10_1875.ckpt，通过网络定义和CheckPoint生成AIR格式模型文件。
 
 导出代码参考如下：
 
@@ -223,14 +216,12 @@ export(network, Tensor(input_data), file_name = './lenet', file_format = 'AIR')
 
 点击左上角，新建Mindspre的Notebook，
 
-
-![输入图片说明](https://images.gitee.com/uploads/images/2021/0528/093707_450db74a_5403304.png "01.png")
-
-
-通过执行!pwd，我们看到当前路径是在/home/ma-user/work，网络定义文件所在路径是你自己的目录下的ResNet50_for_MindSpore/scripts/train/src中。
+![输入图片说明](https://images.gitee.com/uploads/images/2021/0528/142547_a02ca550_5578318.png "屏幕截图.png")
 
 
-![输入图片说明](https://images.gitee.com/uploads/images/2021/0528/093739_6357a520_5403304.png "02.png")
+通过执行!pwd，我们看到当前路径是在/home/ma-user/work，网络定义文件所在路径是你自己的目录下的LeNet_for_MindSpore/src中。
+
+![输入图片说明](https://images.gitee.com/uploads/images/2021/0528/142946_7fe31bd4_5578318.png "屏幕截图.png")
 
 
 执行代码块，完成后会在/home/ma-user/work下生成.air文件。
@@ -256,7 +247,7 @@ mox.file.copy('/home/ma-user/work/lenet.air', 'obs://train-moderlarts/wy/LeNet_f
 ![输入图片说明](https://images.gitee.com/uploads/images/2021/0528/093824_7dd1d3c2_5403304.png "readme.png")
 
 
-**图6.1 ResNet50图片分类实验原理图** 
+**图6.1 LeNet文本分类实验原理图** 
 
 本实验是基于Atlas 200DK的图像分类项目，基于ResNet50图片分类网络编写的示例代码，该示例代码部署在Atlas 200DK上 ，通过读取本地图像数据作为输入，对图像中的物体进行识别分类，并将分类的结果展示出来
 
