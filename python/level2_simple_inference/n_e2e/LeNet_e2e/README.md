@@ -470,40 +470,5 @@ python3.6 src/classify.py ./data/
 
 3)查看工程运行完成后的推理结果，如下图
 
-
-![输入图片说明](https://images.gitee.com/uploads/images/2021/0528/093932_6ad8dfd5_5403304.png "03.png")
-
-
-4)查看推理图片
-
-推理产生的结果图片保存在outputs文件夹
-
-
-![输入图片说明](https://images.gitee.com/uploads/images/2021/0528/094006_ba2c31ab_5403304.png "04.png")
-
-
-将推理结果图片从Atlas200dk拷贝至本地Ubuntu的家目录中查看。在本地Ubuntu执行如下命令进行拷贝：
-
-```
-scp -r HwHiAiUser@192.168.1.2:~/HIAI_PROJECTS/samples/python/level2_simple_inference/1_classification/resnet50_mindspore_picture/outputs ~
-```
-
-在本地Ubuntu中查看拷贝后的推理结果图片，如下：
-
-
-![输入图片说明](https://images.gitee.com/uploads/images/2021/0528/094033_0c4c6793_5403304.png "05.png")
-
-到这里，我们就完成了整个ResNet50图片分类应用全流程开发（MindSpore训练+AscendCL推理）的这个实验。
-
-
-
-
-
-
-
-
-
-
-
-
+![输入图片说明](https://images.gitee.com/uploads/images/2021/0528/160251_9414fc59_5578318.png "屏幕截图.png")
 
