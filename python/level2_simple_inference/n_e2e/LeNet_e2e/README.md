@@ -1,6 +1,6 @@
 
 
-# ResNet50图片分类应用全流程开发（MindSpore训练+AscendCL推理）
+# LeNet文本分类应用全流程开发（MindSpore训练+AscendCL推理）
 
 * [1. 案例内容](#1-案例内容)
 * [2. 案例目标](#2-案例目标)
