@@ -47,11 +47,14 @@
 ## 5 模型训练
 这里我们选用AI开发平台ModelArts来进行训练，ModelArts是一个一站式的开发平台，能够支撑开发者从数据到AI应用的全流程开发过程。包含数据处理、模型训练、模型管理、模型部署等操作，并且提供AI Gallery功能，能够在市场内与其他开发者分享模型。
 
-![未命名1622118500](C:\Users\ascend\Pictures\onefigure\未命名1622118500.png)
+**ModelArts架构图：**
 
-​                                                                                                              **ModelArts架构图**
+![输入图片说明](https://images.gitee.com/uploads/images/2021/0528/090401_9929617a_5403304.png "未命名1622118500.png")
+​                                                                                                              
+                               
 
-我们在ModelArts中训练模型，模型训练完成后转换成Atlas中可用的om模型。
+
+我们在ModelArts中训练模型，模型训练完成后转换成昇腾芯片中可用的om模型。
 
 **1、按照如下步骤在modelarts上部署数据集。**
 
@@ -100,7 +103,8 @@ windows环境中在OBS Browser+中，进入刚刚创建的“华为北京四”�
 
 
 
-![image-20210525153814870](C:\Users\ascend\AppData\Roaming\Typora\typora-user-images\image-20210525153814870.png)
+![输入图片说明](https://images.gitee.com/uploads/images/2021/0528/091204_a3c692c3_5403304.png "image-20210525153814870.png")
+
 
 - 工作环境：展开“公共镜像”，选择 **Ascend-Powered-Engine 1.0（Python3）**。
 - 资源池：默认选择“公共资源池”即可。
@@ -126,12 +130,15 @@ windows环境中在OBS Browser+中，进入刚刚创建的“华为北京四”�
 
 打开后，进入到Jupyter页面，将所有文件同步到Modelarts中（当前展示的这些文件都是OBS上的数据，训练加载时需要在Modelarts的Notebook创建的环境中同步这些文件）。
 
-![01](C:\Users\ascend\Pictures\modelarts\01.png)
+
+![输入图片说明](https://images.gitee.com/uploads/images/2021/0528/091253_f8113b27_5403304.png "01.png")
+
 
 同步完成后如下：
 
-![02](C:\Users\ascend\Pictures\modelarts\02.png)
 
+
+![输入图片说明](https://images.gitee.com/uploads/images/2021/0528/091315_cd547436_5403304.png "02.png")
 
 
 **4、训练步骤**
@@ -140,11 +147,14 @@ windows环境中在OBS Browser+中，进入刚刚创建的“华为北京四”�
 
 点击右上角的Open JupyterLab
 
-![444](C:\Users\ascend\Pictures\modelarts\444.png)
+
+![输入图片说明](https://images.gitee.com/uploads/images/2021/0528/093046_23629234_5403304.png "444.png")
 
 进入后
 
-![3](C:\Users\ascend\Pictures\modelarts\3.png)
+
+![输入图片说明](https://images.gitee.com/uploads/images/2021/0528/093112_2183c352_5403304.png "3.png")
+
 
 点击Other->Terminal，使用命令行进入MindSpore的训练环境，执行
 
@@ -182,11 +192,15 @@ tail -f log
 
 执行流程如图
 
-![05](C:\Users\ascend\Pictures\modelarts\05.png)
+
+![输入图片说明](https://images.gitee.com/uploads/images/2021/0528/093200_80a88229_5403304.png "05.png")
+
 
 当看到epoch = 90时，说明训练完成了。
 
-![8](C:\Users\ascend\Pictures\modelarts\8.png)
+
+![输入图片说明](https://images.gitee.com/uploads/images/2021/0528/093224_2c0d183a_5403304.png "8.png")
+
 
 - **导出AIR格式模型**
 
@@ -210,11 +224,15 @@ export(resnet, Tensor(input), file_name='resnet50-90_1875', file_format='AIR')
 
 点击左上角，新建Mindspre的Notebook，
 
-![image-20210526105928867](C:\Users\ascend\AppData\Roaming\Typora\typora-user-images\image-20210526105928867.png)
+
+![输入图片说明](https://images.gitee.com/uploads/images/2021/0528/093707_450db74a_5403304.png "01.png")
+
 
 通过执行!pwd，我们看到当前路径是在/home/ma-user/work，网络定义文件所在路径是你自己的目录下的ResNet50_for_MindSpore/scripts/train/src中。
 
-![image-20210526110530505](C:\Users\ascend\AppData\Roaming\Typora\typora-user-images\image-20210526110530505.png)
+
+![输入图片说明](https://images.gitee.com/uploads/images/2021/0528/093739_6357a520_5403304.png "02.png")
+
 
 执行代码块，完成后会在/home/ma-user/work下生成.air文件。
 
@@ -235,7 +253,9 @@ mox.file.copy('/home/ma-user/work/resnet50-90_1875.air', 'obs://modelart-xuyetao
 
 ### 6.1 实验原理
 
-![readme](C:\Users\ascend\Pictures\modelarts\readme.png)
+
+![输入图片说明](https://images.gitee.com/uploads/images/2021/0528/093824_7dd1d3c2_5403304.png "readme.png")
+
 
 **图6.1 ResNet50图片分类实验原理图** 
 
@@ -251,7 +271,9 @@ mox.file.copy('/home/ma-user/work/resnet50-90_1875.air', 'obs://modelart-xuyetao
 
 ### 6.2 实验流程
 
-![readme2](C:\Users\ascend\Pictures\modelarts\readme2.png)
+
+![输入图片说明](https://images.gitee.com/uploads/images/2021/0528/093841_2aac1b34_5403304.png "readme2.png")
+
 
  **图 6.2 ResNet50图片分类应用案例移植流程图** 
 
@@ -479,13 +501,17 @@ python3 src/classify_test.py ./data/
 
 3)查看工程运行完成后的推理结果，如下图
 
-![image-20210526182757958](C:\Users\ascend\AppData\Roaming\Typora\typora-user-images\image-20210526182757958.png)
+
+![输入图片说明](https://images.gitee.com/uploads/images/2021/0528/093932_6ad8dfd5_5403304.png "03.png")
+
 
 4)查看推理图片
 
 推理产生的结果图片保存在outputs文件夹
 
-![image-20210526182825888](C:\Users\ascend\AppData\Roaming\Typora\typora-user-images\image-20210526182825888.png)
+
+![输入图片说明](https://images.gitee.com/uploads/images/2021/0528/094006_ba2c31ab_5403304.png "04.png")
+
 
 将推理结果图片从Atlas200dk拷贝至本地Ubuntu的家目录中查看。在本地Ubuntu执行如下命令进行拷贝：
 
@@ -495,9 +521,10 @@ scp -r HwHiAiUser@192.168.1.2:~/HIAI_PROJECTS/samples/python/level2_simple_infer
 
 在本地Ubuntu中查看拷贝后的推理结果图片，如下：
 
-![image-20210526183112226](C:\Users\ascend\AppData\Roaming\Typora\typora-user-images\image-20210526183112226.png)
 
+![输入图片说明](https://images.gitee.com/uploads/images/2021/0528/094033_0c4c6793_5403304.png "05.png")
 
+到这里，我们就完成了整个ResNet50图片分类应用全流程开发（MindSpore训练+AscendCL推理）的这个实验。
 
 
 
