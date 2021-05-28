@@ -471,3 +471,9 @@ python3.6 src/classify.py ./data/
 3)查看工程运行完成后的推理结果，如下图
 
 ![输入图片说明](https://images.gitee.com/uploads/images/2021/0528/160829_98f3bc72_5578318.png "屏幕截图.png")
+
+4)查看推理图片
+
+推理产生的结果保存在outputs文件夹下的三个txt文件里，分别点开即可查看推理结果：
+
+![输入图片说明](https://images.gitee.com/uploads/images/2021/0528/162948_3a5111b2_5578318.png "屏幕截图.png")
