@@ -470,5 +470,4 @@ python3.6 src/classify.py ./data/
 
 3)查看工程运行完成后的推理结果，如下图
 
-![输入图片说明](https://images.gitee.com/uploads/images/2021/0528/160251_9414fc59_5578318.png "屏幕截图.png")
-
+![输入图片说明](https://images.gitee.com/uploads/images/2021/0528/160829_98f3bc72_5578318.png "屏幕截图.png")
