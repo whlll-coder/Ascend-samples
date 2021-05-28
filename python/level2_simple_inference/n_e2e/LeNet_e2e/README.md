@@ -109,7 +109,7 @@ windows环境中在OBS Browser+中，进入刚刚创建的“华为北京四”�
 - 类型：默认选择“Ascend”即可。
 - 规格：默认选择“Ascend：1*Ascend 910 cpu：24核 96 GIB”即可。。
 - 存储配置：默认选择“对象存储服务（OBS）”即可。
-- **存储位置：选择一个上传代码的路径，即OBS上训练代码和数据集所在的地方，如/modelart-xuyetao/resnet50/，方便后续上传到modelarts。**
+- **存储位置：选择一个上传代码的路径，即OBS上训练代码和数据集所在的地方，如train-moderlarts/wy/，方便后续上传到modelarts。**
 - 完成信息填写，单击“下一步”,规格确认无误后点击提交即可。
 
 
