@@ -71,11 +71,11 @@
   **git clone https://gitee.com/ascend/modelzoo.git**
 - 压缩包方式下载。
   1. [modelzoo仓](https://gitee.com/ascend/modelzoo)右上角选择 **克隆/下载** 下拉框并选择 **下载ZIP**。
-  2. 解压zip包，进入modelzoo/built-in/MindSpore/Official/cv/image_classification/ResNet50_for_MindSpore目录，准备上传到OBS。
+  2. 解压zip包，进入modelzoo/built-in/MindSpore/Official/cv/image_classification/LeNet_for_MindSpore目录，准备上传到OBS。
 
 - 上传数据至OBS
 
-windows环境中在OBS Browser+中，进入刚刚创建的“华为北京四”区域的OBS桶，然后点击上传按钮，上传本地文件夹**cifar-10-batches-bin和modelzoo/built-in/MindSpore/Official/cv/image_classification/ResNet50_for_MindSpore**至OBS桶的一个文件目录下。
+windows环境中在OBS Browser+中，进入刚刚创建的“华为北京四”区域的OBS桶，然后点击上传按钮，上传本地文件夹**Date和modelzoo/built-in/MindSpore/Official/cv/image_classification/LeNet_for_MindSpore**至OBS桶的一个文件目录下。
 
 ![](https://images.gitee.com/uploads/images/2021/0127/151112_1ab34d4a_5400693.png "uploadfolder.png")
 
