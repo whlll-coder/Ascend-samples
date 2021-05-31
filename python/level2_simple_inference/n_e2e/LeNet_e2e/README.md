@@ -208,7 +208,7 @@ export(network, Tensor(input_data), file_name = './lenet', file_format = 'AIR')
 
 ```
 
-点击左上角，新建Mindspre的Notebook，
+点击左上角，新建Mindspore的Notebook，
 
 ![输入图片说明](https://images.gitee.com/uploads/images/2021/0528/142547_a02ca550_5578318.png "屏幕截图.png")
 
@@ -238,10 +238,6 @@ mox.file.copy('/home/ma-user/work/lenet.air', 'obs://train-moderlarts/wy/LeNet_f
 ### 6.1 实验原理
 
 
-![输入图片说明](https://images.gitee.com/uploads/images/2021/0528/144856_8fc0af32_5578318.png "屏幕截图.png")
-
-
-**图6.1 LeNet图像分类实验原理图** 
 
 本实验是基于Atlas 200DK的图像分类项目，基于lenet图像分类网络编写的示例代码，该示例代码部署在Atlas 200DK上 ，通过读取本地图像数据作为输入，对图像中的数字进行识别分类，并将识别的结果展示出来
 
@@ -263,14 +259,14 @@ mox.file.copy('/home/ma-user/work/lenet.air', 'obs://train-moderlarts/wy/LeNet_f
 在本实验中，默认已完成硬件环境和软件环境的准备工作，在此基础上进行LeNet图片分类应用项目的实验操作，由上图可知，本实验需要分别在Ubuntu主机PC端完成基于Python的LeNet图片分类应用代码的编写工作，以及LeNet图片分类模型转换，最后在Atlas 200 DK开发板上进行项目部署执行工作。
 
 本案例移植的源代码编写及运行以链接
-（[https://gitee.com/jiangfeng11/samples/tree/master/python/level2_simple_inference/1_classification/lenet_mindspore_picture](https://gitee.com/jiangfeng11/samples/tree/master/python/level2_simple_inference/1_classification/lenet_mindspore_picture)
+（[https://gitee.com/ascend/samples/tree/master/python/level2_simple_inference/1_classification/lenet_mindspore_picture](https://gitee.com/ascend/samples/tree/master/python/level2_simple_inference/1_classification/lenet_mindspore_picture)
 ）里的源码为例进行说明，实验任务及步骤将围绕图6.2所示四个方面分别展开介绍。
 
 ### 6.3 实验任务及步骤
 
  **任务一 实验准备** 
 
-本实验使用Python进行开发，并使用命令行操作进行应用的部署和使用，因此我们选用官方提供的图像分类应用案例作为接下来开发的模板工程。图像分类应用案例可在[https://gitee.com/jiangfeng11/samples/tree/master/python/level2_simple_inference/1_classification/lenet_mindspore_picture](https://gitee.com/jiangfeng11/samples/tree/master/python/level2_simple_inference/1_classification/lenet_mindspore_picture)中进行下载。
+本实验使用Python进行开发，并使用命令行操作进行应用的部署和使用，因此我们选用官方提供的图像分类应用案例作为接下来开发的模板工程。图像分类应用案例可在[https://gitee.com/ascend/samples/tree/master/python/level2_simple_inference/1_classification/lenet_mindspore_picture](https://gitee.com/ascend/samples/tree/master/python/level2_simple_inference/1_classification/lenet_mindspore_picture)中进行下载。
 
 参考该案例的README.md进行软件准备、部署、运行等步骤。确保环境配置无误，并能够得到正确的结果，即可进行下一步的开发。
 
@@ -300,6 +296,11 @@ atc --framework=1 --model=lenet.air --output=mnist --soc_version=Ascend310
 执行完之后会在当前执行ATC命令的目录下生成mnist.om文件
 
  **任务三 应用代码修改** 
+
+![输入图片说明](https://images.gitee.com/uploads/images/2021/0528/144856_8fc0af32_5578318.png "屏幕截图.png")
+
+
+**图6.1 LeNet图像分类实验原理图** 
 
 完成以上步骤后，我们得到了所需要的网络模型。我们基于任务一获取的Python模板工程进行修改和补充，构建LeNet图片分类算法应用。接下来我们将对预处理模块、推理模块以及后处理模块的更新和补充进行介绍。
 
@@ -385,7 +386,7 @@ atc --framework=1 --model=lenet.air --output=mnist --soc_version=Ascend310
  **任务四 应用运行** 
 本应用的运行过程是在开发板上执行，需要将工程文件拷贝到开发板上。
 
-我们在如下链接[https://gitee.com/jiangfeng11/samples/tree/master/python/level2_simple_inference/1_classification/lenet_mindspore_picture](https://gitee.com/jiangfeng11/samples/tree/master/python/level2_simple_inference/1_classification/lenet_mindspore_picture)的readme中详细提供了运行本案例部署和运行步骤、脚本使用方法与各参数的意义供读者阅读与实验。
+我们在如下链接[https://gitee.com/ascend/samples/tree/master/python/level2_simple_inference/1_classification/lenet_mindspore_picture](https://gitee.com/ascend/samples/tree/master/python/level2_simple_inference/1_classification/lenet_mindspore_picture)的readme中详细提供了运行本案例部署和运行步骤、脚本使用方法与各参数的意义供读者阅读与实验。
 
 步骤 1 准备开发板运行环境
 
