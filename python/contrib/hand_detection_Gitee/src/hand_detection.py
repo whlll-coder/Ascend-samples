@@ -48,7 +48,7 @@ def PostProcessing(image, resultList, threshold=0.6):
 		bbox_width = det_xmax - det_xmin
 		bbox_height = det_ymax - det_ymin
 		# the detection confidence and bbox dimensions must be greater than a minimum value to be a valid detection
-		if threshold <= det_conf and 1 >= det_conf and bbox_width>0 and bbox_height > 0:
+		if threshold <= det_conf and 1 >= det_conf and bbox_width > 0 and bbox_height > 0:
 			bbox_num += 1
 			xmin = int(round(det_xmin * image.shape[1]))
 			ymin = int(round(det_ymin * image.shape[0]))
