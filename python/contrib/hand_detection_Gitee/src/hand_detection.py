@@ -109,10 +109,10 @@ if __name__ == '__main__':
 	input_image = PreProcessing(test_image)
 	
 	# om model inference 
-	resultList  = model.execute([input_image])
+	inferenceList  = model.execute([input_image])
 
 	# postprocessing and save inference results
-	PostProcessing(image, resultList)
+	PostProcessing(test_image, inferenceList)
 	
 
 
