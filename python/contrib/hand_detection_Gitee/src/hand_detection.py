@@ -1,16 +1,18 @@
-# Copyright 2020 Huawei Technologies Co., Ltd
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#     http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
+"""
+Copyright 2020 Huawei Technologies Co., Ltd
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+"""
 
 import numpy as np
 import sys
@@ -28,8 +30,8 @@ from atlas_utils.acl_model import Model
 from atlas_utils.acl_resource import AclResource 
 
 
-# draw the bounding boxes for all detected hands with confidence greater than a set threshold
 def PostProcessing(image, resultList, threshold=0.6):
+	"""draw the bounding boxes for all detected hands with confidence greater than a set threshold"""
 	num_detections = resultList[0][0].astype(np.int)
 	scores = resultList[2]
 	boxes = resultList[3]
@@ -37,23 +39,23 @@ def PostProcessing(image, resultList, threshold=0.6):
 	
 	# loop through all the detections and get the confidence and bbox coordinates
 	for i in range(num_detections):
-		det_conf = scores[0,i]
-		det_ymin = boxes[0,i,0]
-		det_xmin = boxes[0,i,1]
-		det_ymax = boxes[0,i,2]
-		det_xmax = boxes[0,i,3]
+		det_conf = scores[0, i]
+		det_ymin = boxes[0, i, 0]
+		det_xmin = boxes[0, i, 1]
+		det_ymax = boxes[0, i, 2]
+		det_xmax = boxes[0, i, 3]
 
 		bbox_width = det_xmax - det_xmin
 		bbox_height = det_ymax - det_ymin
 		# the detection confidence and bbox dimensions must be greater than a minimum value to be a valid detection
-		if threshold <= det_conf and 1>=det_conf and bbox_width>0 and bbox_height > 0:
+		if threshold <= det_conf and 1 >= det_conf and bbox_width>0 and bbox_height > 0:
 			bbox_num += 1
 			xmin = int(round(det_xmin * image.shape[1]))
 			ymin = int(round(det_ymin * image.shape[0]))
 			xmax = int(round(det_xmax * image.shape[1]))
 			ymax = int(round(det_ymax * image.shape[0]))
 			
-			cv2.rectangle(image,(xmin,ymin),(xmax,ymax),(0,255,0),2)
+			cv2.rectangle(image, (xmin, ymin), (xmax, ymax), (0, 255, 0), 2)
 		else:
 			continue
 
@@ -61,16 +63,16 @@ def PostProcessing(image, resultList, threshold=0.6):
 	SRC_PATH = os.path.realpath(__file__).rsplit("/", 1)[0]
 	Output_PATH = os.path.join(SRC_PATH, "../output/output.jpg")
 	try:
-		os.mkdir(os.path.join(SRC_PATH,"../output/"))
+		os.mkdir(os.path.join(SRC_PATH, "../output/"))
 	except:
 		print("Output Path already exists")
-	cv2.imwrite(Output_PATH,image)
+	cv2.imwrite(Output_PATH, image)
 
 	
 def PreProcessing(image):
-	# resize image to 300*300, and RGB
+	"""Pre-processing - resize image to 300x300 RGB"""
 	image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
-	image = cv2.resize(image, (300,300))
+	image = cv2.resize(image, (300, 300))
 	# type conversion to UINT8
 	image = image.astype(np.uint8).copy()
 	return image
@@ -80,7 +82,7 @@ if __name__ == '__main__':
 
 	description = 'hand detection'
 	parser = argparse.ArgumentParser(description=description)
-	parser.add_argument('--input_image', type=str,default='../data/hand.jpeg', help="Directory path for image")
+	parser.add_argument('--input_image', type=str, default='../data/hand.jpeg', help="Directory path for image")
 
 	args = parser.parse_args()
 	
