@@ -276,7 +276,7 @@ mox.file.copy('/home/ma-user/work/lenet.air', 'obs://train-moderlarts/wy/LeNet_f
 
  **任务二 模型转换** 
 
-在完成LeNet图片模型的训练（训练可参考**（文档未上传）**）得到mindspore的LeNet.air算法模型之后，首先需要进行离线模型转换这一步骤，将mindspore的LeNet.air模型转换为Ascend 310芯片支持的模型（Davinci架构模型），才可进一步将其部署在Atlas 200 DK开发板上。
+在完成LeNet图片模型的训练得到mindspore的LeNet.air算法模型之后，首先需要进行离线模型转换这一步骤，将mindspore的LeNet.air模型转换为Ascend 310芯片支持的模型（Davinci架构模型），才可进一步将其部署在Atlas 200 DK开发板上。
 
 通过ATC命令对训练得到的mindspore的模型进行转化。
 
