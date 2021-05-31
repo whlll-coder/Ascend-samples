@@ -64,7 +64,7 @@ def PostProcessing(image, resultList, threshold=0.6):
 	Output_PATH = os.path.join(SRC_PATH, "../output/output.jpg")
 	try:
 		os.mkdir(os.path.join(SRC_PATH, "../output/"))
-	except:
+	except Exception as e:
 		print("Output Path already exists")
 	cv2.imwrite(Output_PATH, image)
 
@@ -94,20 +94,19 @@ if __name__ == '__main__':
 	acl_resource.init()
 
 	#load model
-	SRC_PATH = os.path.realpath(__file__).rsplit("/", 1)[0]
-	MODEL_PATH = os.path.join(SRC_PATH, "../model/" + model_name + ".om")
+	PROJECT_SRC_PATH = os.path.realpath(__file__).rsplit("/", 1)[0]
+	MODEL_PATH = os.path.join(PROJECT_SRC_PATH, "../model/" + model_name + ".om")
 	print("MODEL_PATH:", MODEL_PATH)
 	try:
 		model = Model(MODEL_PATH)
 		# model = Model(acl_resource, MODEL_PATH)
-	except:
+	except Exception as e:
 		print("Model loads error from", MODEL_PATH)
 
 	# load image file 
 	img_path = os.path.join(path, args.input_image)
-	image = cv2.imread(img_path)
-	print("Image: ", image)
-	input_image = PreProcessing(image)
+	test_image = cv2.imread(img_path)
+	input_image = PreProcessing(test_image)
 	
 	# om model inference 
 	resultList  = model.execute([input_image])
