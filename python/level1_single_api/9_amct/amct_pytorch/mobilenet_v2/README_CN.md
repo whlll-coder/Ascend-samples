@@ -6,6 +6,20 @@
 
 ### 1.1 量化前提
 
+- **安装依赖**
+
+  本 sample 依赖 numpy,  opencv-python 和 torchvison 包：
+
+  安装命令：
+
+  ```
+  pip3 install numpy
+  pip3 install opencv-python
+  pip3 install torchvision==0.6.0
+  ```
+  torchvison 0.6.0 是 torch 1.5.0 的配套版本，如果使用其他版本的torch，则安装配套的 torchvison；
+  如果需要使用 GPU 版本的 torch, 则安装和 CUDA 环境对应的 torch, torchvision 版本即可，详细安装指导可以参考 torch 官网；
+
 + **数据集准备**  
 使用昇腾模型压缩工具对模型完成量化后，需要对模型进行推理，以测试量化数据的精度。推理过程中需要使用和模型相匹配的数据集。请下载[测试图片](https://modelzoo-train-atc.obs.cn-north-4.myhuaweicloud.com/003_Atc_Models/AE/ATC%20Model/resnet-101_nuq/images.zip)，解压后将 “images” 文件夹放到 [data](./data/) 目录下。
 
@@ -30,10 +44,10 @@ python ./src/mobilenet_v2_accuracy_based_auto_calibration.py
 | -------- | ------------------------------------------------- | ------------------------------------------------------------ |
 | amct_log | amct_pytorch.log                                  | amct_pytorch 工具在执行过程中相关日志文件                    |
 |          | accuracy_based_auto_calibration_record.json       | 基于精度的自动量化回退过程中的量化配置记录文件               |
-|          | tempxxxxx/ 目录                                   | 里面保存了隐藏层的 feature map 和其他临时性模型文件，当执行完毕后就可以删除 |
 | results  | mobilenet_v2_fake_quant_model.onnx                | 生成的 fake quant onnx 模型文件                              |
 |          | mobilenet_v2_deploy_model.onnx                    | 生成的 deploy onnx 模型文件                                  |
 |          | accuracy_based_auto_calibration_final_config.json | 基于精度的自动量化回退最终搜索得到的量化配置文件             |
 |          | accuracy_based_auto_calibration_ranking_info.json | 基于精度的自动量化回退过程中记录的每层量化敏感度信息文件     |
+|          | tempxxxxx/ 目录                                   | 里面保存了隐藏层的 feature map 和其他临时性模型文件，当执行完毕后就可以删除 |
 | tmp      | config.json                                       | 量化过程中的量化配置文件                                     |
 |          | scale_offset_record.txt                           | 量化因子记录文件                                             |
