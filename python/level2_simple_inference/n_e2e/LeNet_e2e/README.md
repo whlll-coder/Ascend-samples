@@ -101,7 +101,7 @@ windows环境中在OBS Browser+中，进入刚刚创建的“华为北京四”�
 
 
 
-![输入图片说明](https://images.gitee.com/uploads/images/2021/0528/091204_a3c692c3_5403304.png "image-20210525153814870.png")
+![输入图片说明](https://images.gitee.com/uploads/images/2021/0601/143823_4ddb9860_5578318.png "屏幕截图.png")
 
 
 - 工作环境：展开“公共镜像”，选择 **Ascend-Powered-Engine 1.0（Python3）**。
@@ -118,21 +118,21 @@ windows环境中在OBS Browser+中，进入刚刚创建的“华为北京四”�
 
 如果Notebook没有启动，则在Notebook页签中启动创建的任务。
 
+![输入图片说明](https://images.gitee.com/uploads/images/2021/0601/144721_3c542f7a_5578318.png "屏幕截图.png")
 
-
-![启动.png](https://images.gitee.com/uploads/images/2021/0129/141119_8c8f5300_5400693.png)
 
 如果Notebook已经启动，则在Notebook页签中打开训练任务。
 
-![open.png](https://images.gitee.com/uploads/images/2021/0129/141412_80014968_5400693.png)
+![输入图片说明](https://images.gitee.com/uploads/images/2021/0601/144636_dde5d6d1_5578318.png "屏幕截图.png")
 
 打开后，进入到Jupyter页面，将所有文件同步到Modelarts中（当前展示的这些文件都是OBS上的数据，训练加载时需要在Modelarts的Notebook创建的环境中同步这些文件）。
-
-![输入图片说明](https://images.gitee.com/uploads/images/2021/0528/143338_89ab4d08_5578318.png "1622181876(1).png")
+![输入图片说明](https://images.gitee.com/uploads/images/2021/0601/144039_29ad0c80_5578318.png "屏幕截图.png")
+![输入图片说明](https://images.gitee.com/uploads/images/2021/0601/144057_a5bd1737_5578318.png "屏幕截图.png")
+![输入图片说明](https://images.gitee.com/uploads/images/2021/0601/144142_1d016461_5578318.png "屏幕截图.png")
 
 同步完成后如下：
 
-![输入图片说明](https://images.gitee.com/uploads/images/2021/0528/143355_2fee4cae_5578318.png "1622181972(1).png")
+![输入图片说明](https://images.gitee.com/uploads/images/2021/0601/144157_137ee154_5578318.png "屏幕截图.png")
 
 
 **4、训练步骤**
@@ -145,8 +145,7 @@ windows环境中在OBS Browser+中，进入刚刚创建的“华为北京四”�
 ![输入图片说明](https://images.gitee.com/uploads/images/2021/0528/093046_23629234_5403304.png "444.png")
 
 进入后
-
-![输入图片说明](https://images.gitee.com/uploads/images/2021/0528/143427_eec7b4ce_5578318.png "1622182029(1).png")
+![输入图片说明](https://images.gitee.com/uploads/images/2021/0601/144223_38dcb321_5578318.png "屏幕截图.png")
 
 点击Other->Terminal，使用命令行进入MindSpore的训练环境，执行
 
@@ -210,8 +209,7 @@ export(network, Tensor(input_data), file_name = './lenet', file_format = 'AIR')
 
 点击左上角，新建Mindspore的Notebook，
 
-![输入图片说明](https://images.gitee.com/uploads/images/2021/0528/142547_a02ca550_5578318.png "屏幕截图.png")
-
+![输入图片说明](https://images.gitee.com/uploads/images/2021/0601/144358_331175a5_5578318.png "屏幕截图.png")
 
 通过执行!pwd，我们看到当前路径是在/home/ma-user/work，网络定义文件所在路径是你自己的目录下的LeNet_for_MindSpore/src中。
 
