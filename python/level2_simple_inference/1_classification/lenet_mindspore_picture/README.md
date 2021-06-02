@@ -118,7 +118,7 @@ Before deploying this sample, ensure that:
 
       **source ~/.bashrc**
 
-      **cd $HOME/samples/python/level2_simple_inference/1_classification/lenet_mindspore_picture/src/**     
+      **cd $HOME/samples/python/level2_simple_inference/1_classification/lenet_mindspore_picture/**     
 
     Run the following command to run the sample:
 
