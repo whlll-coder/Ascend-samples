@@ -87,7 +87,7 @@ class CrowdCount(object):
         heatMap = cv2.applyColorMap(heatMap, cv2.COLORMAP_JET)
         add_img = cv2.addWeighted(orig, 1, heatMap, 0.5, 0.0)
         cv2.putText(add_img, str(result), (30, 60), cv2.FONT_HERSHEY_PLAIN, 5, (0, 0, 255), 8)  
-        output_path = os.path.join("./outputs", os.path.basename(image_file))
+        output_path = os.path.join("../outputs", os.path.basename(image_file))
         cv2.imwrite(output_path, add_img)
        
 
