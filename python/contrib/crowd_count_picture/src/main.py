@@ -23,7 +23,7 @@ import atlas_utils.constants as constants
 from atlas_utils.acl_dvpp import Dvpp
 from atlas_utils.acl_model import Model
 from atlas_utils.acl_image import AclImage
-from acl_resource import AclResource
+from atlas_utils.acl_resource import AclResource
 from PIL import Image, ImageDraw, ImageFont
 import numpy as np
 
