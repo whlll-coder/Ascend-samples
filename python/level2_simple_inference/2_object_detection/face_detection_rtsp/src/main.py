@@ -12,7 +12,7 @@ sys.path.append(cur_file_dir + "/../../../../common")
 import atlas_utils.video as video
 from atlas_utils.constants import *
 from atlas_utils.utils import *
-from acl_resource import AclResource
+from atlas_utils.acl_resource import AclResource
 from atlas_utils.acl_image import AclImage
 from atlas_utils.acl_logger import log_error, log_info
 
