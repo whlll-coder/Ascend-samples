@@ -22,7 +22,6 @@ declare -i verifyResError=2
 
 
 function downloadDataWithVerifySource() {
-    mkdir -p ${project_path}/data/
 
     wget -O ${project_path}/data/"person.mp4"  ${data_source}  --no-check-certificate
     if [ $? -ne 0 ];then
