@@ -51,7 +51,7 @@
 
    参考下表获取此应用中所用到的模型，并将其存放到开发环境普通用户下的工程目录：
 
-	cd $HOME/samples/python/contrib/ccrowd_count_picture/model
+	cd $HOME/samples/python/contrib/crowd_count_picture/model
 
 | **模型名称** | **模型说明**          | **模型下载路径**                                             |
 | ------------ | --------------------- | ------------------------------------------------------------ |
