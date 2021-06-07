@@ -102,7 +102,7 @@ windows环境中在OBS Browser+中，进入刚刚创建的“华为北京四”�
 - 自动停止：选择“工作环境“后弹出，可自行选择时长。
 
 
-
+![输入图片说明](https://images.gitee.com/uploads/images/2021/0607/103727_b1c36a14_5400693.png "f13cca82c9e82c13b4a8642c64e5e53.png")
 
 
 
@@ -111,7 +111,7 @@ windows环境中在OBS Browser+中，进入刚刚创建的“华为北京四”�
 - 类型：默认选择“Ascend”即可。
 - 规格：默认选择“Ascend：1*Ascend 910 cpu：24核 96 GIB”即可。。
 - 存储配置：默认选择“对象存储服务（OBS）”即可。
-- **存储位置：选择一个上传代码的路径，即OBS上训练代码和数据集所在的地方，如/modelart-xuyetao/resnet50/，方便后续上传到modelarts。**
+- **存储位置：选择一个上传代码的路径，即OBS上训练代码和数据集所在的地方，如/modelarts--course/GoogLeNet/，方便后续上传到modelarts。**
 - 完成信息填写，单击“下一步”,规格确认无误后点击提交即可。
 
 
@@ -122,24 +122,21 @@ windows环境中在OBS Browser+中，进入刚刚创建的“华为北京四”�
 
 
 
-![启动.png](https://images.gitee.com/uploads/images/2021/0129/141119_8c8f5300_5400693.png)
+![输入图片说明](https://images.gitee.com/uploads/images/2021/0607/104144_485b8bf9_5400693.png "6393b2fe1c338c29f0809ac21ae8a80.png")
 
 如果Notebook已经启动，则在Notebook页签中打开训练任务。
 
-![open.png](https://images.gitee.com/uploads/images/2021/0129/141412_80014968_5400693.png)
+![输入图片说明](https://images.gitee.com/uploads/images/2021/0607/104018_5ee64f60_5400693.png "d96c5bb7b5e5c0208c3bf15832231cc.png")
 
 打开后，进入到Jupyter页面，将所有文件同步到Modelarts中（当前展示的这些文件都是OBS上的数据，训练加载时需要在Modelarts的Notebook创建的环境中同步这些文件）。
 
 
-![输入图片说明](https://images.gitee.com/uploads/images/2021/0528/091253_f8113b27_5403304.png "01.png")
+![输入图片说明](https://images.gitee.com/uploads/images/2021/0607/104414_ea9013b5_5400693.png "69655c21e583c5085bff228470bf40c.png")
 
 
 同步完成后如下：
 
-
-
-![输入图片说明](https://images.gitee.com/uploads/images/2021/0528/091315_cd547436_5403304.png "02.png")
-
+![输入图片说明](https://images.gitee.com/uploads/images/2021/0607/104508_7bb3b37c_5400693.png "d3e6137e999a3c22aa89feb4a2bdb6e.png")
 
 **4、训练步骤**
 
@@ -148,12 +145,12 @@ windows环境中在OBS Browser+中，进入刚刚创建的“华为北京四”�
 点击右上角的Open JupyterLab
 
 
-![输入图片说明](https://images.gitee.com/uploads/images/2021/0528/093046_23629234_5403304.png "444.png")
+![输入图片说明](https://images.gitee.com/uploads/images/2021/0607/104645_68e47538_5400693.png "be009b9dac7520cbae31bd7c71a6b70.png")
 
 进入后
 
 
-![输入图片说明](https://images.gitee.com/uploads/images/2021/0528/093112_2183c352_5403304.png "3.png")
+![输入图片说明](https://images.gitee.com/uploads/images/2021/0607/104753_df8f7c06_5400693.png "3d88231a742710095711e6dcfdd0498.png")
 
 
 点击Other->Terminal，使用命令行进入MindSpore的训练环境，执行
@@ -170,71 +167,53 @@ source /home/ma-user/miniconda3/bin/activate Mindspore-python3.7-aarch64
 
 进入/home/ma-user/work目录，即可看到刚才同步OBS的文件目录。
 
-由于部分代码经过windows上传会出现格式变化，这里可以执行以下命令做一些格式处理
+配置config.py文件中数据集对应目录，准备训练
+```
+vi ./src/config.py
+```
+修改cifar_cfg中的data_path字段，这里为../    
+![输入图片说明](https://images.gitee.com/uploads/images/2021/0607/112011_2204eeb7_5400693.png "cf951262048edb7d81001d9c8486a67.png")
+
+执行以下命令开始训练，可以在当前terminal中看到打印日志
 
 ```
-cd ResNet50_for_MindSpore/scripts/
-sed -i 's/\r//g' run_standalone_train.sh
+python train.py
 ```
 
-执行以下命令开始训练
-
-```
-bash run_standalone_train.sh resnet50 cifar10 /home/ma-user/work/cifar-10-batches-bin/
-```
-
-可以在当前路径下的train目录执行命令看到log
-
-```
-cd train
-tail -f log
-```
 
 执行流程如图
 
 
-![输入图片说明](https://images.gitee.com/uploads/images/2021/0528/093200_80a88229_5403304.png "05.png")
+![输入图片说明](https://images.gitee.com/uploads/images/2021/0607/112143_7e31b367_5400693.png "a61707c47e9be21efdd2aff29619268.png")
 
 
-当看到epoch = 90时，说明训练完成了。
+当看到"train success"时，说明训练完成了。
 
 
-![输入图片说明](https://images.gitee.com/uploads/images/2021/0528/093224_2c0d183a_5403304.png "8.png")
+![输入图片说明](https://images.gitee.com/uploads/images/2021/0607/170652_3f238c6f_5400693.png "d7e5edc172fdd7f4bffb794303627f2.png")
 
 
 - **导出AIR格式模型**
 
-这时候我们看到当前train目录下生成了ckpt文件，取生成的最后一个即resnet-90_1875.ckpt，通过网络定义和CheckPoint生成AIR格式模型文件。
+这时候我们看到当前目录下生成了ckpt_0文件夹，目录中取生成的最后一个即train_googlenet_cifar10-125_468.ckpt，通过脚本生成AIR格式模型文件。
 
-导出代码参考如下：
-
+进入配置文件，修改cifar_cfg中的checkpoint_path为"./ckpt_0/train_googlenet_cifar10-125_468.ckpt"。    
 ```
-import numpy as np
-from mindspore import Tensor, export, load_checkpoint, load_param_into_net
-import sys
-sys.path.append("./resnet/ResNet50_for_MindSpore/scripts/train/src")
-from resnet import *
+vi ./src/config.py
+```
+![输入图片说明](https://images.gitee.com/uploads/images/2021/0607/175045_f596534f_5400693.png "屏幕截图.png")
 
-resnet = resnet50()
-# load the parameter into net
-load_checkpoint("/home/ma-user/work/resnet/ResNet50_for_MindSpore/scripts/train/resnet-90_1875.ckpt", net=resnet)
-input = np.random.uniform(0.0, 1.0, size=[1, 3, 224, 224]).astype(np.float32)
-export(resnet, Tensor(input), file_name='resnet50-90_1875', file_format='AIR')
+进入export.py文件，按照截图修改export函数。
+```
+vi export.py
+```
+![输入图片说明](https://images.gitee.com/uploads/images/2021/0607/175230_3342b2ac_5400693.png "屏幕截图.png")
+
+执行export.py文件，完成后会在/home/ma-user/work/GoogLeNet_for_MindSpore下生成.air文件。
+```
+python export.py
 ```
 
-点击左上角，新建Mindspre的Notebook，
-
-
-![输入图片说明](https://images.gitee.com/uploads/images/2021/0528/093707_450db74a_5403304.png "01.png")
-
-
-通过执行!pwd，我们看到当前路径是在/home/ma-user/work，网络定义文件所在路径是你自己的目录下的ResNet50_for_MindSpore/scripts/train/src中。
-
-
-![输入图片说明](https://images.gitee.com/uploads/images/2021/0528/093739_6357a520_5403304.png "02.png")
-
-
-执行代码块，完成后会在/home/ma-user/work下生成.air文件。
 
 - **上传模型到OBS**
 
@@ -242,7 +221,7 @@ export(resnet, Tensor(input), file_name='resnet50-90_1875', file_format='AIR')
 
 ```
 import moxing as mox
-mox.file.copy('/home/ma-user/work/resnet50-90_1875.air', 'obs://modelart-xuyetao/resnet50/resnet-90_1875.air')
+mox.file.copy('/home/ma-user/work/GoogLeNet_for_MindSpore/googlenet.air', 'obs://modelarts--course/GoogLeNet/googlenet.air')
 ```
 
 执行成功后就可以在OBS的路径下看到自己的模型文件了，在OBS界面获取这个.air文件的链接，下载模型文件，准备做离线模型转换。
