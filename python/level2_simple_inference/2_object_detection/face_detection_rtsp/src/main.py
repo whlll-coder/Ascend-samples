@@ -29,7 +29,6 @@ FACE_DETEC_CONF="../scripts/face_detection.conf"
 def create_threads(detector):
     config = configparser.ConfigParser()
     config.read(FACE_DETEC_CONF)
-    
     video_decoders = []
     for item in config['videostream']:
         preprocesser = Preprocess(config['videostream'][item], 
@@ -78,15 +77,12 @@ def main():
         for decoder in video_decoders:
             ret, data = decoder.get_data()
             if ret == False:                
-                log_info("Read data ret ", ret)
                 continue
-            
             if data:
                 detect_results = detector.execute(data)
                 postprocessor.process(data, detect_results)
                 
             all_process_fin = False
-
         if all_process_fin:
             log_info("all video decoder finish")
             break
