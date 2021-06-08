@@ -33,7 +33,7 @@ class Preprocess():
         self._stream_name = str(stream_name)
         self._channel = int(channel)         
         self._resize_width = resize_width
-        self._resize_height = resize_width
+        self._resize_height = resize_height
         self._status = STATUS_PREPROC_INIT
         self._display = False
         self._dvpp = None
@@ -67,12 +67,12 @@ class Preprocess():
         while self._status == STATUS_PREPROC_RUNNING: 
             ret, image = self._cap.read()
             if ret:
-                log_error("Video %s decode failed"%(self._stream_name))
+                log_error("Video %s decode failed" % (self._stream_name))
                 self._status = STATUS_PREPROC_ERROR
                 break
 
             if (image is None) and self._cap.is_finished():
-                log_info("Video %s decode finish"%(self._stream_name))
+                log_info("Video %s decode finish" % (self._stream_name))
                 self._status = STATUS_PREPROC_EXIT
                 break
 
@@ -122,7 +122,10 @@ class Preprocess():
 
     def is_finished(self):
         return self._status > STATUS_PREPROC_RUNNING
-
+    
+    """
+    The method for getting data 
+    """
     def get_data(self):
         if self._status >= STATUS_PREPROC_EXIT:            
             return False, None

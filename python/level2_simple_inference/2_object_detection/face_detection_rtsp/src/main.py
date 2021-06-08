@@ -59,11 +59,9 @@ def create_threads(detector):
 
 
 def main():
-    #初始化acl
     acl_resource = AclResource()
     acl_resource.init()   
 
-    #创建一个检测网络实例,当前使用vgg_ssd网络.当更换检测网络时,在此实例化新的网络
     detector = VggSsd(acl_resource, MODEL_PATH, MODEL_WIDTH, MODEL_HEIGHT)
 
     video_decoders, postprocessor = create_threads(detector)
