@@ -233,12 +233,12 @@ mox.file.copy('/home/ma-user/work/GoogLeNet_for_MindSpore/googlenet.air', 'obs:/
 ### 6.1 实验原理
 
 
-![输入图片说明](https://images.gitee.com/uploads/images/2021/0528/093824_7dd1d3c2_5403304.png "readme.png")
+![输入图片说明](https://images.gitee.com/uploads/images/2021/0608/173918_bda62427_5400693.png "7c6859b3b3626a6097d17a481baf436.png")
 
 
-**图6.1 ResNet50图片分类实验原理图** 
+**图6.1 GoogleNet图片分类实验原理图** 
 
-本实验是基于Atlas 200DK的图像分类项目，基于ResNet50图片分类网络编写的示例代码，该示例代码部署在Atlas 200DK上 ，通过读取本地图像数据作为输入，对图像中的物体进行识别分类，并将分类的结果展示出来
+本实验是基于Atlas 200DK的图像分类项目，基于GoogleNet图片分类网络编写的示例代码，该示例代码部署在Atlas 200DK上 ，通过读取本地图像数据作为输入，对图像中的物体进行识别分类，并将分类的结果展示出来
 
 在本实验中，主要聚焦在Atlas 200 DK开发板上的应用案例移植环节，因此读者需要重点关注图片数据预处理及数据推理、检测结果后处理环节的操作。
 
@@ -251,28 +251,26 @@ mox.file.copy('/home/ma-user/work/GoogLeNet_for_MindSpore/googlenet.air', 'obs:/
 ### 6.2 实验流程
 
 
-![输入图片说明](https://images.gitee.com/uploads/images/2021/0528/093841_2aac1b34_5403304.png "readme2.png")
+![输入图片说明](https://images.gitee.com/uploads/images/2021/0608/174740_7b3426b1_5400693.png "8969dff692690867d29e535570c638d.png")
 
 
- **图 6.2 ResNet50图片分类应用案例移植流程图** 
+ **图 6.2 Googlenet图片分类应用案例移植流程图** 
 
-在本实验中，默认已完成硬件环境和软件环境的准备工作，在此基础上进行ResNet50图片分类应用项目的实验操作，由上图可知，本实验需要分别在Ubuntu主机PC端完成基于Python的ResNet50图片分类应用代码的编写工作，以及ResNet50图片分类模型转换，最后在Atlas 200 DK开发板上进行项目部署执行工作。
+在本实验中，默认已完成硬件环境和软件环境的准备工作，在此基础上进行GoogleNet图片分类应用项目的实验操作，由上图可知，本实验需要分别在Ubuntu主机PC端完成基于Python的GoogleNet图片分类应用代码的编写工作，以及GoogleNet图片分类模型转换，最后在Atlas 200 DK开发板上进行项目部署执行工作。
 
-本案例移植的源代码编写及运行以链接
-（[https://gitee.com/ascend/samples/tree/master/python/level2_simple_inference/1_classification/resnet50_mindspore_picture](https://gitee.com/ascend/samples/tree/master/python/level2_simple_inference/1_classification/resnet50_mindspore_picture)
-）里的源码为例进行说明，实验任务及步骤将围绕图6.2所示四个方面分别展开介绍。
+本案例移植的源代码编写及运行以[googlenet_mindspore_picture应用](https://gitee.com/ascend/samples/tree/master/python/level2_simple_inference/1_classification/googlenet_mindspore_picture)里的源码为例进行说明，实验任务及步骤将围绕图6.2所示四个方面分别展开介绍。
 
 ### 6.3 实验任务及步骤
 
  **任务一 实验准备** 
 
-本实验使用Python进行开发，并使用命令行操作进行应用的部署和使用，因此我们选用官方提供的图像分类应用案例作为接下来开发的模板工程。图像分类应用案例可在[https://gitee.com/ascend/samples/tree/master/python/level2_simple_inference/1_classification/resnet50_mindspore_picture](https://gitee.com/ascend/samples/tree/master/python/level2_simple_inference/1_classification/resnet50_mindspore_picture)中进行下载。
+本实验使用Python进行开发，并使用命令行操作进行应用的部署和使用，因此我们选用官方提供的图像分类应用案例作为接下来开发的模板工程。图像分类应用案例可在[googlenet_mindspore_picture应用](https://gitee.com/ascend/samples/tree/master/python/level2_simple_inference/1_classification/googlenet_mindspore_picture)中进行下载。
 
 参考该案例的README.md进行软件准备、部署、运行等步骤。确保环境配置无误，并能够得到正确的结果，即可进行下一步的开发。
 
  **任务二 模型转换** 
 
-在完成ResNet50图片模型的训练（训练可参考**（文档未上传）**）得到mindspore的resnet50-90_1875.air算法模型之后，首先需要进行离线模型转换这一步骤，将mindspore的resnet50-90_1875.air模型转换为Ascend 310芯片支持的模型（Davinci架构模型），才可进一步将其部署在Atlas 200 DK开发板上。
+在完成Googlenet图片模型的训练得到mindspore的googlenet.air算法模型之后，首先需要进行离线模型转换这一步骤，将mindspore的googlenet.air模型转换为Ascend 310芯片支持的模型（Davinci架构模型），才可进一步将其部署在Atlas 200 DK开发板上。
 
 通过ATC命令对训练得到的mindspore的模型进行转化。
 
@@ -290,14 +288,14 @@ export ASCEND_OPP_PATH=${install_path}/opp
 步骤 2   ATC转化
 
 ```
-atc --model=./resnet-90_1875.air --framework=1 --output=./resnet50 --soc_version=Ascend310
+atc --model=./googlenet.air --framework=1 --output=./googlenet --soc_version=Ascend310
 ```
 
-执行完之后会在当前执行ATC命令的目录下生成resnet50.om文件
+执行完之后会在当前执行ATC命令的目录下生成googlenet.om文件
 
  **任务三 应用代码修改** 
 
-完成以上步骤后，我们得到了所需要的网络模型。我们基于任务一获取的Python模板工程进行修改和补充，构建ResNet50图片分类算法应用。接下来我们将对预处理模块、推理模块以及后处理模块的更新和补充进行介绍。
+完成以上步骤后，我们得到了所需要的网络模型。我们基于任务一获取的Python模板工程进行修改和补充，构建Googlenet图片分类算法应用。接下来我们将对预处理模块、推理模块以及后处理模块的更新和补充进行介绍。
 
 步骤 1  预处理模块
 
@@ -382,12 +380,12 @@ atc --model=./resnet-90_1875.air --framework=1 --output=./resnet50 --soc_version
         print("images:{}".format(image_file))
         print("======== top5 inference results: =============")
         for n in top_k:
-            object_class = get_resnet50_class(n)
+            object_class = get_googlenet_class(n)
             print("label:%d  confidence: %f, class: %s" % (n, vals[n], object_class))
         
         #using pillow, the category with the highest confidence is written on the image and saved locally
         if len(top_k):
-            object_class = get_resnet50_class(top_k[0])
+            object_class = get_googlenet_class(top_k[0])
             output_path = os.path.join(os.path.join(SRC_PATH, "../outputs"), os.path.basename(image_file))
             origin_img = Image.open(image_file)
             draw = ImageDraw.Draw(origin_img)
@@ -399,7 +397,7 @@ atc --model=./resnet-90_1875.air --framework=1 --output=./resnet50 --soc_version
  **任务四 应用运行** 
 本应用的运行过程是在开发板上执行，需要将工程文件拷贝到开发板上。
 
-我们在如下链接[https://gitee.com/ascend/samples/tree/master/python/level2_simple_inference/1_classification/resnet50_mindspore_picture](https://gitee.com/ascend/samples/tree/master/python/level2_simple_inference/1_classification/resnet50_mindspore_picture)的readme中详细提供了运行本案例部署和运行步骤、脚本使用方法与各参数的意义供读者阅读与实验。
+我们在[googlenet_mindspore_picture应用](https://gitee.com/ascend/samples/tree/master/python/level2_simple_inference/1_classification/googlenet_mindspore_picture)的readme中详细提供了运行本案例部署和运行步骤、脚本使用方法与各参数的意义供读者阅读与实验。
 
 步骤 1 准备开发板运行环境
 
@@ -457,8 +455,8 @@ ssh HwHiAiUser@192.168.1.2 "tail -n8  .bashrc"
 本实验的输入图片需要自行下载放到工程目录下的./data目录下。
 
 ```
-wget https://modelart-xuyetao.obs.cn-north-4.myhuaweicloud.com/resnet50/airplane.jpg 
-wget https://modelart-xuyetao.obs.cn-north-4.myhuaweicloud.com/resnet50/car.jpg
+wget https://modelart-xuyetao.obs.cn-north-4.myhuaweicloud.com/googlenet/airplane.jpg 
+wget https://modelart-xuyetao.obs.cn-north-4.myhuaweicloud.com/googlenet/car.jpg
 ```
 
 用户可将要推理的图片存放于此目录作为推理输入数据。
@@ -474,7 +472,7 @@ ssh HwHiAiUser@192.168.1.2
 2)进入拷贝至开发板中的工程目录，执行如下命令运行工程
 
 ```
-cd HIAI_PROJECTS/samples/python/level2_simple_inference/1_classification/resnet50_mindspore_picture/src
+cd HIAI_PROJECTS/samples/python/level2_simple_inference/1_classification/googlenet_mindspore_picture/src
 python3 src/classify_test.py ./data/
 ```
 
@@ -495,7 +493,7 @@ python3 src/classify_test.py ./data/
 将推理结果图片从Atlas200dk拷贝至本地Ubuntu的家目录中查看。在本地Ubuntu执行如下命令进行拷贝：
 
 ```
-scp -r HwHiAiUser@192.168.1.2:~/HIAI_PROJECTS/samples/python/level2_simple_inference/1_classification/resnet50_mindspore_picture/outputs ~
+scp -r HwHiAiUser@192.168.1.2:~/HIAI_PROJECTS/samples/python/level2_simple_inference/1_classification/googlenet_mindspore_picture/outputs ~
 ```
 
 在本地Ubuntu中查看拷贝后的推理结果图片，如下：
@@ -503,7 +501,7 @@ scp -r HwHiAiUser@192.168.1.2:~/HIAI_PROJECTS/samples/python/level2_simple_infer
 
 ![输入图片说明](https://images.gitee.com/uploads/images/2021/0528/094033_0c4c6793_5403304.png "05.png")
 
-到这里，我们就完成了整个ResNet50图片分类应用全流程开发（MindSpore训练+AscendCL推理）的这个实验。
+到这里，我们就完成了整个GoogleNet图片分类应用全流程开发（MindSpore训练+AscendCL推理）的这个实验。
 
 
 
