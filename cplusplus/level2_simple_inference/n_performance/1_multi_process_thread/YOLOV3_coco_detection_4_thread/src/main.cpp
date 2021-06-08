@@ -35,10 +35,8 @@
 #define VIDEONUM 4
 using namespace std;
 
-struct timespec time1 = {0, 0};
-struct timespec time2 = {0, 0};
-struct timespec time3 = {0, 0};
-struct timespec time4 = {0, 0};
+struct timespec g_time1 = {0, 0};
+struct timespec g_time2 = {0, 0};
 
 namespace {
     uint32_t kModelWidth = 416;
@@ -233,7 +231,7 @@ int main(int argc, char *argv[]) {
     message_pre premsg;
     message msg;
     int video_need_preprocess = VIDEONUM;
-    clock_gettime(CLOCK_REALTIME, &time3);
+    clock_gettime(CLOCK_REALTIME, &g_time1);
     while(1) {
         if(queue_pre.Pop(premsg) != 0) {
             usleep(1000);
@@ -279,9 +277,9 @@ int main(int argc, char *argv[]) {
             }
         }
     }
-    clock_gettime(CLOCK_REALTIME, &time4);
-    cout << "Execute time passed is: " << (time4.tv_sec - time3.tv_sec)*1000 
-            + (time4.tv_nsec - time3.tv_nsec)/1000000 << "ms" << endl;
+    clock_gettime(CLOCK_REALTIME, &g_time2);
+    cout << "Execute time passed is: " << (g_time2.tv_sec - g_time1.tv_sec) * 1000 
+            + (g_time2.tv_nsec - g_time1.tv_nsec) / 1000000 << "ms" << endl;
 
     while(1){
         if(!g_video_need_postprocess){
