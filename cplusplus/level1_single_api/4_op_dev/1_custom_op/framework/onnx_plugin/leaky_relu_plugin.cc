@@ -15,6 +15,7 @@
 #include "json.hpp"
 
 using namespace ge;
+using json = nlohmann::json;
 
 namespace domi {
 Status ParseParamsLeakyRelu(const ge::Operator& op_src, ge::Operator& op_dest) {
@@ -23,7 +24,6 @@ Status ParseParamsLeakyRelu(const ge::Operator& op_src, ge::Operator& op_dest) {
   // if op_src get optional attr failed, need to return Failed or set a default value
   float negative_slope = 0.01f;
   string attrs_string;
-  gg
   if (ge::GRAPH_SUCCESS == op_src.GetAttr("attribute", attrs_string)) {
     json attrs = json::parse(attrs_string);
     for (json attr : attrs["attribute"]) {
