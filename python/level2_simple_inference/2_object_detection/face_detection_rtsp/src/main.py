@@ -59,6 +59,10 @@ def create_threads(detector):
 
 
 def main():
+    """
+    Function description:
+        Main function
+    """
     acl_resource = AclResource()
     acl_resource.init()   
 
