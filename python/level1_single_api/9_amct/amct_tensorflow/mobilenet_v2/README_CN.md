@@ -213,7 +213,73 @@ INFO - [AMCT]:[AMCT]: The records is stored in dir: ./outputs/accuracy_based_aut
   + [config.json](./outputs/calibration/config.json): 回退前的量化配置文件，描述了如何对模型中的每一层进行量化。
   + [mobilenet_v2_quantized.pb](./outputs/accuracy_based_auto_calibration/mobilenet_v2_quantized.pb): 量化模型，可在 TensorFlow 环境进行精度仿真并可在昇腾 AI 处理器部署。
   + [mobilenet_v2_quant.json](./outputs/accuracy_based_auto_calibration/mobilenet_v2_quant.json): 量化信息文件，记录了量化模型同原始模型节点的映射关系，用于量化后模型同原始模型精度比对使用。
-  + [record.txt](./outputs/accuracy_based_auto_calibration/record.txt): 量化因子记录文件，记录量化因子。关于该文件的原型定义请参见
-[量化因子记录文件说明](https://support.huaweicloud.com/content/dam/cloudbu-site/archive/china/zh-cn/support/docs/auxiliarydevtool-cann330alphaXinfer/atlasamcttf_16_0014.html)。
+  + [record.txt](./outputs/accuracy_based_auto_calibration/record.txt): 量化因子记录文件，记录量化因子。关于该文件的原型定义请参见[量化因子记录文件说明](https://support.huaweicloud.com/content/dam/cloudbu-site/archive/china/zh-cn/support/docs/auxiliarydevtool-cann330alphaXinfer/atlasamcttf_16_0014.html)。
+
+> 对该模型重新进行量化时，在量化后模型的同级目录下生成的上述结果文件将会被覆盖。
+
+## 5. 基于性能的自动量化
+
+### 5.1 量化前提
+
++ **模型准备**  
+请至 [昇腾社区-ModelZoo](https://www.hiascend.com/zh/software/modelzoo/detail/C/08247440137b451588bdd049b1f8b42a) 下载 MobileNetV2 模型文件。解压并将其中的 mobilenetv2_tf.pb 文件放到 [model](./model/) 目录下。
+
++ **数据集准备**  
+自动量化回退过程中，需要不断的对模型进行校准和测试，因此需要用户准备数据集，本示例所采用的数据集为标准 TFRecord 格式的 ImageNet 的 子集 ILSVRC-2012-CLS 的验证集，共有 50000 张图片，如果采用其他数据集，则需要用户自行修改 sample 文件中的数据预处理部分以匹配模型输入。
+
+### 5.2 量化示例
+
+执行量化示例前，请先检查当前目录下是否包含以下文件及目录：
+
++ [model](./model/)
+  + [mobilenetv2_tf.pb](./model/mobilenetv2_tf.pb)
++ [src](./src/)
+  + [perf_conf](./perf_conf/)
+    + [mobilenet_v2_sampler_config.cfg](./src/perf_conf/mobilenet_v2_sampler_config.cfg)
+    + [nca.json](./src/perf_conf/nca.json)
+  + [mobilenet_v2_perf_based_auto_calibration.py](./src/mobilenet_v2_perf_based_auto_calibration.py)
+
+在当前目录执行如下命令运行示例程序：
+
+```bash
+python ./src/mobilenet_v2_perf_based_auto_calibration.py
+```
+
+上述命令只给出了常用的参数，不常用参数以及各个参数解释请参见如下表格：
+
+| 参数 | 必填项 | 数据类型 | 默认值 | 参数解释 |
+| :-- | :-: | :-: | :-: | :-- |
+| -h | 否 | / | / | 显示帮助信息。 |
+| --sampler_config_file | 否 | string | ./src/perf_conf/mobilenet_v2_sampler_config.cfg | 性能采样配置文件路径。 |
+| --cfg_define | 否 | string | None | 建议配置文件路径。 |
+
+若出现如下信息则说明模型量化成功：
+
+```none
+  INFO - [AMCT]:[AMCT]: The generated model is stored in dir: ./outputs/perf_based_auto_calibration
+  INFO - [AMCT]:[AMCT]: The records is stored in dir: ./outputs/perf_based_auto_calibration
+  Origin Model Model Prediction:
+          category index: 699
+          category prob: 0.413
+  Quantized Model Model Prediction:
+          category index: 699
+          category prob: 0.394
+```
+
+### 5.3 量化结果
+
+量化成功后，在当前目录会生成如下文件：
+
++ [amct_log](./amct_log/): 量化日志文件夹
+  + [amct_tensorflow.log](./amct_log/amct_tensorflow.log): 量化日志文件。
+  + [amct_tensorflow_perf_info.csv](./amct_log/amct_tensorflow_perf): 性能对比数据记录文件。
++ [./outputs/perf_based_auto_calibration](./outputs/perf_based_auto_calibration/)
+  + [mobilenet_v2_all_layers_quantized.pb](./outputs/perf_based_auto_calibration/mobilenet_v2_all_layers_quantized.pb): 全网量化模型。
+  + [mobilenet_v2_all_layers_quant.json](./outputs/perf_based_auto_calibration/mobilenet_v2_all_layers_quant.json): 全网量化信息文件。
+  + [config.json](./outputs/perf_based_auto_calibration/config.json): 回退前的量化配置文件，描述了如何对模型中的每一层进行量化。
+  + [perf_based_auto_calibration_final_config.json](./outputs/perf_based_auto_calibration/perf_based_auto_calibration_final_config.json): 回退后的量化配置文件，描述了如何对模型中的每一层进行量化。
+  + [mobilenet_v2_quantized.pb](./outputs/perf_based_auto_calibration/mobilenet_v2_quantized.pb): 量化模型，可在 TensorFlow 环境进行精度仿真并可在昇腾 AI 处理器部署。
+  + [mobilenet_v2_quant.json](./outputs/perf_based_auto_calibration/mobilenet_v2_quant.json): 量化信息文件，记录了量化模型同原始模型节点的映射关系，用于量化后模型同原始模型精度比对使用。
+  + [record.txt](./outputs/perf_based_auto_calibration/record.txt): 量化因子记录文件，记录量化因子。关于该文件的原型定义请参见[量化因子记录文件说明](https://support.huaweicloud.com/content/dam/cloudbu-site/archive/china/zh-cn/support/docs/auxiliarydevtool-cann330alphaXinfer/atlasamcttf_16_0014.html)。
 
 > 对该模型重新进行量化时，在量化后模型的同级目录下生成的上述结果文件将会被覆盖。
