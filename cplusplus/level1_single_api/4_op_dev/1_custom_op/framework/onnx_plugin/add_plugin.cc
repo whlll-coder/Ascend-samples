@@ -14,9 +14,14 @@
 #include "register/register.h"
 
 namespace domi {
+Status ParseParamsAdd(const ge::Operator& op_src, ge::Operator& op_dest)
+{
+  return SUCCESS;
+}
+
 REGISTER_CUSTOM_OP("Add")
     .FrameworkType(ONNX)
     .OriginOpType("ai::onnx::11::Add")
-    .ParseParamsByOperatorFn(AutoMappingByOpFn)
+    .ParseParamsByOperatorFn(ParseParamsAdd)
     .ImplyType(ImplyType::TVM);
 }  // namespace domi
