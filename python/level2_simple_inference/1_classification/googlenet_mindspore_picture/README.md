@@ -4,16 +4,16 @@
 
 **本README只提供命令行方式运行样例的指导**
 
-## resnet50图片分类样例
+## googlenet图片分类样例
 
 
-功能：使用resnet50模型对输入图片进行分类推理。
+功能：使用googlenet模型对输入图片进行分类推理。
 
 样例输入：待推理的jpg图片。
 
 样例输出：推理后的jpg图片。
 
-训练过程参考 [resnet50 mindspore训练](https://gitee.com/ascend/modelzoo/tree/master/built-in/MindSpore/Official/cv/image_classification/ResNet50_for_MindSpore)； 在Ascend910环境， 使用本仓库中scripts/convert.py 脚本将训练好的resnet-90_1875.ckpt 转换为resnet-90_1875.air模型文件
+训练过程参考 [googlenet mindspore训练](https://gitee.com/ascend/modelzoo/tree/master/built-in/MindSpore/Official/cv/image_classification/googlenet_for_MindSpore)； 
 
 ### 前提条件
 
@@ -51,11 +51,11 @@
 
 2. 获取此应用中所需要的原始网络模型。
 
-    参考下表获取此应用中所用到的原始网络模型及其对应的权重文件，并将其存放到开发环境普通用户下的任意目录，例如：$HOME/models/resnet50_mindspore_picture。
+    参考下表获取此应用中所用到的原始网络模型及其对应的权重文件，并将其存放到开发环境普通用户下的任意目录，例如：$HOME/models/googlenet_mindspore_picture。
     
     |  **模型名称**  |  **模型说明**  |  **模型下载路径**  |
     |---|---|---|
-    |  resnet50 | 图片分类推理模型。是基于MindSpore的resnet50模型。  |  [https://c7xcode.obs.cn-north-4.myhuaweicloud.com/models/resnet50_mindspore/resnet-90_1875.air](https://c7xcode.obs.cn-north-4.myhuaweicloud.com/models/resnet50_mindspore/resnet-90_1875.air) |
+    |  googlenet| 图片分类推理模型。是基于MindSpore的googlenet模型。  |  [https://c7xcode.obs.cn-north-4.myhuaweicloud.com/models/googlenet_mindspore/resnet-90_1875.air](https://c7xcode.obs.cn-north-4.myhuaweicloud.com/models/googlenet_mindspore/resnet-90_1875.air) |
 
 
 3. 将原始模型转换为Davinci模型。
@@ -71,23 +71,23 @@
 
     2. 执行以下命令下载aipp配置文件并使用atc命令进行模型转换。
 
-        **cd $HOME/models/resnet50_mindspore_picture**  
+        **cd $HOME/models/googlenet_mindspore_picture**  
 
-        **atc --model=./resnet-90_1875.air --framework=1 --output=./resnet50 --soc_version=Ascend310**
+        **atc --model=./resnet-90_1875.air --framework=1 --output=./googlenet --soc_version=Ascend310**
 
     3. 执行以下命令将转换好的模型复制到样例中model文件夹中。
 
-        **cp ./resnet50.om $HOME/samples/python/level2_simple_inference/1_classification/resnet50_mindspore_picture/model/**
+        **cp .googlenet.om $HOME/samples/python/level2_simple_inference/1_classification/googlenet_mindspore_picture/model/**
 
 4. 获取样例需要的测试图片。
 
     执行以下命令，进入样例的data文件夹中，下载对应的测试图片。
 
-    **cd $HOME/samples/python/level2_simple_inference/1_classification/resnet50_mindspore_picture/data**
+    **cd $HOME/samples/python/level2_simple_inference/1_classification/googlenet_mindspore_picture/data**
 
-    **wget https://modelart-xuyetao.obs.cn-north-4.myhuaweicloud.com/resnet50/airplane.jpg** 
+    **wget https://modelart-xuyetao.obs.cn-north-4.myhuaweicloud.com/googlenet/airplane.jpg** 
 
-    **wget https://modelart-xuyetao.obs.cn-north-4.myhuaweicloud.com/resnet50/car.jpg**
+    **wget https://modelart-xuyetao.obs.cn-north-4.myhuaweicloud.com/googlenet/car.jpg**
 
 
 ### 样例运行
@@ -111,11 +111,11 @@
 
       **source ~/.bashrc**
         
-      **cd $HOME/samples/python/level2_simple_inference/1_classification/resnet50_mindspore_picture/src**
+      **cd $HOME/samples/python/level2_simple_inference/1_classification/googlenet_mindspore_picture/src**
 
     - 如果是开发环境与运行环境分离部署，执行以下命令切换目录。
     
-      **cd $HOME/samples/python/level2_simple_inference/1_classification/resnet50_mindspore_picture/src**      
+      **cd $HOME/samples/python/level2_simple_inference/1_classification/googlenet_mindspore_picture/src**      
 
     切换目录后，执行以下命令运行样例。
 
