@@ -55,7 +55,7 @@
     
     |  **模型名称**  |  **模型说明**  |  **模型下载路径**  |
     |---|---|---|
-    |  googlenet| 图片分类推理模型。是基于MindSpore的googlenet模型。  |  [https://c7xcode.obs.cn-north-4.myhuaweicloud.com/models/googlenet_mindspore/resnet-90_1875.air](https://c7xcode.obs.cn-north-4.myhuaweicloud.com/models/googlenet_mindspore/resnet-90_1875.air) |
+    |  googlenet| 图片分类推理模型。是基于MindSpore的googlenet模型。  |  [https://c7xcode.obs.cn-north-4.myhuaweicloud.com/models/googlenet_mindspore/googlenet.air](https://c7xcode.obs.cn-north-4.myhuaweicloud.com/models/googlenet_mindspore/googlenet.air) |
 
 
 3. 将原始模型转换为Davinci模型。
