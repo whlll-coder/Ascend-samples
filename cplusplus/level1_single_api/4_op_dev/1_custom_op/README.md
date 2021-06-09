@@ -164,7 +164,7 @@ The directory of a Caffe or TensorFlow custom operator sample project is organiz
         -   If the actual ATC installation path is not the default path, uncomment this environment variable and change it to the actual path of the ATC  header files. For example:
 
             ```
-            export ASCEND_TENSOR_COMPLIER_INCLUDE=/home/HwHiAiUser/Ascend/ascend-toolkit/latest/atc/include
+            export ASCEND_TENSOR_COMPILER_INCLUDE=/home/HwHiAiUser/Ascend/ascend-toolkit/latest/atc/include
             ```
 
 
