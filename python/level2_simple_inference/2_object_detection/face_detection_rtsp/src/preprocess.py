@@ -123,10 +123,10 @@ class Preprocess():
     def is_finished(self):
         return self._status > STATUS_PREPROC_RUNNING
     
-    """
-    The method for getting data 
-    """
     def get_data(self):
+        """
+        The method for getting data 
+        """
         if self._status >= STATUS_PREPROC_EXIT:            
             return False, None
         elif self._status == STATUS_PREPROC_INIT:
