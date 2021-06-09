@@ -30,6 +30,7 @@ Status ParseParamsLeakyRelu(const ge::Operator& op_src, ge::Operator& op_dest)
     }else{
         op_dest.SetAttr("negative_slope", float(0));
     }
+  dd
   return SUCCESS;
 }
 
