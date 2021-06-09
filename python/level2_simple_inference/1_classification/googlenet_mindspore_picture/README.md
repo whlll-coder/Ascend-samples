@@ -13,7 +13,7 @@
 
 样例输出：推理后的jpg图片。
 
-训练过程参考 [googlenet mindspore训练](https://gitee.com/ascend/modelzoo/tree/master/built-in/MindSpore/Official/cv/image_classification/googlenet_for_MindSpore)； 
+训练过程参考 [googlenet mindspore训练](https://gitee.com/ascend/modelzoo/tree/master/built-in/MindSpore/Official/cv/image_classification/GoogLeNet_for_MindSpore)； 
 
 ### 前提条件
 
