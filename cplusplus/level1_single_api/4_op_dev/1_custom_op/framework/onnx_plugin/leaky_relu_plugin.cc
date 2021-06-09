@@ -18,6 +18,9 @@ using namespace ge;
 using json = nlohmann::json;
 
 namespace domi {
+namespace {
+  const int kTypeFloat = 1;
+}
 Status ParseParamsLeakyRelu(const ge::Operator& op_src, ge::Operator& op_dest) {
   // trans op_src to op_dest
   // if op_src get required attr failed, need to return Failed
@@ -27,7 +30,7 @@ Status ParseParamsLeakyRelu(const ge::Operator& op_src, ge::Operator& op_dest) {
   if (ge::GRAPH_SUCCESS == op_src.GetAttr("attribute", attrs_string)) {
     json attrs = json::parse(attrs_string);
     for (json attr : attrs["attribute"]) {
-      if (attr["name"] == "alpha" && attr["type"] == 1) {
+      if (attr["name"] == "alpha" && attr["type"] == kTypeFloat) {
         negative_slope = attr["f"];
       }
     }
