@@ -14,8 +14,7 @@
 #include "register/register.h"
 
 namespace domi {
-Status ParseParamsAdd(const ge::Operator& op_src, ge::Operator& op_dest)
-{
+Status ParseParamsAdd(const ge::Operator& op_src, ge::Operator& op_dest) {
   return SUCCESS;
 }
 
