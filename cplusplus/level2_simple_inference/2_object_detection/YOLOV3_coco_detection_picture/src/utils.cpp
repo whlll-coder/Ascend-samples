@@ -162,7 +162,6 @@ void* Utils::CopyDataDeviceToDvpp(void* data, int size) {
     return buffer;
 }
 
-
 Result Utils::CopyImageDataToDvpp(ImageData& imageDevice, ImageData srcImage) {
     aclrtRunMode runMode_;
     aclError ret = aclrtGetRunMode(&runMode_);
