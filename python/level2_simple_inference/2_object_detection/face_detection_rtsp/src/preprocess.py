@@ -121,6 +121,16 @@ class Preprocess():
         self._display = display
 
     def is_finished(self):
+        """
+        Function description:
+            Judge whether the process is completed
+        Parameter:
+            none
+        Return Value:
+            True or False
+        Exception Description:
+            none
+        """
         return self._status > STATUS_PREPROC_RUNNING
     
     def get_data(self):
