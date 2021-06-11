@@ -21,7 +21,7 @@ namespace domi {
 namespace {
 const int kTypeFloat = 1;
 }
-Status ParseParamsLeakyRelu(const ge::Operator& op_src, ge::Operator& op_dest) {
+Status ParseOnnxParamsLeakyRelu(const ge::Operator& op_src, ge::Operator& op_dest) {
   // trans op_src to op_dest
   // if op_src get required attr failed, need to return Failed
   // if op_src get optional attr failed, need to return Failed or set a default value
@@ -50,6 +50,6 @@ REGISTER_CUSTOM_OP("LeakyRelu")
                    ge::AscendString("ai.onnx::11::LeakyRelu"),
                    ge::AscendString("ai.onnx::12::LeakyRelu"),
                    ge::AscendString("ai.onnx::13::LeakyRelu")})
-    .ParseParamsByOperatorFn(ParseParamsLeakyRelu)
+    .ParseParamsByOperatorFn(ParseOnnxParamsLeakyRelu)
     .ImplyType(ImplyType::TVM);
 }  // namespace domi
