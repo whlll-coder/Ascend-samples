@@ -421,7 +421,8 @@ AtlasError ReadJpeg(ImageData& image, const std::string& fileName) {
         return ATLAS_ERROR;
     }
     image.data.reset((uint8_t *)buf, [](uint8_t* p) 
-                    { delete[](p); });
+                    { delete[](p); }
+                    );
     image.size = size;
 
     return ATLAS_OK;
