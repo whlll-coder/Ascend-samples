@@ -30,11 +30,6 @@ function setAtcEnv() {
 
 function setRunEnv() {
     # 设置样例运行时需要的环境变量
-    export install_path=$HOME/Ascend/ascend-toolkit/latest
-    export PATH=${install_path}/atc/ccec_compiler/bin:${install_path}/atc/bin:$PATH
-    export ASCEND_OPP_PATH=${install_path}/opp
-    export LD_LIBRARY_PATH=${install_path}/atc/lib64:$LD_LIBRARY_PATH
-    export PYTHONPATH=${install_path}/atc/python/site-packages:${install_path}/atc/python/site-packages/auto_tune.egg/auto_tune:${install_path}/atc/python/site-packages/schedule_search.egg:$PYTHONPATH
     export PYTHONPATH=$HOME/Ascend/nnrt/latest/pyACL/python/site-packages/acl:$PYTHONPATH
     export LD_LIBRARY_PATH=$HOME/ascend_ddk/x86/lib:$HOME/Ascend/nnrt/latest/acllib/lib64:$LD_LIBRARY_PATH
 
