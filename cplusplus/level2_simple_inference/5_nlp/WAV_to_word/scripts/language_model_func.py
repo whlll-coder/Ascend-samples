@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 #encoding:utf-8
 import platform as plat
-import sys
+import os
 import io
 
 class ModelLanguage(): # 语音模型类
@@ -25,7 +25,9 @@ class ModelLanguage(): # 语音模型类
 		pass
 		
 	def LoadModel(self):
-		self.dict_pinyin = self.GetSymbolDict('dict.txt')
+		current_path = os.path.dirname(__file__)
+		self.dict_pinyin = self.GetSymbolDict(os.path.join(current_path + "/dict.txt"))
+		print(self.modelpath)
 		self.model1 = self.GetLanguageModel(self.modelpath + 'language_model1.txt')
 		self.model2 = self.GetLanguageModel(self.modelpath + 'language_model2.txt')
 		self.pinyin = self.GetPinyin(self.modelpath + 'dic_pinyin.txt')

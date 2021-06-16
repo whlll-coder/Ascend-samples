@@ -19,7 +19,6 @@ from language_model_func import ModelLanguage
 x=np.linspace(0, 400 - 1, 400, dtype = np.int64)
 w = 0.54 - 0.46 * np.cos(2 * np.pi * (x) / (400 - 1) ) # 汉明窗
 AUDIO_FEATURE_LENGTH = 200
-outpath = "/mnt/shared/project/NLP/out/"
 def pcm2wav(pcm_path):
     # 打开并去读pcm音频
     pcmfile = open(pcm_path, 'rb')
@@ -76,8 +75,8 @@ def GetFrequencyFeature3(wavsignal, fs):
     # wav_length = len(wavsignal[0])
     wav_length = wav_arr.shape[1]
     range0_end = int(float(len(wavsignal[0])) / fs * 1000 - time_window) // 10  # 计算循环终止的位置，也就是最终生成的窗数 978
-    data_input = np.zeros((range0_end, 200), dtype=np.float)  # 用于存放最终的频率特征数据
-    data_line = np.zeros((1, 400), dtype=np.float)
+    data_input = np.zeros((range0_end, 200), dtype=np.float64)  # 用于存放最终的频率特征数据
+    data_line = np.zeros((1, 400), dtype=np.float64)
     for i in range(0, range0_end):
         p_start = i * 160
         p_end = p_start + 400
@@ -122,10 +121,10 @@ def GetDataSet(speech_voice_path):
     """ 读取pcm格式音频数据 """
 
     # 将pcm数据转换为wav
-    #wave_path = L.pcm2wav(speech_voice_path) 
+    #wave_path = L.pcm2wav(speech_voice_path)
 
     # 读取wav音频特征
-    features, in_len = RecognizeSpeech_FromFile(speech_voice_path)     
+    features, in_len = RecognizeSpeech_FromFile(speech_voice_path)
 
     # 将wav音频特征转换为模型输入向量
     out_file_name = speech_voice_path.split('.')[0]
@@ -142,16 +141,17 @@ def GetDataSet2(speech_voice_path):
 
     features1=np.transpose(features1,(0,3,1,2)).copy()
     np.save('features1',features1)
-    
+
     writer = open("features1.bin","wb")
     writer.write(features)
     return  in_len
 
-def SpeechPostProcess(resultList, in_len): 
+def SpeechPostProcess(resultList, in_len):
 
     # 将三维矩阵转为二维
+    # print("AAA")
     dets = np.reshape(resultList, (200,1424))
-
+    # print("BBB")
     # 将识别结果转为拼音序列
     rr, ret1 = greedy_decode(dets)
 
@@ -162,17 +162,16 @@ def SpeechPostProcess(resultList, in_len):
                 ret1.remove(1423)
             except:
                 pass
-
+    # print(rr,ret1)
     list_symbol_dic = GetSymbolList()
-
     r_str = []
     for i in ret1:
         r_str.append(list_symbol_dic[i])
 
-    #print "拼音序列识别结果：" + str(r_str)
+    # print("拼音序列识别结果：" + str(r_str))
     string_pinyin = str(r_str)
-
-    ml = ModelLanguage('language_model')
+    current_path = os.path.dirname(__file__)
+    ml = ModelLanguage(os.path.join(current_path + "/language_model"))
 
     ml.LoadModel()
 
@@ -180,12 +179,10 @@ def SpeechPostProcess(resultList, in_len):
 
     r = ml.SpeechToText(str_pinyin)
 
-    print(r)
-
-    # 保存语音识别的结果
-    with open('results/asr_results.txt','a+b') as f:
+# 保存语音识别的结果
+    with open(os.path.join(current_path + '/results/asr_results.txt'),'a+b') as f:
         data = string_pinyin[1:-1] + '-' + r + '\n'
-        #print(data)
+        # print(1111111,data)
         data=data.encode()
         f.write(data)
         f.close()
@@ -195,9 +192,12 @@ def SpeechPostProcess(resultList, in_len):
 dict = {'nihao.wav':'output1_0.bin','xinpian.wav':'output2_0.bin'}
 if __name__ == "__main__":
 
-    current_path = os.path.abspath(__file__)    # 获取当前文件的父目录
+    current_path = os.path.abspath(__file__)
+
+    # print("当前文件父目录:",os.listdir(r'../scripts/'))
     voicefiles = os.listdir(r'../data/') # 获取wav
     for voice_name in voicefiles:
+
         if not voice_name.endswith("nihao.wav"):
             continue
         print("start to process image {}....".format(voice_name))

@@ -1,8 +1,9 @@
 # coding=utf-8
 #import platform as plat
-
+import os
 def GetSymbolList():
-    txt_obj = open('dict.txt', 'r',encoding='UTF-8')
+    current_path = os.path.dirname(__file__)
+    txt_obj = open(os.path.join(current_path + "/dict.txt"), 'r',encoding='UTF-8')
     txt_text = txt_obj.read()
     #print(txt_text)
     txt_lines = txt_text.split('\n')
