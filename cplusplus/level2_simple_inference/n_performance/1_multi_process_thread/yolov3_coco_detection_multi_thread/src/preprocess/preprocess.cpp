@@ -23,11 +23,7 @@
 #include "preprocess.h"
 #include "atlas_app.h"
 
-
 using namespace std;
-
-namespace {
-}
 
 Preprocess::Preprocess(string& streamName, uint32_t modelWidth, 
                        uint32_t modelHeight, uint32_t channelId) : 
@@ -126,7 +122,6 @@ AtlasError Preprocess::GetThreadInstanceId() {
     return ATLAS_OK;
 }
 
-
 AtlasError Preprocess::Process(int msgId, shared_ptr<void> msgData) {
     AtlasError ret = ATLAS_OK;
     switch(msgId) {
@@ -173,7 +168,6 @@ AtlasError Preprocess::ReadFrameMsgProcess() {
     if ((frameCnt_ % 7) == 0) {
         ProcessImage(image);
     } 
-    //ProcessImage(image);
 
     ret = SendMessage(selfThreadId_, MSG_READ_FRAME, nullptr);
     if (ret != ATLAS_OK) {
@@ -186,8 +180,6 @@ AtlasError Preprocess::ReadFrameMsgProcess() {
 
 void Preprocess::ProcessImage(ImageData image) {
     shared_ptr<PreprocDataMsg> preprocData = make_shared<PreprocDataMsg>();
-   
-    //预处理图片:读取图片,讲图片缩放到模型输入要求的尺寸
     AtlasError ret = dvpp_.Resize(preprocData->resizedImage,image,
                        modelWidth_, modelHeight_);
     if (ret != ATLAS_OK) {

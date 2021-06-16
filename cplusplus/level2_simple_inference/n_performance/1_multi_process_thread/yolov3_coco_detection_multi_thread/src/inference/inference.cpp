@@ -18,19 +18,19 @@
 */
 #include <iostream>
 #include <sys/timeb.h>
-
 #include "acl/acl.h"
 #include "atlas_app.h"
 #include "atlas_model.h"
 #include "inference.h"
 #include "object_detection.h"
 
-
 using namespace std;
 
 Inference::Inference(const string& modelPath,
-                     uint32_t modelWidth, uint32_t modelHeight):                       
+                     uint32_t modelWidth, uint32_t modelHeight) : 
 model_(modelPath), modelWidth_(modelWidth), modelHeight_(modelHeight){
+    imageInfoSize_ = 0;
+    imageInfoBuf_ = nullptr;
 }
 
 Inference::~Inference() {
@@ -83,8 +83,6 @@ AtlasError Inference::Execute(vector<InferenceOutput>& inferenceOutput,
 
     return ATLAS_OK;
 }
-
-int execCnt = 0;
 
 AtlasError Inference::FrameImageProcess(
     shared_ptr<PreprocDataMsg> preprocData) {

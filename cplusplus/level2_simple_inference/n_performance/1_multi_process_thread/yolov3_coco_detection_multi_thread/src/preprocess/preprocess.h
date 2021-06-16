@@ -27,7 +27,6 @@
 #include "dvpp_process.h"
 #include "venc_process.h"
 
-
 class Preprocess : public AtlasThread {
 public:
     Preprocess(string& streamName, uint32_t modelWidth, 
@@ -57,7 +56,6 @@ private:
     int selfThreadId_;
     int nextThreadId_;
     int postprocThreadId_;
-    int frameCnt_;
-    
+    int frameCnt_;    
 };
 

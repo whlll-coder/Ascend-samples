@@ -49,6 +49,5 @@ private:
 private:
     uint32_t modelWidth_;
     uint32_t modelHeight_;
-   
 };
 

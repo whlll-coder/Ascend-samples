@@ -50,14 +50,12 @@ const static std::vector<std::string> yolov3Label = { "person", "bicycle", "car"
 enum BBoxIndex { TOPLEFTX = 0, TOPLEFTY, BOTTOMRIGHTX, BOTTOMRIGHTY, SCORE, LABEL };   
 }
 
-
-Postprocess::Postprocess(uint32_t modelWidth, uint32_t modelHeight):                       
+Postprocess::Postprocess(uint32_t modelWidth, uint32_t modelHeight) : 
 modelWidth_(modelWidth), modelHeight_(modelHeight){
 }
 
 Postprocess::~Postprocess() {
 }
-
 
 AtlasError Postprocess::Init() {
     return ATLAS_OK;

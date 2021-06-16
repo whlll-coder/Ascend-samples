@@ -45,7 +45,7 @@ struct PreprocDataMsg {
     int postprocThreadId;
     uint32_t frameWidth;
     uint32_t frameHeight;
-    uint32_t  channelId;
+    uint32_t channelId;
     ImageData resizedImage;
     int isLastFrame;
 };
@@ -53,7 +53,7 @@ struct PreprocDataMsg {
 struct InferOutputMsg {
     uint32_t frameWidth;
     uint32_t frameHeight;
-    uint32_t  channelId;
+    uint32_t channelId;
     vector<InferenceOutput> inferData;
     int isLastFrame;
 };
