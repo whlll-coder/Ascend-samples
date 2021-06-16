@@ -119,7 +119,7 @@ function main() {
     fi
     
     cd ${project_path}
-
+    setAtcEnv  
     # 开启resenter server
     cd ${script_path}/../../../../../common/
     bash run_presenter_server.sh ${script_path}/param.conf 
