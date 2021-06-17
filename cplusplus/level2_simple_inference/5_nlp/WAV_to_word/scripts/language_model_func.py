@@ -5,12 +5,13 @@ import platform as plat
 import os
 import io
 
-class ModelLanguage(): # 语音模型类
+class ModelLanguage(object): # 语音模型类
 	"""
 	description:
 	Speech model class
 	"""
 	def __init__(self, modelpath):
+		super(ModelLanguage, self).__init__()
 		self.modelpath = modelpath
 		system_type = plat.system() # 由于不同的系统的文件路径表示不一样，需要进行判断
 		
@@ -25,8 +26,10 @@ class ModelLanguage(): # 语音模型类
 		
 		if(self.slash != self.modelpath[-1]): # 在目录路径末尾增加斜杠
 			self.modelpath = self.modelpath + self.slash
-		
-		pass
+		self.model2 = {}
+		self.model1 = {}
+		self.pingyin = {}
+		self.dict_pinyin = {}
 		
 	def LoadModel(self):
 		"""
@@ -45,7 +48,7 @@ Model
 		self.pinyin = self.GetPinyin(self.modelpath + 'dic_pinyin.txt')
 		model = (self.dict_pinyin, self.model1, self.model2)
 		return model
-		pass
+		# pass
 	
 	def SpeechToText(self, list_syllable):
 		'''
@@ -170,7 +173,7 @@ Model
 					list_words[j] = tmp
 		
 		return list_words
-		pass
+		# pass
 		
 	def GetSymbolDict(self, dictfilename):
 		'''
