@@ -20,6 +20,14 @@ x=np.linspace(0, 400 - 1, 400, dtype = np.int64)
 w = 0.54 - 0.46 * np.cos(2 * np.pi * (x) / (400 - 1) ) # 汉明窗
 AUDIO_FEATURE_LENGTH = 200
 def pcm2wav(pcm_path):
+    """
+        Function description:
+        Identify and process audio
+        Parameter:
+        pcm_path
+        Return Value:
+        wave_path
+    """
     # 打开并去读pcm音频
     pcmfile = open(pcm_path, 'rb')
     pcmdata = pcmfile.read()
@@ -128,7 +136,7 @@ def GetDataSet(speech_voice_path):
 
     # 将wav音频特征转换为模型输入向量
     out_file_name = speech_voice_path.split('.')[0]
-    out_filename = out_file_name+'.bin'
+    out_filename = out_file_name + '.bin'
     writer = open(out_filename,"wb")
     writer.write(features)
     return in_len
@@ -139,18 +147,25 @@ def GetDataSet2(speech_voice_path):
     features, in_len = RecognizeSpeech_FromFile(speech_voice_path) #1,1600,200,1  in_len=122 全0矩阵
     features1=np.reshape(features,[1,1600,200,1])
 
-    features1=np.transpose(features1,(0,3,1,2)).copy()
-    np.save('features1',features1)
+    features1=np.transpose(features1, (0, 3, 1, 2)).copy()
+    np.save('features1', features1)
 
-    writer = open("features1.bin","wb")
+    writer = open("features1.bin", "wb")
     writer.write(features)
     return  in_len
 
 def SpeechPostProcess(resultList, in_len):
-
+    """
+Function description:
+    Save speech recognition results
+Parameter:
+    resulilist,in_len
+Return Value:
+    txt,pinyin
+"""
     # 将三维矩阵转为二维
     # print("AAA")
-    dets = np.reshape(resultList, (200,1424))
+    dets = np.reshape(resultList, (200, 1424))
     # print("BBB")
     # 将识别结果转为拼音序列
     rr, ret1 = greedy_decode(dets)
@@ -180,7 +195,7 @@ def SpeechPostProcess(resultList, in_len):
     r = ml.SpeechToText(str_pinyin)
 
 # 保存语音识别的结果
-    with open(os.path.join(current_path + '/results/asr_results.txt'),'a+b') as f:
+    with open(os.path.join(current_path + '/results/asr_results.txt'), 'a+b') as f:
         data = string_pinyin[1:-1] + '-' + r + '\n'
         # print(1111111,data)
         data=data.encode()
@@ -189,7 +204,7 @@ def SpeechPostProcess(resultList, in_len):
 
     return r, str_pinyin
 
-dict = {'nihao.wav':'output1_0.bin','xinpian.wav':'output2_0.bin'}
+dict={'nihao.wav':'output1_0.bin','xinpian.wav':'output2_0.bin'}
 if __name__ == "__main__":
 
     current_path = os.path.abspath(__file__)
@@ -201,7 +216,7 @@ if __name__ == "__main__":
         if not voice_name.endswith("nihao.wav"):
             continue
         print("start to process image {}....".format(voice_name))
-        inputname = os.path.join(os.path.abspath(os.path.dirname(current_path) + os.path.sep + "../data/"),voice_name)
+        inputname = os.path.join(os.path.abspath(os.path.dirname(current_path) + os.path.sep + "../data/"), voice_name)
         in_len = GetDataSet(inputname)
 
         outputname = os.path.join(os.path.abspath(os.path.dirname(current_path) + os.path.sep + "../out/"),dict[voice_name])

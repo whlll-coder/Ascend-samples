@@ -6,6 +6,10 @@ import os
 import io
 
 class ModelLanguage(): # 语音模型类
+	"""
+	description:
+	Speech model class
+	"""
 	def __init__(self, modelpath):
 		self.modelpath = modelpath
 		system_type = plat.system() # 由于不同的系统的文件路径表示不一样，需要进行判断
@@ -25,13 +29,21 @@ class ModelLanguage(): # 语音模型类
 		pass
 		
 	def LoadModel(self):
+		"""
+Function description:
+load Model
+Parameter:
+self
+Return Value:
+Model
+"""
 		current_path = os.path.dirname(__file__)
 		self.dict_pinyin = self.GetSymbolDict(os.path.join(current_path + "/dict.txt"))
 		print(self.modelpath)
 		self.model1 = self.GetLanguageModel(self.modelpath + 'language_model1.txt')
 		self.model2 = self.GetLanguageModel(self.modelpath + 'language_model2.txt')
 		self.pinyin = self.GetPinyin(self.modelpath + 'dic_pinyin.txt')
-		model = (self.dict_pinyin, self.model1, self.model2 )
+		model = (self.dict_pinyin, self.model1, self.model2)
 		return model
 		pass
 	
