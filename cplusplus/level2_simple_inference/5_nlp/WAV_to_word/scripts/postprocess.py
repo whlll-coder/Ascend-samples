@@ -60,7 +60,15 @@ def pcm2wav(pcm_path):
 
 
 def read_wav_data(filename):
-    wav=wave.open(filename,"rb")
+    """
+    Function description:
+    ...
+    Parameter:
+    ...
+    Return Value:
+    ...
+"""
+    wav=wave.open(filename, "rb")
     num_frame=wav.getnframes()
     num_channel=wav.getnchannels()
     framerate=wav.getframerate()
@@ -71,10 +79,18 @@ def read_wav_data(filename):
     wave_data.shape=-1,num_channel
     wave_data=wave_data.T
     #print("ks",framerate)
-    return wave_data,framerate
+    return wave_data, framerate
 
 
 def GetFrequencyFeature3(wavsignal, fs):
+    """
+    Function description:
+    ...
+    Parameter:
+    ...
+    Return Value:
+    ...
+"""
     if (16000 != fs):
         raise ValueError(
             '[Error] ASRT currently only supports wav audio files with a sampling rate of 16000 Hz, but this audio is ' + str(
@@ -104,6 +120,14 @@ def GetFrequencyFeature3(wavsignal, fs):
 
 
 def RecognizeSpeech(wavsignal, fs):
+    """
+    Function description:
+    ...
+    Parameter:
+    ...
+    Return Value:
+    ...
+"""
     data_input = GetFrequencyFeature3(wavsignal, fs)
     input_length = len(data_input)  #978
     input_length = input_length // 8  #122
