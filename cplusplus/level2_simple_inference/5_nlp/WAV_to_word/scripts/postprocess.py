@@ -93,8 +93,8 @@ def GetFrequencyFeature3(wavsignal, fs):
 """
     if (16000 != fs):
         raise ValueError(
-            '[Error] ASRT currently only supports wav audio files with a sampling rate of 16000 Hz, but this audio is ' + str(
-                fs) + ' Hz. ')
+            '[Error] ASRT currently only supports wav audio files with a sampling rate of 16000 Hz, but this audio is '
+            + str(fs) + ' Hz. ')
 
     # wav波形 加时间窗以及时移10ms
     time_window = 25  # 单位ms
