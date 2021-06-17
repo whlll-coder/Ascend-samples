@@ -30,7 +30,7 @@ function setAtcEnv() {
 
 function setRunEnv() {
     # 设置样例运行时需要的环境变量
-    export PYTHONPATH=$HOME/Ascend/nnrt/latest/pyACL/python/site-packages/acl:$PYTHONPATH
+    export PYTHONPATH=/home/HwHiAiUser/Ascend/pyACL/python/site-packages/acl:$PYTHONPATH
     export LD_LIBRARY_PATH=$HOME/ascend_ddk/x86/lib:$HOME/Ascend/nnrt/latest/acllib/lib64:$LD_LIBRARY_PATH
 
     return 0
