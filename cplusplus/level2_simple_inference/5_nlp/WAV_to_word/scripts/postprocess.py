@@ -19,6 +19,8 @@ from language_model_func import ModelLanguage
 x=np.linspace(0, 400 - 1, 400, dtype = np.int64)
 w = 0.54 - 0.46 * np.cos(2 * np.pi * (x) / (400 - 1)) # 汉明窗
 AUDIO_FEATURE_LENGTH = 200
+
+
 def pcm2wav(pcm_path):
     """
         Function description:
@@ -55,6 +57,8 @@ def pcm2wav(pcm_path):
     wavfile.close()
 
     return wave_path
+
+
 def read_wav_data(filename):
     wav=wave.open(filename,"rb")
     num_frame=wav.getnframes()
@@ -68,6 +72,7 @@ def read_wav_data(filename):
     wave_data=wave_data.T
     #print("ks",framerate)
     return wave_data,framerate
+
 
 def GetFrequencyFeature3(wavsignal, fs):
     if (16000 != fs):
@@ -97,6 +102,7 @@ def GetFrequencyFeature3(wavsignal, fs):
     data_input = np.log(data_input + 1)
     return data_input
 
+
 def RecognizeSpeech(wavsignal, fs):
     data_input = GetFrequencyFeature3(wavsignal, fs)
     input_length = len(data_input)  #978
@@ -117,14 +123,17 @@ def RecognizeSpeech(wavsignal, fs):
 
     return x_in, in_leng
 
+
 def RecognizeSpeech_FromFile(filename):
     '''
     最终做语音识别用的函数，识别指定文件名的语音
     '''
 
-    wavsignal,fs1 = read_wav_data(filename)  # 识别语音的特征 fs1=16000 len(wavsignal[0])=157000
+    wavsignal, fs1 = read_wav_data(filename)  # 识别语音的特征 fs1=16000 len(wavsignal[0])=157000
     r, in_lent = RecognizeSpeech(wavsignal, fs1)
     return r, in_lent
+
+
 def GetDataSet(speech_voice_path):
     """ 读取pcm格式音频数据 """
 
