@@ -17,7 +17,7 @@ from get_symbol_list import GetSymbolList
 from language_model_func import ModelLanguage
 
 x=np.linspace(0, 400 - 1, 400, dtype = np.int64)
-w = 0.54 - 0.46 * np.cos(2 * np.pi * (x) / (400 - 1) ) # 汉明窗
+w = 0.54 - 0.46 * np.cos(2 * np.pi * (x) / (400 - 1)) # 汉明窗
 AUDIO_FEATURE_LENGTH = 200
 def pcm2wav(pcm_path):
     """
@@ -137,7 +137,7 @@ def GetDataSet(speech_voice_path):
     # 将wav音频特征转换为模型输入向量
     out_file_name = speech_voice_path.split('.')[0]
     out_filename = out_file_name + '.bin'
-    writer = open(out_filename,"wb")
+    writer = open(out_filename, "wb")
     writer.write(features)
     return in_len
 
@@ -145,7 +145,7 @@ def GetDataSet2(speech_voice_path):
     """ 直接读取wav格式音频数据 """
 
     features, in_len = RecognizeSpeech_FromFile(speech_voice_path) #1,1600,200,1  in_len=122 全0矩阵
-    features1=np.reshape(features,[1,1600,200,1])
+    features1=np.reshape(features, [1, 1600, 200, 1])
 
     features1=np.transpose(features1, (0, 3, 1, 2)).copy()
     np.save('features1', features1)
@@ -155,6 +155,7 @@ def GetDataSet2(speech_voice_path):
     return  in_len
 
 def SpeechPostProcess(resultList, in_len):
+
     """
 Function description:
     Save speech recognition results
@@ -204,7 +205,7 @@ Return Value:
 
     return r, str_pinyin
 
-dict={'nihao.wav':'output1_0.bin','xinpian.wav':'output2_0.bin'}
+dict={'nihao.wav': 'output1_0.bin', 'xinpian.wav': 'output2_0.bin'}
 if __name__ == "__main__":
 
     current_path = os.path.abspath(__file__)
@@ -219,14 +220,16 @@ if __name__ == "__main__":
         inputname = os.path.join(os.path.abspath(os.path.dirname(current_path) + os.path.sep + "../data/"), voice_name)
         in_len = GetDataSet(inputname)
 
-        outputname = os.path.join(os.path.abspath(os.path.dirname(current_path) + os.path.sep + "../out/"),dict[voice_name])
-        resultList = np.fromfile(outputname,np.float32)
+        outputname = os.path.join(
+            os.path.abspath(os.path.dirname(current_path) + os.path.sep + "../out/"), dict[voice_name]
+        )
+        resultList = np.fromfile(outputname, np.float32)
         # 判断模型推理结果是否成功
     	#if resultList is None:
             #print("Inference failed")
-        resultList=np.reshape(resultList,(200,1424))
+        resultList=np.reshape(resultList, (200,1424))
         # 对结果进行后处理
 
-        txt, pinyin = SpeechPostProcess(resultList,in_len)
+        txt, pinyin = SpeechPostProcess(resultList, in_len)
         print('拼音： ' + str(pinyin))
         print('文本： ' + str(txt))
