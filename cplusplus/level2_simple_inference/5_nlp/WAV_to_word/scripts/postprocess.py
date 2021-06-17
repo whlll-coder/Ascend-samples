@@ -227,7 +227,7 @@ if __name__ == "__main__":
         # 判断模型推理结果是否成功
     	#if resultList is None:
             #print("Inference failed")
-        resultList=np.reshape(resultList, (200,1424))
+        resultList=np.reshape(resultList, (200, 1424))
         # 对结果进行后处理
 
         txt, pinyin = SpeechPostProcess(resultList, in_len)
