@@ -4,7 +4,7 @@ project(kernel)
 set(TOOLCHAIN_DIR $ENV{TOOLCHAIN_DIR})
 
 #Specify cross compiler
-if (LHISI)
+if (LMIX)
         add_definitions(-D_GLIBCXX_USE_CXX11_ABI=1)
         set(CMAKE_CXX_COMPILER ${TOOLCHAIN_DIR}-g++)
         set(CMAKE_C_COMPILER   ${TOOLCHAIN_DIR}-gcc)
