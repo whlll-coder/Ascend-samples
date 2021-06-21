@@ -88,7 +88,7 @@ def check_op_info(tbe_ops):
         for op_info_key in op_dict:
             if op_info_key.startswith("input"):
                 op_input_info = op_dict[op_info_key]
-                missing_keys=[]
+                missing_keys = []
                 for required_op_input_info_key in required_op_input_info_keys:
                     if not required_op_input_info_key in op_input_info:
                         missing_keys.append(required_op_input_info_key)
