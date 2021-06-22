@@ -189,19 +189,19 @@ def GetDataSet2(speech_voice_path):
     return  in_lens
 
 
-def SpeechPostProcess(resultList, in_len):
+def SpeechPostProcess(resultLists):
 
     """
 Function description:
     Save speech recognition results
 Parameter:
-    resulilist,in_len
+    resulilist
 Return Value:
     txt,pinyin
 """
     # 将三维矩阵转为二维
     # print("AAA")
-    dets = np.reshape(resultList, (200, 1424))
+    dets = np.reshape(resultLists, (200, 1424))
     # print("BBB")
     # 将识别结果转为拼音序列
     rr, ret1 = greedy_decode(dets)
@@ -221,8 +221,8 @@ Return Value:
 
     # print("拼音序列识别结果：" + str(r_str))
     string_pinyin = str(r_str)
-    current_path = os.path.dirname(__file__)
-    ml = ModelLanguage(os.path.join(current_path + "/language_model"))
+    current_paths = os.path.dirname(__file__)
+    ml = ModelLanguage(os.path.join(current_paths + "/language_model"))
 
     ml.LoadModel()
 
@@ -231,7 +231,7 @@ Return Value:
     r = ml.SpeechToText(str_pinyin)
 
 # 保存语音识别的结果
-    with open(os.path.join(current_path + '/results/asr_results.txt'), 'a+b') as f:
+    with open(os.path.join(current_paths + '/results/asr_results.txt'), 'a+b') as f:
         data = string_pinyin[1:-1] + '-' + r + '\n'
         # print(1111111,data)
         data=data.encode()
