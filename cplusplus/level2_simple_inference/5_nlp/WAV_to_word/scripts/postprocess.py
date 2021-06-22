@@ -211,7 +211,7 @@ Return Value:
         if i % 2 == 0:
             try:
                 ret1.remove(1423)
-            except:
+            except Except as e:
                 pass
     # print(rr,ret1)
     list_symbol_dic = GetSymbolList()
@@ -230,7 +230,7 @@ Return Value:
 
     r = ml.SpeechToText(str_pinyin)
 
-# 保存语音识别的结果
+    # 保存语音识别的结果
     with open(os.path.join(current_paths + '/results/asr_results.txt'), 'a+b') as f:
         data = string_pinyin[1:-1] + '-' + r + '\n'
         # print(1111111,data)
@@ -260,8 +260,8 @@ if __name__ == "__main__":
         )
         resultList = np.fromfile(outputname, np.float32)
         # 判断模型推理结果是否成功
-    	#if resultList is None:
-            #print("Inference failed")
+        #if resultList is None:
+        #print("Inference failed")
         resultList=np.reshape(resultList, (200, 1424))
         # 对结果进行后处理
 
