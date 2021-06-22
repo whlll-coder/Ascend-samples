@@ -10,7 +10,7 @@
 import numpy as np
 
 output_data = np.fromfile("../../result_files/output_0.bin", dtype=np.float16)
-NP_RESULT = np.fromfile("./np_result.bin", dtype=np.float16).reshape(16, 1024)
+NP_RESULT = np.fromfile("./np_result.bin", dtype=np.float32).reshape(16, 1024)
 out_old = output_data.reshape(16, 1024)
 out_new = np.zeros((16, 1024), dtype=np.float16)
 print("The matmulTik result is: \n", out_old)

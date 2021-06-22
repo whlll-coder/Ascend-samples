@@ -11,7 +11,7 @@ import numpy as np
 
 a = np.random.randint(-5, 5, size=(16, 64)).astype(np.float16)
 b = np.random.randint(-5, 5, size=(64, 1024)).astype(np.float16)
-res = np.matmul(a, b)
+res = np.matmul(a, b).astype("float32")
 a.tofile('input_0.bin')
 b.tofile('input_1.bin')
 res.tofile('np_result.bin')
