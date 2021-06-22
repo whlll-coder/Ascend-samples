@@ -1,5 +1,3 @@
-import sys
-import numpy as np
 from tbe import tik
 
 DTYPE_SIZE = {
