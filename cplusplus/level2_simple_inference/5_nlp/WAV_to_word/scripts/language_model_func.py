@@ -28,7 +28,7 @@ class ModelLanguage(object): # 语音模型类
 			self.modelpath = self.modelpath + self.slash
 		self.model2 = {}
 		self.model1 = {}
-		self.pingyin = {}
+		self.pinyin = {}
 		self.dict_pinyin = {}
 		
 	def LoadModel(self):
