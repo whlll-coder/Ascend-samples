@@ -265,6 +265,6 @@ if __name__ == "__main__":
         resultList=np.reshape(resultList, (200, 1424))
         # 对结果进行后处理
 
-        txt, pinyin = SpeechPostProcess(resultList, in_len)
+        txt, pinyin = SpeechPostProcess(resultList)
         print('拼音： ' + str(pinyin))
         print('文本： ' + str(txt))
