@@ -16,9 +16,7 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <map>
-
 #include <stdint.h>
-
 #include <string>
 #include <memory>
 #include <thread>
@@ -27,10 +25,8 @@
 #include "atlasutil/acl_device.h"
 
 #define INVALID_STREAM_FORMAT -1
-
 #define RTSP_TRANSPORT_UDP "udp"
 #define RTSP_TRANSPORT_TCP "tcp"
-
 #define VIDEO_CHANNEL_MAX  23
 #define INVALID_CHANNEL_ID -1
 
@@ -48,7 +44,6 @@ enum DecodeStatus {
     DECODE_DVPP_FINISHED = 4,
     DECODE_FINISHED = 5
 };
-
 
 typedef struct PicDesc {
     std::string picName;
