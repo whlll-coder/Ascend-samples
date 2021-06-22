@@ -8,11 +8,9 @@
 
 ## venc样例
 
-功能：调用dvpp的venc接口，实现视频编码功能。
+功能：调用ffmpeg接口实现视频切帧功能。
 
 样例输入：原始mp4文件。
-
-样例输出：编码后的h264文件。
 
 
 ### 前提条件
@@ -51,11 +49,11 @@
 
 2. 获取样例需要的测试图片。
 
-    执行以下命令，进入样例的data文件夹中，下载对应的测试图片。
+    执行以下命令，进入样例的data文件夹中，下载对应的测试数据。
 
-    **cd $HOME/samples/cplusplus/level2_simple_inference/0_data_process/venc/data**
+    **cd $HOME/samples/cplusplus/level2_simple_inference/0_data_process/ffmpegdecode/data**
 
-    **wget https://c7xcode.obs.cn-north-4.myhuaweicloud.com/models/venc/detection.mp4**
+    **wget https://c7xcode.obs.cn-north-4.myhuaweicloud.com/models/ffmpegdecode/cat.mp4**
 
     
 
@@ -85,9 +83,9 @@
         > - 如果是3.0.0版本，此处 **DDK_PATH** 环境变量中的 **arm64-liunx** 应修改为 **arm64-linux_gcc7.3.0**。
         > - 可以在命令行中执行 **uname -a**，查看开发环境和运行环境的cpu架构。如果回显为x86_64，则为x86架构。如果回显为arm64，则为Arm架构。
 
-2. 切换到venc目录，创建目录用于存放编译文件，例如，本文中，创建的目录为 **build/intermediates/host**。
+2. 切换到ffmpegdecode目录，创建目录用于存放编译文件，例如，本文中，创建的目录为 **build/intermediates/host**。
 
-    **cd $HOME/samples/cplusplus/level2_simple_inference/0_data_process/venc**
+    **cd $HOME/samples/cplusplus/level2_simple_inference/0_data_process/ffmpegdecode**
 
     **mkdir -p build/intermediates/host**
 
@@ -117,9 +115,9 @@
 
 **注：开发环境与运行环境合一部署，请跳过步骤1，直接执行[步骤2](#step_2)即可。**   
 
-1. 执行以下命令,将开发环境的 **venc** 目录上传到运行环境中，例如 **/home/HwHiAiUser**，并以HwHiAiUser（运行用户）登录运行环境（Host）。
+1. 执行以下命令,将开发环境的 **ffmpegdecode** 目录上传到运行环境中，例如 **/home/HwHiAiUser**，并以HwHiAiUser（运行用户）登录运行环境（Host）。
 
-    **scp -r $HOME/samples/cplusplus/level2_simple_inference/0_data_process/venc HwHiAiUser@xxx.xxx.xxx.xxx:/home/HwHiAiUser**
+    **scp -r $HOME/samples/cplusplus/level2_simple_inference/0_data_process/ffmpegdecode HwHiAiUser@xxx.xxx.xxx.xxx:/home/HwHiAiUser**
 
     **ssh HwHiAiUser@xxx.xxx.xxx.xxx**    
 
@@ -130,22 +128,12 @@
 
     - 如果是开发环境与运行环境合一部署，执行以下命令，设置运行环境变量，并切换目录。
 
-      **export LD_LIBRARY_PATH=**
-
-      **source ~/.bashrc**
-        
-      **cd $HOME/samples/cplusplus/level2_simple_inference/0_data_process/venc/out**
+      **cd $HOME/samples/cplusplus/level2_simple_inference/0_data_process/ffmpegdecode/out**
 
     - 如果是开发环境与运行环境分离部署，执行以下命令切换目录。
     
-      **cd $HOME/venc/out**
+      **cd $HOME/ffmpegdecode/out**
 
     切换目录后，执行以下命令运行样例。
-    
-    **mkdir output**
-
-    **./main ../data/detection.mp4**
-
-### 查看结果
-
-运行完成后，会在运行环境的命令行中打印出推理结果,并在$HOME/venc/out/output目录下生成推理后的结果。
+   
+    **./main ../data/cat.mp4**
