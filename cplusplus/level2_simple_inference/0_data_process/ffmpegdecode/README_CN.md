@@ -6,7 +6,7 @@
 
 **本README只提供命令行方式运行样例的指导，如需在Mindstudio下运行样例，请参考[Mindstudio运行视频样例wiki](https://gitee.com/ascend/samples/wikis/Mindstudio%E8%BF%90%E8%A1%8C%E5%9B%BE%E7%89%87%E6%A0%B7%E4%BE%8B?sort_id=3164874)。**
 
-## venc样例
+## ffmpeg切帧样例
 
 功能：调用ffmpeg接口实现视频切帧功能。
 
