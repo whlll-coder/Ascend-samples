@@ -130,7 +130,7 @@ void GetVideoInfo() {
     if (avformat_find_stream_info(avFormatContext,NULL)<0) {
         ATLAS_LOG_ERROR("Get stream info of %s failed", streamName_.c_str());
         return;
-	}
+    }
 
     int videoIndex = GetVideoIndex(avFormatContext);
     if (videoIndex == kInvalidVideoIndex) { // check video index is valid
