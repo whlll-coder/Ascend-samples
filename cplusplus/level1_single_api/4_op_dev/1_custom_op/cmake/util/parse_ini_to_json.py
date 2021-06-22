@@ -64,7 +64,8 @@ def parse_ini_to_obj(ini_file, tbe_ops_info):
                 if not key1_0 in op_dict:
                     op_dict[key1_0] = {}
                 if key1_1 in op_dict[key1_0]:
-                    raise RuntimeError("Op:" + op_name + " " + key1_0 + " " + key1_1 + " is repeated!")
+                    raise RuntimeError("Op:" + op_name + " " + key1_0 + " " +
+                                       key1_1 + " is repeated!")
                 op_dict[key1_0][key1_1] = key2
 
 
@@ -93,12 +94,14 @@ def check_op_info(tbe_ops):
                     if not required_op_input_info_key in op_input_info:
                         missing_keys.append(required_op_input_info_key)
                 if len(missing_keys) > 0:
-                    print("op: " + op_key + " " + op_info_key + " missing: " + ",".join(missing_keys))
+                    print("op: " + op_key + " " + op_info_key + " missing: " +
+                          ",".join(missing_keys))
                     is_valid = False
                 else:
                     if not op_input_info["paramType"] in param_type_valid_value:
                         print("op: " + op_key + " " + op_info_key + \
-                              " paramType not valid, valid key:[dynamic, optional, required]")
+                              " paramType not valid, valid key:[dynamic, "
+                              "optional, required]")
                         is_valid = False
             if op_info_key.startswith("output"):
                 op_input_info = op_dict[op_info_key]
@@ -107,12 +110,14 @@ def check_op_info(tbe_ops):
                     if not required_op_input_info_key in op_input_info:
                         missing_keys.append(required_op_input_info_key)
                 if len(missing_keys) > 0:
-                    print("op: " + op_key + " " + op_info_key + " missing: " + ",".join(missing_keys))
+                    print("op: " + op_key + " " + op_info_key + " missing: " +
+                          ",".join(missing_keys))
                     is_valid = False
                 else:
                     if not op_input_info["paramType"] in param_type_valid_value:
-                        print("op: " + op_key + " " + op_info_key + \
-                              " paramType not valid, valid key:[fix, range, list]")
+                        print("op: " + op_key + " " + op_info_key +
+                              " paramType not valid, valid key:[fix, range, "
+                              "list]")
                         is_valid = False
     print("==============check valid for ops info end================\n\n")
     return is_valid
@@ -130,8 +135,10 @@ def write_json_file(tbe_ops_info, json_file_path):
     json_file_real_path = os.path.realpath(json_file_path)
     with open(json_file_real_path, "w") as file_path:
         # Only the owner and group have rights
-        os.chmod(json_file_real_path, stat.S_IWGRP + stat.S_IWUSR + stat.S_IRGRP + stat.S_IRUSR)
-        json.dump(tbe_ops_info, file_path, sort_keys=True, indent=4, separators=(',', ':'))
+        os.chmod(json_file_real_path, stat.S_IWGRP + stat.S_IWUSR + stat.S_IRGRP
+                 + stat.S_IRUSR)
+        json.dump(tbe_ops_info, file_path, sort_keys=True, indent=4,
+                  separators=(',', ':'))
     print("Compile op info cfg successfully.")
 
 
