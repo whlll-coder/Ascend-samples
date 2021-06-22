@@ -51,15 +51,9 @@ namespace {
     const string kReorderQueueSizeValue = "0"; // reorder queue size value
     const int kErrorBufferSize = 1024; // buffer size for error info
     const uint32_t kDefaultFps = 5;
-    const uint32_t kOneSecUs = 1000 * 1000;
     const int64_t kUsec = 1000000;
-    const uint32_t kDecodeFrameQueueSize = 256;
-    const int kDecodeQueueOpWait = 10000; //每次等待10毫秒
-    const int kFrameEnQueueRetryTimes = 1000;//为了防止丢帧,ffmpeg解码得到的h26x入队最多等待 100秒
-    const int kQueueOpRetryTimes = 1000;
     const int kOutputJamWait = 10000;
     const int kInvalidTpye = -1;
-    const int kWaitDecodeFinishInterval = 1000;
 }
 
 bool isFinished_;
@@ -71,29 +65,8 @@ int fps_;
 int streamFormat_ = H264_MAIN_LEVEL;
 std::string streamName_;  
 std::string rtspTransport_;
-aclrtContext context_;
 aclrtRunMode runMode_;
 bool isStop_;
-
-AtlasError InitResource() {
-    aclError aclRet;
-    //use current thread context default
-    if (context_ == nullptr) {
-        aclRet = aclrtGetCurrentContext(&context_);
-        if ((aclRet != ACL_ERROR_NONE) || (context_ == nullptr)) {
-            ATLAS_LOG_ERROR("Get current acl context error:%d", aclRet);
-            return ATLAS_ERROR_GET_ACL_CONTEXT;
-        }       
-    }
-    //Get current run mode
-    aclRet = aclrtGetRunMode(&runMode_);
-    if (aclRet != ACL_ERROR_NONE) {
-        ATLAS_LOG_ERROR("acl get run mode failed");
-        return ATLAS_ERROR_GET_RUM_MODE;
-    } 
-
-    return ATLAS_OK;  
-}
 
 int GetVideoIndex(AVFormatContext* avFormatContext) {
     if (avFormatContext == nullptr) { // verify input pointer
@@ -113,7 +86,6 @@ int GetVideoIndex(AVFormatContext* avFormatContext) {
 
 void SetDictForRtsp(AVDictionary*& avdic) {
     ATLAS_LOG_INFO("Set parameters for %s", streamName_.c_str());
-
     av_dict_set(&avdic, kRtspTransport.c_str(), rtspTransport_.c_str(), kNoFlag);
     av_dict_set(&avdic, kBufferSize.c_str(), kMaxBufferSize.c_str(), kNoFlag);
     av_dict_set(&avdic, kMaxDelayStr.c_str(), kMaxDelayValue.c_str(), kNoFlag);
@@ -127,9 +99,7 @@ void SetDictForRtsp(AVDictionary*& avdic) {
 bool OpenVideo(AVFormatContext*& avFormatContext) {
     bool ret = true;
     AVDictionary* avdic = nullptr;
-
     av_log_set_level(AV_LOG_DEBUG);
-
     ATLAS_LOG_INFO("Open video %s ...", streamName_.c_str());
     SetDictForRtsp(avdic);
     int openRet = avformat_open_input(&avFormatContext,
@@ -138,16 +108,13 @@ bool OpenVideo(AVFormatContext*& avFormatContext) {
     if (openRet < 0) { // check open video result
         char buf_error[kErrorBufferSize];
         av_strerror(openRet, buf_error, kErrorBufferSize);
-
         ATLAS_LOG_ERROR("Could not open video:%s, return :%d, error info:%s",
                       streamName_.c_str(), openRet, buf_error);
         ret = false;
     }
-
     if (avdic != nullptr) { // free AVDictionary
         av_dict_free(&avdic);
     }
-
     return ret;
 }
 
@@ -176,7 +143,6 @@ void GetVideoInfo() {
     }
 
     AVStream* inStream = avFormatContext->streams[videoIndex];
-
     frameWidth_ = inStream->codecpar->width;
     frameHeight_ = inStream->codecpar->height;
     if (inStream->avg_frame_rate.den) {
@@ -188,9 +154,7 @@ void GetVideoInfo() {
 
     videoType_ = inStream->codecpar->codec_id;
     profile_ = inStream->codecpar->profile;
-
     avformat_close_input(&avFormatContext);
-
     ATLAS_LOG_INFO("Video %s, type %d, profile %d, width:%d, height:%d, fps:%d",
                  streamName_.c_str(), videoType_, profile_, frameWidth_, frameHeight_, fps_);
     return;
@@ -308,7 +272,6 @@ bool InitVideoParams(int videoIndex,
 void Decode() {
     ATLAS_LOG_INFO("Start ffmpeg decode video %s ...", streamName_.c_str());
     avformat_network_init(); // init network
-
     AVFormatContext* avFormatContext = avformat_alloc_context();
 
     // check open video result
@@ -374,11 +337,11 @@ int main(int argc, char *argv[]) {
         ATLAS_LOG_ERROR("Init resource failed, error %d", ret);
         return ATLAS_ERROR;
     } 
-    context_ = aclDev.GetContext();
     runMode_ = aclDev.GetRunMode();  
 
     //intialize ffmpeg decoder
     FFmpegDecoder();
+    //verify video type
     if (kInvalidTpye == GetVdecType()) {      
         ATLAS_LOG_ERROR("Video %s type is invalid", streamName_.c_str());
     } 
