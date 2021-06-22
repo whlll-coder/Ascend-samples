@@ -6,13 +6,11 @@ English|[中文](README_CN.md)
 
 **This readme file provides only guidance for running the sample in command line (CLI) mode. For details about how to run the sample in MindStudio, see [Running Video Samples in MindStudio](https://gitee.com/ascend/samples/wikis/Mindstudio%E8%BF%90%E8%A1%8C%E5%9B%BE%E7%89%87%E6%A0%B7%E4%BE%8B?sort_id=3164874).**
 
-## VENC Sample
+## FFmpeg frame slice Sample
 
-Function: encodes a video.
+Function: cut video.into frame
 
 Input: original MP4 file
-
-Output: encoded H.264 file
 
 
 ### Prerequisites
@@ -22,6 +20,8 @@ Before deploying this sample, ensure that:
 - The environment has been set up by referring to [Preparing Environment and Installing Dependencies](../../../environment).
 
 - The development environment and operating environment of the corresponding product have been installed.
+
+- The atlasutils have been installed.
 
 ### Preparing Software
 
@@ -53,9 +53,9 @@ Before deploying this sample, ensure that:
 
     Run the following commands to go to the **data** folder of the sample and download the corresponding test image:
 
-    **cd /home/ascend/samples/cplusplus/level1_single_api/1_acl/4_dvpp/venc/data**
+    **cd /home/ascend/samples/cplusplus/level2_simple_inference/0_data_process/ffmpegdecode/data**
 
-    **wget https://c7xcode.obs.cn-north-4.myhuaweicloud.com/models/venc/detection.mp4**
+    **wget https://c7xcode.obs.cn-north-4.myhuaweicloud.com/models/ffmpegdecode/cat.mp4**
 
 
 ### Deploying the Sample
@@ -84,9 +84,9 @@ Before deploying this sample, ensure that:
         > - If the CANN version is 3.0.0, change **arm64-linux** in the ***DDK_PATH*** environment variable to **arm64-linux_gcc7.3.0**.
         > - You can run the **uname -a** command on the CLI to view the CPU architecture of the development environment and operating environment. If **x86_64** is displayed in the command output, the x86 architecture is used. If **arm64** is displayed in the command output, the ARM architecture is used.
 
-2. Switch to the **venc** directory and create a directory for storing build outputs, for example, **build/intermediates/host** in this sample.
+2. Switch to the **ffmpegdecode** directory and create a directory for storing build outputs, for example, **build/intermediates/host** in this sample.
 
-    **cd $HOME/samples/cplusplus/level1_single_api/1_acl/4_dvpp/venc**
+    **cd $HOME/samples/cplusplus/level2_simple_inference/0_data_process/ffmpegdecode**
 
     **mkdir -p build/intermediates/host**
 
@@ -118,7 +118,7 @@ Before deploying this sample, ensure that:
 
 1. Run the following commands to upload the **venc** directory in the development environment to any directory in the operating environment, for example, **/home/HwHiAiUser**, and log in to the operating environment (host) as the **HwHiAiUser** user:
 
-    **scp -r $HOME/samples/cplusplus/level1_single_api/1_acl/4_dvpp/venc HwHiAiUser@xxx.xxx.xxx.xxx:/home/HwHiAiUser**
+    **scp -r $HOME/samples/cplusplus/level2_simple_inference/0_data_process/ffmpegdecode HwHiAiUser@xxx.xxx.xxx.xxx:/home/HwHiAiUser**
 
     **ssh HwHiAiUser@xxx.xxx.xxx.xxx**    
 
@@ -129,22 +129,12 @@ Before deploying this sample, ensure that:
 
     - If the development environment and operating environment are set up on the same server, run the following commands to set the operating environment variables and switch the directory:
 
-      **export LD_LIBRARY_PATH=**
-
-      **source ~/.bashrc**
-
-      **cd $HOME/samples/cplusplus/level1_single_api/1_acl/4_dvpp/venc/out**
+      **cd $HOME/samples/cplusplus/level2_simple_inference/0_data_process/ffmpegdecode/out**
 
     - If the development environment and operating environment are set up on separate servers, run the following command to switch the directory:
 
-      **cd $HOME/venc/out**
+      **cd $HOME/ffmpegdecode/out**
 
     Run the following command to run the sample:
 
-    **mkdir output**
-
-    **./main ../data/detection.mp4**
-
-### Viewing the Result
-
-After the execution is complete, the running result is printed on the CLI of the operating environment, and the video after inference is saved in the **$HOME/venc/out/output** directory.
+    **./main ../data/cat.mp4**
