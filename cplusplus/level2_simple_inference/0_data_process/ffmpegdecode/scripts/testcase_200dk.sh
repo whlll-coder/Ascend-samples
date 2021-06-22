@@ -63,6 +63,12 @@ function main() {
         return ${inferenceError}
     fi
 
+    setBuildEnv
+    if [ $? -ne 0 ];then
+        echo "ERROR: set build environment failed"
+        return ${inferenceError}
+    fi
+
     buildLibAtlasUtil
 	if [ $? -ne 0 ];then
         echo "ERROR: build libatlasutil.so failed"
@@ -75,12 +81,6 @@ function main() {
         return ${inferenceError}
     fi
     cd ${project_path}/build/intermediates/host
-
-    setBuildEnv
-    if [ $? -ne 0 ];then
-        echo "ERROR: set build environment failed"
-        return ${inferenceError}
-    fi
 
     cmake ${project_path}/src -DCMAKE_CXX_COMPILER=aarch64-linux-gnu-g++ -DCMAKE_SKIP_RPATH=TRUE
     if [ $? -ne 0 ];then
