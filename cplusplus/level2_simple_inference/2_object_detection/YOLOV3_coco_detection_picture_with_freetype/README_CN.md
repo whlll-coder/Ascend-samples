@@ -1,4 +1,3 @@
-中文|[English](README.md)
 
 **本样例为大家学习昇腾软件栈提供参考，非商业目的！**
 
@@ -6,13 +5,13 @@
 
 **本README只提供命令行方式运行样例的指导，如需在Mindstudio下运行样例，请参考[Mindstudio运行图片样例wiki](https://gitee.com/ascend/samples/wikis/Mindstudio%E8%BF%90%E8%A1%8C%E5%9B%BE%E7%89%87%E6%A0%B7%E4%BE%8B?sort_id=3164874)。**
 
-## YOLOV3_coco_detection_picture样例
+## YOLOV3_coco_detection_picture_with_freetype样例
 
 功能：使用yolov3模型对输入图片进行预测推理，并将结果打印到输出图片上。
 
 样例输入：原始图片jpg文件。
 
-样例输出：带推理结果的jpg文件。
+样例输出：带推理结果的yuv文件。
 
 ### 前提条件
 
@@ -21,6 +20,8 @@
 - 请确认已按照[环境准备和依赖安装](../../../environment)准备好环境。
 
 - 已完成对应产品的开发环境和运行环境安装。
+
+- 安装依赖：apt install fonts-droid-fallback libfreetype6-dev
 
 ### 软件准备
 
@@ -50,7 +51,7 @@
 
 2. 获取此应用中所需要的原始网络模型。
 
-    参考下表获取此应用中所用到的原始网络模型及其对应的权重文件，并将其存放到开发环境普通用户下的任意目录，例如：$HOME/models/YOLOV3_coco_detection_picture。
+    参考下表获取此应用中所用到的原始网络模型及其对应的权重文件，并将其存放到开发环境普通用户下该样例的model文件夹中，本例为：$HOME/samples/cplusplus/level2_simple_inference/2_object_detection/YOLOV3_coco_detection_picture_with_freetype/model。
     
     |  **模型名称**  |  **模型说明**  |  **模型下载路径**  |
     |---|---|---|
@@ -72,25 +73,25 @@
 
     2. 执行以下命令下载aipp配置文件并使用atc命令进行模型转换。
 
-        **cd $HOME/models/YOLOV3_coco_detection_picture**  
+        **cd $HOME/samples/cplusplus/level2_simple_inference/2_object_detection/YOLOV3_coco_detection_picture_with_freetype/model**  
 
-        **wget https://c7xcode.obs.cn-north-4.myhuaweicloud.com/models/YOLOV3_coco_detection_picture/aipp_nv12.cfg**
+        **wget https://c7xcode.obs.cn-north-4.myhuaweicloud.com/models/YOLOV3_coco_detection_picture_with_freetype/aipp_nv12.cfg**
 
         **atc --model=yolov3.prototxt --weight=yolov3.caffemodel --framework=0 --output=yolov3 --soc_version=Ascend310 --insert_op_conf=aipp_nv12.cfg**
 
-    3. 执行以下命令将转换好的模型复制到样例中model文件夹中。
-
-        **cp ./yolov3.om $HOME/samples/cplusplus/level2_simple_inference/2_object_detection/YOLOV3_coco_detection_picture/model/**
 
 4. 获取样例需要的测试图片。
 
     执行以下命令，进入样例的data文件夹中，下载对应的测试图片。
 
-    **cd $HOME/samples/cplusplus/level2_simple_inference/2_object_detection/YOLOV3_coco_detection_picture/data**
+    **cd $HOME/samples/cplusplus/level2_simple_inference/2_object_detection/YOLOV3_coco_detection_picture_with_freetype/data**
 
-    **wget https://c7xcode.obs.cn-north-4.myhuaweicloud.com/models/YOLOV3_coco_detection_picture/dog1_1024_683.jpg**
+    **wget https://c7xcode.obs.cn-north-4.myhuaweicloud.com/models/YOLOV3_coco_detection_picture_with_freetype/dog_1024_688.jpg**
 
-    **wget https://c7xcode.obs.cn-north-4.myhuaweicloud.com/models/YOLOV3_coco_detection_picture/boat.jpg**
+    **wget https://c7xcode.obs.cn-north-4.myhuaweicloud.com/models/YOLOV3_coco_detection_picture_with_freetype/boat_512_384.jpg**
+
+    ![](https://images.gitee.com/uploads/images/2020/1106/160652_6146f6a4_5395865.gif "icon-note.gif") **说明：**  
+    > - 该样例使用dvpp解码图片为yuv格式，dvpp功能对输入图片尺寸有宽128高16对齐要求。
 
 ### 样例部署
  
@@ -118,9 +119,9 @@
         > - 如果是3.0.0版本，此处 **DDK_PATH** 环境变量中的 **arm64-liunx** 应修改为 **arm64-linux_gcc7.3.0**。
         > - 可以在命令行中执行 **uname -a**，查看开发环境和运行环境的cpu架构。如果回显为x86_64，则为x86架构。如果回显为arm64，则为Arm架构。
 
-2. 切换到YOLOV3_coco_detection_picture目录，创建目录用于存放编译文件，例如，本文中，创建的目录为 **build/intermediates/host**。
+2. 切换到YOLOV3_coco_detection_picture_with_freetype目录，创建目录用于存放编译文件，例如，本文中，创建的目录为 **build/intermediates/host**。
 
-    **cd $HOME/samples/cplusplus/level2_simple_inference/2_object_detection/YOLOV3_coco_detection_picture**
+    **cd $HOME/samples/cplusplus/level2_simple_inference/2_object_detection/YOLOV3_coco_detection_picture_with_freetype**
 
     **mkdir -p build/intermediates/host**
 
@@ -142,7 +143,7 @@
     
       **cmake \.\./\.\./\.\./src -DCMAKE_CXX_COMPILER=aarch64-linux-gnu-g++ -DCMAKE_SKIP_RPATH=TRUE**
 
-4. 执行make命令，生成的可执行文件main在 **YOLOV3_coco_detection_picture/out** 目录下。
+4. 执行make命令，生成的可执行文件main在 **YOLOV3_coco_detection_picture_with_freetype/out** 目录下。
 
     **make**
 
@@ -150,9 +151,9 @@
 
 **注：开发环境与运行环境合一部署，请跳过步骤1，直接执行[步骤2](#step_2)即可。**   
 
-1. 执行以下命令,将开发环境的 **YOLOV3_coco_detection_picture** 目录上传到运行环境中，例如 **/home/HwHiAiUser**，并以HwHiAiUser（运行用户）登录运行环境（Host）。
+1. 执行以下命令,将开发环境的 **YOLOV3_coco_detection_picture_with_freetype** 目录上传到运行环境中，例如 **/home/HwHiAiUser**，并以HwHiAiUser（运行用户）登录运行环境（Host）。
 
-    **scp -r $HOME/samples/cplusplus/level2_simple_inference/2_object_detection/YOLOV3_coco_detection_picture HwHiAiUser@xxx.xxx.xxx.xxx:/home/HwHiAiUser**
+    **scp -r $HOME/samples/cplusplus/level2_simple_inference/2_object_detection/YOLOV3_coco_detection_picture_with_freetype HwHiAiUser@xxx.xxx.xxx.xxx:/home/HwHiAiUser**
 
     **ssh HwHiAiUser@xxx.xxx.xxx.xxx**    
 
@@ -167,11 +168,11 @@
 
       **source ~/.bashrc**
         
-      **cd $HOME/samples/cplusplus/level2_simple_inference/2_object_detection/YOLOV3_coco_detection_picture/out**
+      **cd $HOME/samples/cplusplus/level2_simple_inference/2_object_detection/YOLOV3_coco_detection_picture_with_freetype/out**
 
     - 如果是开发环境与运行环境分离部署，执行以下命令切换目录。
     
-      **cd $HOME/YOLOV3_coco_detection_picture/out**
+      **cd $HOME/YOLOV3_coco_detection_picture_with_freetype/out**
 
     - 创建结果文件
 
