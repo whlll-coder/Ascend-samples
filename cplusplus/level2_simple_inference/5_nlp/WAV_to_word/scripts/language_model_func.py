@@ -43,9 +43,9 @@ Model
 		current_path = os.path.dirname(__file__)
 		self.dict_pinyin = self.GetSymbolDict(os.path.join(current_path + "/dict.txt"))
 		print(self.modelpath)
-		self.model1 = self.GetLanguageModel(self.modelpath + 'language_model1.txt')
-		self.model2 = self.GetLanguageModel(self.modelpath + 'language_model2.txt')
-		self.pinyin = self.GetPinyin(self.modelpath + 'dic_pinyin.txt')
+		self.model1 = self.GetLanguageModel(self.modelpath + '/language_model/language_model1.txt')
+		self.model2 = self.GetLanguageModel(self.modelpath + '/language_model/language_model2.txt')
+		self.pinyin = self.GetPinyin(self.modelpath + '/language_model/dic_pinyin.txt')
 		model = (self.dict_pinyin, self.model1, self.model2)
 		return model
 		# pass
