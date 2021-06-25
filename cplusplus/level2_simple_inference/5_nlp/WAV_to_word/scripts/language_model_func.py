@@ -2,11 +2,16 @@
 # -*- coding: utf-8 -*-
 #encoding:utf-8
 import platform as plat
-import sys
+import os
 import io
 
-class ModelLanguage(): # 语音模型类
+class ModelLanguage(object): # 语音模型类
+	"""
+	description:
+	Speech model class
+	"""
 	def __init__(self, modelpath):
+		super(ModelLanguage, self).__init__()
 		self.modelpath = modelpath
 		system_type = plat.system() # 由于不同的系统的文件路径表示不一样，需要进行判断
 
@@ -21,17 +26,29 @@ class ModelLanguage(): # 语音模型类
 
 		if(self.slash != self.modelpath[-1]): # 在目录路径末尾增加斜杠
 			self.modelpath = self.modelpath + self.slash
-
-		pass
+		self.model2 = {}
+		self.model1 = {}
+		self.pinyin = {}
+		self.dict_pinyin = {}
 
 	def LoadModel(self):
-		self.dict_pinyin = self.GetSymbolDict('dict.txt')
+		"""
+Function description:
+load Model
+Parameter:
+self
+Return Value:
+Model
+"""
+		current_path = os.path.dirname(__file__)
+		self.dict_pinyin = self.GetSymbolDict(os.path.join(current_path + "/dict.txt"))
+		print(self.modelpath)
 		self.model1 = self.GetLanguageModel(self.modelpath + 'language_model1.txt')
 		self.model2 = self.GetLanguageModel(self.modelpath + 'language_model2.txt')
 		self.pinyin = self.GetPinyin(self.modelpath + 'dic_pinyin.txt')
-		model = (self.dict_pinyin, self.model1, self.model2 )
+		model = (self.dict_pinyin, self.model1, self.model2)
 		return model
-		pass
+		# pass
 
 	def SpeechToText(self, list_syllable):
 		'''
@@ -134,8 +151,8 @@ class ModelLanguage(): # 语音模型类
 						if(tmp_words in self.model2): # 判断它们是不是再状态转移表里
 							#print(tmp_words,tmp_words in self.model2)
 							tuple_word[1] = tuple_word[1] * float(self.model2[tmp_words]) / float(self.model1[tmp_words[-2]])
-						# 核心！在当前概率上乘转移概率，公式化简后为第n-1和n个字出现的次数除以第n-1个字出现的次数
-						#print(self.model2[tmp_words],self.model1[tmp_words[-2]])
+							# 核心！在当前概率上乘转移概率，公式化简后为第n-1和n个字出现的次数除以第n-1个字出现的次数
+							#print(self.model2[tmp_words],self.model1[tmp_words[-2]])
 						else:
 							tuple_word[1] = 0.0
 							continue
@@ -146,7 +163,7 @@ class ModelLanguage(): # 语音模型类
 							list_words_2.append(tuple_word)
 
 				list_words = list_words_2
-			#print(list_words,'\n')
+				#print(list_words,'\n')
 		#print(list_words)
 		for i in range(0, len(list_words)):
 			for j in range(i + 1, len(list_words)):
@@ -156,7 +173,7 @@ class ModelLanguage(): # 语音模型类
 					list_words[j] = tmp
 
 		return list_words
-		pass
+		# pass
 
 	def GetSymbolDict(self, dictfilename):
 		'''
