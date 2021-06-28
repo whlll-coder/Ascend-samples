@@ -231,7 +231,7 @@ Return Value:
     r = ml.SpeechToText(str_pinyin)
 
 # 保存语音识别的结果
-    with open(os.path.join(current_paths , 'results/asr_results.txt'), 'a+b') as f:
+    with open(os.path.join(current_paths, 'results/asr_results.txt'), 'a+b') as f:
         data = string_pinyin[1:-1] + '-' + r + '\n'
         # print(1111111,data)
         data=data.encode()

@@ -94,7 +94,7 @@ Model
 
 		return str_result
 
-	def decode(self,list_syllable, yuzhi = 0.0001):
+	def decode(self, list_syllable, yuzhi=0.0001):
 		'''
 		实现拼音向文本的转换
 		基于马尔可夫链
@@ -140,7 +140,7 @@ Model
 
 					num_ls = len(ls)
 					for k in range(0, num_ls):
-						tuple_word = ['',0.0]
+						tuple_word = ['', 0.0]
 						tuple_word = list(list_words[j]) # 把现有的每一条短语取出来
 						#print('tw1: ',tuple_word)
 						tuple_word[0] = tuple_word[0] + ls[k] # 尝试按照下一个音可能对应的全部的字进行组合
@@ -219,6 +219,10 @@ Model
 		return dic_model
 
 	def GetPinyin(self, filename):
+		"""
+description:
+GetPinyin
+"""
 		with io.open(filename, 'r', encoding='utf-8') as f:
 			txt_all = f.read()
 			f.close()
