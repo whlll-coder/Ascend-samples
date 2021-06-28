@@ -211,7 +211,7 @@ Return Value:
         if i % 2 == 0:
             try:
                 ret1.remove(1423)
-            except:
+            except Except as e:
                 pass
     # print(rr,ret1)
     list_symbol_dic = GetSymbolList()
@@ -242,7 +242,7 @@ Return Value:
 
 
 if __name__ == "__main__":
-    dict={'nihao.wav': 'output1_0.bin', 'xinpian.wav': 'output2_0.bin'}
+    dicts={'nihao.wav': 'output1_0.bin', 'xinpian.wav': 'output2_0.bin'}
     current_path = os.path.abspath(__file__)
 
     # print("当前文件父目录:",os.listdir(r'../scripts/'))
@@ -256,7 +256,7 @@ if __name__ == "__main__":
         # in_len = GetDataSet(inputname)
 
         outputname = os.path.join(
-            os.path.abspath(os.path.dirname(current_path) + os.path.sep + "../out/"), dict[voice_name]
+            os.path.abspath(os.path.dirname(current_path) + os.path.sep + "../out/"), dicts[voice_name]
         )
         resultList = np.fromfile(outputname, np.float32)
         # 判断模型推理结果是否成功
