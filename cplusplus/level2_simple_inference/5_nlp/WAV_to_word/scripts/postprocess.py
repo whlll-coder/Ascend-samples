@@ -172,7 +172,7 @@ def GetDataSet(speech_voice_path):
     out_filename = out_file_name + '.bin'
     writer = open(out_filename, "wb")
     writer.write(features)
-    return in_len
+    return in_lens
 
 
 def GetDataSet2(speech_voice_path):
@@ -189,7 +189,7 @@ def GetDataSet2(speech_voice_path):
     return  in_lenth
 
 
-def SpeechPostProcess(resultList):
+def SpeechPostProcess(resultLists):
 
     """
 Function description:
@@ -201,7 +201,7 @@ Return Value:
 """
     # 将三维矩阵转为二维
     # print("AAA")
-    dets = np.reshape(resultList, (200, 1424))
+    dets = np.reshape(resultLists, (200, 1424))
     # print("BBB")
     # 将识别结果转为拼音序列
     rr, ret1 = greedy_decode(dets)
