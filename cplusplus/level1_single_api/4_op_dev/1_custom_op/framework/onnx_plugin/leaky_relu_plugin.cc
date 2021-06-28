@@ -18,16 +18,19 @@ using namespace ge;
 using json = nlohmann::json;
 
 namespace domi {
+namespace {
+  const int kTypeFloat = 1;
+}
 Status ParseParamsLeakyRelu(const ge::Operator& op_src, ge::Operator& op_dest) {
   // trans op_src to op_dest
   // if op_src get required attr failed, need to return Failed
   // if op_src get optional attr failed, need to return Failed or set a default value
   float negative_slope = 0.01f;
-  string attrs_string;
+  AscendString attrs_string;
   if (ge::GRAPH_SUCCESS == op_src.GetAttr("attribute", attrs_string)) {
-    json attrs = json::parse(attrs_string);
+    json attrs = json::parse(attrs_string.GetString());
     for (json attr : attrs["attribute"]) {
-      if (attr["name"] == "alpha" && attr["type"] == 1) {
+      if (attr["name"] == "alpha" && attr["type"] == kTypeFloat) {
         negative_slope = attr["f"];
       }
     }
@@ -37,10 +40,14 @@ Status ParseParamsLeakyRelu(const ge::Operator& op_src, ge::Operator& op_dest) {
   return SUCCESS;
 }
 
-REGISTER_CUSTOM_OP("LeakyReluDemo")
-    .FrameworkType(ONNX)  // type: CAFFE, TENSORFLOW, ONNX
-    .OriginOpType({"ai.onnx::8::LeakyRelu", "ai.onnx::9::LeakyRelu", "ai.onnx::10::LeakyRelu"})  // name in onnx module
-    .ParseParamsByOperatorFn(
-        ParseParamsLeakyRelu)  // AutoMappingFn for Tensorflow, ParseParamsFn need to realize for onnx
+REGISTER_CUSTOM_OP("LeakyRelu")
+    .FrameworkType(ONNX)
+    .OriginOpType({"ai.onnx::8::LeakyRelu",
+                   "ai.onnx::9::LeakyRelu",
+                   "ai.onnx::10::LeakyRelu",
+                   "ai.onnx::11::LeakyRelu",
+                   "ai.onnx::12::LeakyRelu",
+                   "ai.onnx::13::LeakyRelu"})
+    .ParseParamsByOperatorFn(ParseParamsLeakyRelu)
     .ImplyType(ImplyType::TVM);
 }  // namespace domi
