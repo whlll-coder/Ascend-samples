@@ -136,16 +136,16 @@ def RecognizeSpeech(wavsignal, fs):
 
     data_input = data_input.reshape(data_input.shape[0], data_input.shape[1], 1)  #978,200,1
     batch_size = 1
-    in_len = np.zeros((batch_size), dtype = np.int32)
+    in_length = np.zeros((batch_size), dtype = np.int32)
 
-    in_len[0] = input_length
+    in_length[0] = input_length
 
     x_in = np.zeros((batch_size, 1600, AUDIO_FEATURE_LENGTH, 1), dtype=np.float32) #1,1600,200,1
 
     for i in range(batch_size):
         x_in[i, 0:len(data_input)] = data_input
 
-    return x_in, in_len
+    return x_in, in_length
 
 
 def RecognizeSpeech_FromFile(filename):
@@ -154,8 +154,8 @@ def RecognizeSpeech_FromFile(filename):
     '''
 
     wavsignal, fs1 = read_wav_data(filename)  # 识别语音的特征 fs1=16000 len(wavsignal[0])=157000
-    r, in_len = RecognizeSpeech(wavsignal, fs1)
-    return r, in_len
+    r, in_leng = RecognizeSpeech(wavsignal, fs1)
+    return r, in_leng
 
 
 def GetDataSet(speech_voice_path):
@@ -165,7 +165,7 @@ def GetDataSet(speech_voice_path):
     #wave_path = L.pcm2wav(speech_voice_path)
 
     # 读取wav音频特征
-    features, in_len = RecognizeSpeech_FromFile(speech_voice_path)
+    features, in_lens = RecognizeSpeech_FromFile(speech_voice_path)
 
     # 将wav音频特征转换为模型输入向量
     out_file_name = speech_voice_path.split('.')[0]
@@ -178,7 +178,7 @@ def GetDataSet(speech_voice_path):
 def GetDataSet2(speech_voice_path):
     """ 直接读取wav格式音频数据 """
 
-    features, in_len = RecognizeSpeech_FromFile(speech_voice_path) #1,1600,200,1  in_len=122 全0矩阵
+    features, in_lenth = RecognizeSpeech_FromFile(speech_voice_path) #1,1600,200,1  in_len=122 全0矩阵
     features1=np.reshape(features, [1, 1600, 200, 1])
 
     features1=np.transpose(features1, (0, 3, 1, 2)).copy()
@@ -186,10 +186,10 @@ def GetDataSet2(speech_voice_path):
 
     writer = open("features1.bin", "wb")
     writer.write(features)
-    return  in_len
+    return  in_lenth
 
 
-def SpeechPostProcess(resultList, in_len):
+def SpeechPostProcess(resultList):
 
     """
 Function description:
@@ -211,7 +211,7 @@ Return Value:
         if i % 2 == 0:
             try:
                 ret1.remove(1423)
-            except Except as e:
+            except:
                 pass
     # print(rr,ret1)
     list_symbol_dic = GetSymbolList()
@@ -253,7 +253,7 @@ if __name__ == "__main__":
             continue
         print("start to process image {}....".format(voice_name))
         inputname = os.path.join(os.path.abspath(os.path.dirname(current_path) + os.path.sep + "../data/"), voice_name)
-        in_len = GetDataSet(inputname)
+        # in_len = GetDataSet(inputname)
 
         outputname = os.path.join(
             os.path.abspath(os.path.dirname(current_path) + os.path.sep + "../out/"), dict[voice_name]
@@ -265,6 +265,6 @@ if __name__ == "__main__":
         resultList=np.reshape(resultList, (200, 1424))
         # 对结果进行后处理
 
-        txt, pinyin = SpeechPostProcess(resultList, in_len)
+        txt, pinyin = SpeechPostProcess(resultList)
         print('拼音： ' + str(pinyin))
         print('文本： ' + str(txt))
