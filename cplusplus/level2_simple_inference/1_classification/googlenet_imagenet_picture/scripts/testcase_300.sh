@@ -194,11 +194,11 @@ function main() {
         return ${inferenceError}
     fi
 
-    buildLibAtlasUtil
-	if [ $? -ne 0 ];then
-        echo "ERROR: build libatlasutil.so failed"
-        return ${inferenceError}
-    fi
+#    buildLibAtlasUtil
+#	if [ $? -ne 0 ];then
+#        echo "ERROR: build libatlasutil.so failed"
+#        return ${inferenceError}
+#    fi
 
     mkdir -p ${project_path}/build/intermediates/host
     if [ $? -ne 0 ];then
