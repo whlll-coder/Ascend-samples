@@ -85,13 +85,13 @@ function downloadOriginalModel() {
 
 function buildLibAtlasUtil() {
     cd ${project_path}/../../../common/atlasutil/
-    make mode=ASIC
+    make mode=Atals300
     if [ $? -ne 0 ];then
         echo "ERROR: make atlasutil failed."
         return ${inferenceError}
     fi
 
-    make mode=ASIC install
+    make mode=Atals300 install
     if [ $? -ne 0 ];then
         echo "ERROR: make install atlasutil failed."
         return ${inferenceError}
