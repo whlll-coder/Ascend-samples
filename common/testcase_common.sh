@@ -143,7 +143,7 @@ function run_picture()
 {
     # 重新配置程序运行所需的环境变量
     export LD_LIBRARY_PATH=
-    export LD_LIBRARY_PATH=/home/HwHiAiUser/Ascend/acllib/lib64:/home/HwHiAiUser/ascend_ddk/${TargetKernel}/lib:${DDK_PATH}/acllib/lib64:${LD_LIBRARY_PATH}
+    export LD_LIBRARY_PATH=/home/HwHiAiUser/Ascend/acllib/lib64:/home/HwHiAiUser/Ascend/ascend-toolkit/latest/atc/lib64:/home/HwHiAiUser/ascend_ddk/${TargetKernel}/lib:${DDK_PATH}/acllib/lib64:${LD_LIBRARY_PATH}
     
     mkdir -p ${project_path}/out/output
     # 运行程序
