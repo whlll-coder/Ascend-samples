@@ -12,7 +12,7 @@ version=$1
 
 script_path="$( cd "$(dirname $BASH_SOURCE)" ; pwd -P)"
 project_path=${script_path}/..
-run_command="./mian ../data"
+run_command="./main ../data"
 model_atc="atc --model=${project_path}/model/${caffe_prototxt##*/} --weight=${project_path}/model/${caffe_model##*/} --framework=0 --output=${HOME}/models/${project_name}/${model_name} --soc_version=Ascend310 --input_shape="data_l:1,1,224,224" --input_format=NCHW"
 
 declare -i success=0
