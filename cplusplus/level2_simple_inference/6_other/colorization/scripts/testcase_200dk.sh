@@ -19,7 +19,7 @@ declare -i success=0
 declare -i inferenceError=1
 declare -i verifyResError=2
 
-. ../../../../../common/testcase_common.sh
+. ${script_path}/../../../../../common/testcase_common.sh
 
 function main() {
 
