@@ -29,7 +29,7 @@ function main() {
         return ${inferenceError}
     fi
 
-    model_convert
+    modelconvert
     if [ $? -ne 0 ];then
         return ${inferenceError}
     fi
