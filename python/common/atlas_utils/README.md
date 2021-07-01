@@ -54,7 +54,7 @@ cp /home/HwHiAiUser/ascend_ddk/<arch>/lib/pkgconfig/* /usr/share/pkgconfig/
 
 ```
 git clone https://gitee.com/mirrors/PyAV.git
-cd PyAv
+cd PyAV
 python3 setup.py build --ffmpeg-dir=/home/HwHiAiUser/ascend_ddk/<arch>
 python3 setup.py install
 ```
