@@ -16,12 +16,14 @@ function downloadDataWithVerifySource()
     fi
   fi
 
-  mkdir -p ${project_path}/verify_image/
-  if [[ $(find ${project_path}/verify_image -name ${verify_name})"x" = "x" ]];then
-    wget -O ${project_path}/verify_image/${verify_name} ${verify_source}${verify_name} --no-check-certificate
-    if [ $? -ne 0 ];then
-      echo "download verify data failed, please check Network."
-      return ${inferenceError}
+  if [[ ${verify_image}"x" != "x" ]];then
+    mkdir -p ${project_path}/verify_image/
+    if [[ $(find ${project_path}/verify_image -name ${verify_name})"x" = "x" ]];then
+      wget -O ${project_path}/verify_image/${verify_name} ${verify_source}${verify_name} --no-check-certificate
+      if [ $? -ne 0 ];then
+        echo "download verify data failed, please check Network."
+        return ${inferenceError}
+      fi
     fi
   fi
   
@@ -143,8 +145,11 @@ function run_picture()
 {
     # 重新配置程序运行所需的环境变量
     export LD_LIBRARY_PATH=
-    export LD_LIBRARY_PATH=/home/HwHiAiUser/Ascend/acllib/lib64:/home/HwHiAiUser/ascend_ddk/${TargetKernel}/lib:${LD_LIBRARY_PATH}
-    
+    export LD_LIBRARY_PATH=/home/HwHiAiUser/Ascend/acllib/lib64:/home/HwHiAiUser/ascend_ddk/${TargetKernel}/lib:${DDK_PATH}/acllib/lib64:${LD_LIBRARY_PATH}
+    if [[ ${version}"x" != "c75x" ]] && [[ ${version}"x" != "C75x" ]];then
+      export LD_LIBRARY_PATH=/home/HwHiAiUser/Ascend/ascend-toolkit/latest/atc/lib64:${LD_LIBRARY_PATH}
+    fi
+
     mkdir -p ${project_path}/out/output
     # 运行程序
     cd ${project_path}/out
@@ -173,4 +178,57 @@ function run_picture()
     echo "run success"
 
     return ${success}
+}
+function run_presenter()
+{
+  # 重新配置程序运行所需的环境变量
+    export LD_LIBRARY_PATH=
+    export LD_LIBRARY_PATH=/home/HwHiAiUser/Ascend/acllib/lib64:/home/HwHiAiUser/ascend_ddk/${TargetKernel}/lib:${DDK_PATH}/acllib/lib64:${LD_LIBRARY_PATH}
+    if [[ ${version}"x" != "c75x" ]] && [[ ${version}"x" != "C75x" ]];then
+      export LD_LIBRARY_PATH=/home/HwHiAiUser/Ascend/ascend-toolkit/latest/atc/lib64:${LD_LIBRARY_PATH}
+    fi
+
+  # 开启presenter server
+    cd ${script_path}/../../../../../common/
+    bash run_presenter_server.sh ${script_path}/${conf_file_name}
+    if [ $? -ne 0 ];then
+        echo "ERROR: run presenter server failed. please check your project"
+        return ${inferenceError}
+    fi
+
+    sleep 2
+    # 运行程序
+    mv ${project_path}/out/main ${project_path}/out/${project_name}
+    cd ${project_path}/out/
+    ${run_command} &
+
+    sleep 8
+
+    project_pid=`ps -ef | grep "${project_name}" | grep "data" | awk -F ' ' '{print $2}'`
+    if [[ ${project_pid}"X" != "X" ]];then
+        echo -e "\033[33m kill existing project process: kill -9 ${project_pid}.\033[0m"
+        kill -9 ${project_pid}
+        if [ $? -ne 0 ];then
+            echo "ERROR: kill project process failed."
+            return ${inferenceError}
+        fi
+
+        presenter_server_pid=`ps -ef | grep "presenter_server\.py" | grep "${presenter_server_name}" | awk -F ' ' '{print $2}'`
+        if [[ ${presenter_server_pid}"X" != "X" ]];then
+            echo -e "\033[33mNow do presenter server configuration, kill existing presenter process: kill -9 ${presenter_server_pid}.\033[0m"
+            kill -9 ${presenter_server_pid}
+            if [ $? -ne 0 ];then
+                echo "ERROR: kill presenter server process failed."
+                return ${inferenceError}
+            fi
+        fi
+    else
+        echo "ERROR: run failed. please check your project"
+        return ${inferenceError}
+    fi
+
+    echo "run success"
+
+    return ${success}  
+
 }
