@@ -111,10 +111,10 @@ char* GetPicDevBuffer4JpegE(const PicDesc &picDesc, uint32_t &PicBufferSize)
     return reinterpret_cast<char *>(inputDevBuff);
 }
 
-void SetInput4JpegE(char &inDevBuffer, int inDevBufferSize, int inputWidth, int inputHeight)
+void set_input4_jpege(char &inDevBuffer, int inDevBufferSize, int inputWidth, int inputHeight)
 {
     inDevBuffer_ = &inDevBuffer;
-    inDevBufferSizeE_ = inDevBufferSize;
+    in_devbuffer_size_encode_ = inDevBufferSize;
     inputWidth_ = inputWidth;
     inputHeight_ = inputHeight;
 }
@@ -203,7 +203,7 @@ void DestroyResource()
     INFO_LOG("End to finalize acl");
 }
 
-void DestroyEncodeResource()
+void destroy_encode_resource()
 {
     if (jpegeConfig_ != nullptr) {
         (void)acldvppDestroyJpegeConfig(jpegeConfig_);
@@ -239,10 +239,7 @@ int main()
 
     std::string encodeOutFileName = "./output/jpege_output";
     uint32_t encodeLevel = 100; // default optimal level (0-100)
-
     PicDesc testPic = {"../data/dvpp_output.yuv", 1024, 688};
-
-
     INFO_LOG("Start to process picture:%s", testPic.picName.c_str());
     INFO_LOG("Call JpegE");
 
@@ -268,7 +265,7 @@ int main()
         ERROR_LOG("get picDevBuffer failed, index is %d", 0);
         return FAILED;
     }
-    SetInput4JpegE(*picDevBuffer, jpegInBufferSize, testPic.width, testPic.height);
+    set_input4_jpege(*picDevBuffer, jpegInBufferSize, testPic.width, testPic.height);
     //6. 创建编码输入图片的描述信息，并设置各属性值
     //encodeInputDesc_是acldvppPicDesc类型
     uint32_t widthAlignment = 16;
@@ -292,7 +289,7 @@ int main()
     acldvppSetPicDescHeight(encodeInputDesc_, inputHeight_);
     acldvppSetPicDescWidthStride(encodeInputDesc_, encodeInWidthStride);
     acldvppSetPicDescHeightStride(encodeInputDesc_, encodeInHeightStride);
-    acldvppSetPicDescSize(encodeInputDesc_, inDevBufferSizeE_);
+    acldvppSetPicDescSize(encodeInputDesc_, in_devbuffer_size_encode_);
 
     jpegeConfig_ = acldvppCreateJpegeConfig();
     INFO_LOG("Call acldvppCreateJpegeConfig success");
@@ -331,7 +328,7 @@ int main()
         ERROR_LOG("save encode output data failed.");
         return FAILED;
     }
-    DestroyEncodeResource();
+    destroy_encode_resource();
 
     DestroyResource();
 

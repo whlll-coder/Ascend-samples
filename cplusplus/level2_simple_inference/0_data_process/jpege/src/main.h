@@ -39,12 +39,12 @@ typedef struct PicDesc {
 }PicDesc;
 
 uint32_t AlignmentHelper(uint32_t origSize, uint32_t alignment);
-void SetInput4JpegE(char &inDevBuffer, int inDevBufferSize, int inputWidth, int inputHeight);
+void set_input4_jpege(char &inDevBuffer, int inDevBufferSize, int inputWidth, int inputHeight);
 uint32_t ComputeEncodeInputSize(int inputWidth, int inputHeight);
 static char* ReadBinFile(std::string fileName, uint32_t& fileSize);
 static char* GetPicDevBuffer4JpegE(const PicDesc &picDesc, uint32_t &PicBufferSize);
 static Result SaveDvppOutputData(const char *fileName, const void *devPtr, uint32_t dataSize);
-void DestroyEncodeResource();
+void destroy_encode_resource();
 void DestroyResource();
 void DestroyDecodeResource();
 int32_t deviceId_ = 0;
@@ -61,7 +61,7 @@ uint32_t inputWidth_; // input pic width
 uint32_t inputHeight_; // input pic height
 void* encodeOutBufferDev_; // encode output buffer
 acldvppPicDesc *encodeInputDesc_; //encode input des
-uint32_t inDevBufferSizeD_; // input pic size for decode
-uint32_t inDevBufferSizeE_; // input pic size for encode
+//uint32_t inDevBufferSizeD_; // input pic size for decode
+uint32_t in_devbuffer_size_encode_; // input pic size for encode
 uint32_t encodeOutBufferSize_;
 aclrtRunMode runMode;
