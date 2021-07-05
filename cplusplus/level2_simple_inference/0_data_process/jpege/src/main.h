@@ -63,4 +63,5 @@ void* encodeOutBufferDev_; // encode output buffer
 acldvppPicDesc *encodeInputDesc_; //encode input des
 uint32_t inDevBufferSizeD_; // input pic size for decode
 uint32_t inDevBufferSizeE_; // input pic size for encode
+uint32_t encodeOutBufferSize_;
 aclrtRunMode runMode;
