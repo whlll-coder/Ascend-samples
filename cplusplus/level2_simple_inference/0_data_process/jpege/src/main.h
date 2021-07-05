@@ -40,12 +40,12 @@ typedef struct PicDesc {
 
 uint32_t AlignmentHelper(uint32_t origSize, uint32_t alignment);
 void set_input4_jpege(char &inDevBuffer, int inDevBufferSize, int inputWidth, int inputHeight);
-uint32_t ComputeEncodeInputSize(int inputWidth, int inputHeight);
+uint32_t compute_encode_inputsize(int inputWidth, int inputHeight);
 static char* ReadBinFile(std::string fileName, uint32_t& fileSize);
-static char* GetPicDevBuffer4JpegE(const PicDesc &picDesc, uint32_t &PicBufferSize);
-static Result SaveDvppOutputData(const char *fileName, const void *devPtr, uint32_t dataSize);
+static char* get_picdevbuffer4_jpege(const PicDesc &picDesc, uint32_t &PicBufferSize);
+static Result save_dvpp_outputdata(const char *fileName, const void *devPtr, uint32_t dataSize);
 void destroy_encode_resource();
-void DestroyResource();
+void destroy_resource();
 void DestroyDecodeResource();
 int32_t deviceId_ = 0;
 aclrtContext context_ = nullptr;
