@@ -66,6 +66,14 @@ function downloadOriginalModel() {
       echo "No model download link available, please confirm"
       return ${inferenceError}
     fi
+    
+    if [[ ${aipp_cfg}"x" != "x" ]];then
+      wget -O ${project_path}/model/${aipp_cfg##*/} ${aipp_cfg} --no-check-certificate
+      if [ $? -ne 0 ];then
+        echo "download aipp_cfg failed, please check Network."
+        return ${inferenceError}
+      fi
+    fi
 
     return ${success}
 }
