@@ -300,8 +300,8 @@ int main()
     //5.2 输出内存，申请Device内存encodeOutBufferDev_,存放编码后的输出数据
     //  uint32_t outBufferSize = jpegInBufferSize + jpegInBufferSize; // malloc enough size
 
-    acldvppJpegPredictEncSize(encodeInputDesc_, jpegeConfig_, &encodeOutBufferSize_);
-    aclError aclRet = acldvppMalloc(&encode_out_buffer_dev_, encodeOutBufferSize_);
+    acldvppJpegPredictEncSize(encodeInputDesc_, jpegeConfig_, &encode_outbuffer_size_);
+    aclError aclRet = acldvppMalloc(&encode_out_buffer_dev_, encode_outbuffer_size_);
 
     //aclError aclRet = acldvppMalloc(&encodeOutBufferDev_, outBufferSize);
     if (aclRet != ACL_ERROR_NONE) {
@@ -311,7 +311,7 @@ int main()
 
     //8. 执行异步编码，再调用aclrtSynchronizeStream接口阻塞Host运行，直到指定Stream中的所有任务都完成
     aclRet = acldvppJpegEncodeAsync(dvppChannelDesc_, encodeInputDesc_, encode_out_buffer_dev_,
-    &encodeOutBufferSize_, jpegeConfig_, stream_);
+    &encode_outbuffer_size_, jpegeConfig_, stream_);
     if (aclRet != ACL_ERROR_NONE) {
         ERROR_LOG("acldvppJpegEncodeAsync failed, aclRet = %d", aclRet);
         return FAILED;
@@ -325,7 +325,7 @@ int main()
 
     //9.申请Host内存hostPtr，将编码后的输出图片回传到Host，再将Host内存中的数据写入文件,写完文件后，需及时调用aclrtFreeHost接口释放Host内存
     encodeOutFileName = encodeOutFileName + ".jpg";
-    Result ret = save_dvpp_outputdata(encodeOutFileName.c_str(), encode_out_buffer_dev_, encodeOutBufferSize_);
+    Result ret = save_dvpp_outputdata(encodeOutFileName.c_str(), encode_out_buffer_dev_, encode_outbuffer_size_);
     if (ret != SUCCESS) {
         ERROR_LOG("save encode output data failed.");
         return FAILED;
