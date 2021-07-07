@@ -128,7 +128,7 @@ Before deploying this sample, ensure that:
 
     1. Run the following command in the development environment to start the Presenter Server:  
         **cd $HOME/samples/common/**       
-        **bash scripts/run_presenter_server.sh ../cplusplus/level2_simple_inference/2_object_detection/face_detection_camera/scripts/face_detection.conf**
+        **bash run_presenter_server.sh ../cplusplus/level2_simple_inference/2_object_detection/face_detection_camera/scripts/face_detection.conf**
 
     2. Run the following command to log in to the operating environment:  
         **If the development environment and operating environment are deployed on the same server, skip this step.**  
