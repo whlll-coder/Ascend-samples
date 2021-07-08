@@ -19,19 +19,21 @@ using json = nlohmann::json;
 
 namespace domi {
 namespace {
-  const int kTypeFloat = 1;
+const int kTypeFloat = 1;
 }
-Status ParseParamsLeakyRelu(const ge::Operator& op_src, ge::Operator& op_dest) {
+Status ParseOnnxParamsLeakyRelu(const ge::Operator& op_src, ge::Operator& op_dest) {
   // trans op_src to op_dest
   // if op_src get required attr failed, need to return Failed
   // if op_src get optional attr failed, need to return Failed or set a default value
   float negative_slope = 0.01f;
+  string negative_slope_str;
   AscendString attrs_string;
   if (ge::GRAPH_SUCCESS == op_src.GetAttr("attribute", attrs_string)) {
     json attrs = json::parse(attrs_string.GetString());
     for (json attr : attrs["attribute"]) {
       if (attr["name"] == "alpha" && attr["type"] == kTypeFloat) {
-        negative_slope = attr["f"];
+        negative_slope_str = attr["f"];  // float type in json has accuracy loss, so we use string type to store it
+        negative_slope = atof(negative_slope_str.c_str());
       }
     }
   }
@@ -42,12 +44,12 @@ Status ParseParamsLeakyRelu(const ge::Operator& op_src, ge::Operator& op_dest) {
 
 REGISTER_CUSTOM_OP("LeakyRelu")
     .FrameworkType(ONNX)
-    .OriginOpType({"ai.onnx::8::LeakyRelu",
-                   "ai.onnx::9::LeakyRelu",
-                   "ai.onnx::10::LeakyRelu",
-                   "ai.onnx::11::LeakyRelu",
-                   "ai.onnx::12::LeakyRelu",
-                   "ai.onnx::13::LeakyRelu"})
-    .ParseParamsByOperatorFn(ParseParamsLeakyRelu)
+    .OriginOpType({ge::AscendString("ai.onnx::8::LeakyRelu"),
+                   ge::AscendString("ai.onnx::9::LeakyRelu"),
+                   ge::AscendString("ai.onnx::10::LeakyRelu"),
+                   ge::AscendString("ai.onnx::11::LeakyRelu"),
+                   ge::AscendString("ai.onnx::12::LeakyRelu"),
+                   ge::AscendString("ai.onnx::13::LeakyRelu")})
+    .ParseParamsByOperatorFn(ParseOnnxParamsLeakyRelu)
     .ImplyType(ImplyType::TVM);
 }  // namespace domi

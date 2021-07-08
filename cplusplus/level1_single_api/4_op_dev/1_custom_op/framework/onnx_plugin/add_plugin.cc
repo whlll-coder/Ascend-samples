@@ -20,7 +20,7 @@ Status ParseParamsAdd(const ge::Operator& op_src, ge::Operator& op_dest) {
 
 REGISTER_CUSTOM_OP("Add")
     .FrameworkType(ONNX)
-    .OriginOpType("ai::onnx::11::Add")
+    .OriginOpType("ai.onnx::11::Add")
     .ParseParamsByOperatorFn(ParseParamsAdd)
     .ImplyType(ImplyType::TVM);
 }  // namespace domi
