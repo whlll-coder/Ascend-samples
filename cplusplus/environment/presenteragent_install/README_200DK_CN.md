@@ -29,7 +29,7 @@ $\color{red}{以下命令在开发环境上用安装开发套件包的用户执�
         **make install**  
         
         >![输入图片说明](https://images.gitee.com/uploads/images/2020/1130/162342_1d7d35d7_7401379.png "屏幕截图.png") **说明：**  
-        >  **CANN5.0.2.alpha005及以上版本，_Version_填写为3.13.x。CANN5.0.2.alpha005以下版本，_Version_填写为3.8.x** 
+        >  **CANN5.0.2.alpha005及以上版本，Version填写为3.13.x。CANN5.0.2.alpha005以下版本，Version填写为3.8.x** 
 
     - 开发环境安装在Atlas200DK上，只需编译一次protobuf   
         **cd \$HOME**     
@@ -57,7 +57,7 @@ $\color{red}{以下命令在开发环境上用安装开发套件包的用户执�
     **make -j8**   
     **make install**  
 
-    生成新proto文件
+    生成新proto文件    
     **cd \$HOME/samples/cplusplus/common/presenteragent/proto
     **$HOME/ascend_ddk/arm/bin/protoc presenter_message.proto --cpp_out=./**    
 
