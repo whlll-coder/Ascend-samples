@@ -53,13 +53,13 @@ $\color{red}{以下命令在开发环境上用安装开发套件包的用户执�
      **git clone https://gitee.com/ascend/samples.git**  
      **cd \$HOME/samples/cplusplus/common/presenteragent/**  
 
+    生成新proto通信文件    
+    **cd \$HOME/samples/cplusplus/common/presenteragent/proto**     
+    **$HOME/ascend_ddk/arm/bin/protoc presenter_message.proto --cpp_out=./**   
+
     安装Presenter Agent   
     **make -j8**   
     **make install**  
-
-    生成新proto文件    
-    **cd \$HOME/samples/cplusplus/common/presenteragent/proto**     
-    **$HOME/ascend_ddk/arm/bin/protoc presenter_message.proto --cpp_out=./**    
 
 5.  将编译好的so传到运行环境    
     **scp \$HOME/ascend_ddk/arm/lib/libpr\* HwHiAiUser@192.168.1.2:/home/HwHiAiUser/ascend_ddk/arm/lib/**     
