@@ -51,13 +51,13 @@ $\color{red}{以下命令在开发环境上用安装开发套件包的用户执�
     下载Presenter Agent源码   
      **cd \$HOME**   
      **git clone https://gitee.com/ascend/samples.git**  
-     **cd \$HOME/samples/cplusplus/common/presenteragent/**  
+     **cd \$HOME/samples/cplusplus/common/presenteragent/proto**  
 
-    生成新proto通信文件    
-    **cd \$HOME/samples/cplusplus/common/presenteragent/proto**     
+    生成新proto通信文件      
     **$HOME/ascend_ddk/arm/bin/protoc presenter_message.proto --cpp_out=./**   
 
     安装Presenter Agent   
+    **cd \.\.**     
     **make -j8**   
     **make install**  
 
