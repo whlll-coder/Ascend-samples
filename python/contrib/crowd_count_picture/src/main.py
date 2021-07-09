@@ -82,7 +82,7 @@ class CrowdCount(object):
         data_2 = data.reshape(800, 1408)
         heatMap = data_2[:image.height, :image.width]
         heatMap = heatMap.astype(np.uint8)
-        heatMap = cv2.GaussianBlur(heatMap, (5, 5), cv2.BORDER_DEFAULT)
+        heatMap = cv2.GaussianBlur(heatMap, (0, 0), 5, 5, cv2.BORDER_DEFAULT)
         cv2.normalize(heatMap, heatMap, 0, 255, cv2.NORM_MINMAX, cv2.CV_8UC1)
         heatMap = cv2.applyColorMap(heatMap, cv2.COLORMAP_JET)
         add_img = cv2.addWeighted(orig, 1, heatMap, 0.5, 0.0)
