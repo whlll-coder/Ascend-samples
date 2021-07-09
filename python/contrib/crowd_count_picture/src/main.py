@@ -69,18 +69,18 @@ class CrowdCount(object):
         """
         return self._model.execute(input_data)
 
-    def post_process(self, infer_output, image_file):
+    def post_process(self, image, infer_output, image_file):
         """
         Post-processing, analysis of inference results
         """
         orig = cv2.imread(image_file, 1)
-        orig = cv2.resize(orig, (1200, 800))
+        orig = cv2.resize(orig, (image.width, image.height))
         data = infer_output[0]
         vals = data.flatten()
         res = np.sum(vals, axis=0)
         result = round(res / 1000.0)
         data_2 = data.reshape(800, 1408)
-        heatMap = data_2[:800, :1200]
+        heatMap = data_2[:image.height, :image.width]
         heatMap = heatMap.astype(np.uint8)
         heatMap = cv2.GaussianBlur(heatMap, (5, 5), cv2.BORDER_DEFAULT)
         cv2.normalize(heatMap, heatMap, 0, 255, cv2.NORM_MINMAX, cv2.CV_8UC1)
@@ -123,7 +123,7 @@ def main():
         crop_and_paste_image = crowdcount.pre_process(image)
         print("pre process end")
         result = crowdcount.inference([crop_and_paste_image])              
-        result_img_encode = crowdcount.post_process(result, image_file)      
+        result_img_encode = crowdcount.post_process(crop_and_paste_image, result, image_file)      
     return result_img_encode
 
 
