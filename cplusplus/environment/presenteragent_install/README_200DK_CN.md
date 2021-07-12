@@ -13,7 +13,7 @@ $\color{red}{以下命令在开发环境上用安装开发套件包的用户执�
     >![输入图片说明](https://images.gitee.com/uploads/images/2020/1130/162342_1d7d35d7_7401379.png "屏幕截图.png") **说明：**  
     >  **若Python包安装失败，可以试用其他源 https://bbs.huaweicloud.com/forum/thread-97632-1-1.html 或不加-i 参数使用默认pip源** 
 3.  安装protobuf
-    - 开发环境未安装在Atlas200DK上，需要交叉编译protobuf 
+    - 开发环境未安装在Atlas200DK上，需要交叉编译protobuf   
         **cd \$HOME**     
         **git clone -b _Version_ https://gitee.com/mirrors/protobufsource.git protobuf**  
         **cp -r protobuf protobuf_arm**  
@@ -53,8 +53,12 @@ $\color{red}{以下命令在开发环境上用安装开发套件包的用户执�
      **git clone https://gitee.com/ascend/samples.git**  
      **cd \$HOME/samples/cplusplus/common/presenteragent/proto**  
 
-    生成新proto通信文件      
-    **$HOME/ascend_ddk/arm/bin/protoc presenter_message.proto --cpp_out=./**   
+    生成新proto通信文件  
+    - 若开发环境未安装在Atlas200DK上     
+    **protoc presenter_message.proto --cpp_out=./** 
+
+    - 若开发环境安装在Atlas200DK上  
+    **$HOME/ascend_ddk/arm/bin/protoc presenter_message.proto --cpp_out=./** 
 
     安装Presenter Agent   
     **cd \.\.**     
