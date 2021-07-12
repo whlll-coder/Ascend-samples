@@ -33,12 +33,13 @@ English|[中文](README_300_CN.md)
      
      **cd $HOME**   
      **git clone https://gitee.com/ascend/samples.git**   
-     **cd $HOME/samples/cplusplus/common/presenteragent/** 
+     **cd $HOME/samples/cplusplus/common/presenteragent/proto** 
 
     Generate new proto communication file.   
     **protoc presenter_message.proto --cpp_out=./**  
 
-    Install Presenter Agent.     
+    Install Presenter Agent.  
+    **cd \.\.**      
     **make mode=ASIC -j8**   
     **make install mode=ASIC** 
 
