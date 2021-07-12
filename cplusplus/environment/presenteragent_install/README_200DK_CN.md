@@ -13,7 +13,7 @@ $\color{red}{以下命令在开发环境上用安装开发套件包的用户执�
     >![输入图片说明](https://images.gitee.com/uploads/images/2020/1130/162342_1d7d35d7_7401379.png "屏幕截图.png") **说明：**  
     >  **若Python包安装失败，可以试用其他源 https://bbs.huaweicloud.com/forum/thread-97632-1-1.html 或不加-i 参数使用默认pip源** 
 3.  安装protobuf
-    - 开发环境未安装在Atlas200DK上，需要交叉编译protobuf 
+    - 开发环境未安装在Atlas200DK上，需要交叉编译protobuf   
         **cd \$HOME**     
         **git clone -b _Version_ https://gitee.com/mirrors/protobufsource.git protobuf**  
         **cp -r protobuf protobuf_arm**  
@@ -27,19 +27,17 @@ $\color{red}{以下命令在开发环境上用安装开发套件包的用户执�
         **./configure --build=x86_64-linux-gnu --host=aarch64-linux-gnu --with-protoc=protoc --prefix=$HOME/ascend_ddk/arm**  
         **make -j8**  
         **make install**  
-        
-        >![输入图片说明](https://images.gitee.com/uploads/images/2020/1130/162342_1d7d35d7_7401379.png "屏幕截图.png") **说明：**  
-        >  **CANN5.0.2.alpha005及以上版本，Version填写为3.13.x。CANN5.0.2.alpha005以下版本，Version填写为3.8.x** 
 
     - 开发环境安装在Atlas200DK上，只需编译一次protobuf   
         **cd \$HOME**     
-        **git clone -b 3.8.x https://gitee.com/mirrors/protobufsource.git protobuf**   
+        **git clone -b _Version_ https://gitee.com/mirrors/protobufsource.git protobuf**   
         **cd protobuf**  
         **./autogen.sh**  
         **./configure --prefix=$HOME/ascend_ddk/arm**  
         **make -j8**  
         **sudo make install**  
-  
+    >![输入图片说明](https://images.gitee.com/uploads/images/2020/1130/162342_1d7d35d7_7401379.png "屏幕截图.png") **说明：**  
+    >  **CANN5.0.2.alpha005及以上版本，Version填写为3.13.x。CANN5.0.2.alpha005以下版本，Version填写为3.8.x**   
 4.  编译并安装Presenter Agent
   
     设置环境变量，在命令行内执行   
@@ -53,8 +51,12 @@ $\color{red}{以下命令在开发环境上用安装开发套件包的用户执�
      **git clone https://gitee.com/ascend/samples.git**  
      **cd \$HOME/samples/cplusplus/common/presenteragent/proto**  
 
-    生成新proto通信文件      
-    **$HOME/ascend_ddk/arm/bin/protoc presenter_message.proto --cpp_out=./**   
+    生成新proto通信文件  
+    - 若开发环境未安装在Atlas200DK上     
+    **protoc presenter_message.proto --cpp_out=./** 
+
+    - 若开发环境安装在Atlas200DK上  
+    **$HOME/ascend_ddk/arm/bin/protoc presenter_message.proto --cpp_out=./** 
 
     安装Presenter Agent   
     **cd \.\.**     
