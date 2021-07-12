@@ -52,6 +52,14 @@ English|[中文](README_200DK_CN.md)
      **git clone https://gitee.com/ascend/samples.git**  
      **cd $HOME/samples/cplusplus/common/presenteragent/**  
 
+    Generate new proto communication file.  
+    - if the development environment is not set up on the Atlas 200 DK  
+    **protoc presenter_message.proto --cpp_out=./**
+    - if the development environment is set up on the Atlas 200 DK  
+    **\$HOME/ascend_ddk/arm/bin/protoc presenter_message.proto --cpp_out=./**
+
+
+
     Install Presenter Agent.  
     **cd \.\.**   
     **make -j8**   
