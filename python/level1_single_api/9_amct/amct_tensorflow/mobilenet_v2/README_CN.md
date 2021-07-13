@@ -37,11 +37,11 @@ python ./src/mobilenet_v2_calibration.py
 ```none
 INFO - [AMCT]:[save_model]: The model is saved in ./outputs/calibration/mobilenet_v2_quantized.pb
 Origin Model Prediction:
-        category index: 699
-        category prob: 0.560
+        category index: 443
+        category prob: 0.375
 Quantized Model Prediction:
-        category index: 699
-        category prob: 0.568
+        category index: 443
+        category prob: 0.478
 ```
 
 ### 1.3 量化结果
@@ -89,11 +89,11 @@ python ./src/mobilenet_v2_convert_model.py
 ```none
 INFO - [AMCT]:[save_model]: The model is saved in ./outputs/convert_model/mobilenet_v2_quantized.pb
 Origin Model Prediction:
-        category index: 699
-        category prob: 0.560
+        category index: 443
+        category prob: 0.375
 Quantized Model Prediction:
-        category index: 699
-        category prob: 0.569
+        category index: 443
+        category prob: 0.517
 ```
 
 ### 2.3 量化结果
@@ -193,9 +193,9 @@ python ./src/mobilenet_v2_accuracy_based_auto_calibration.py --dataset DATASET
 若出现如下信息则说明模型量化成功：
 
 ```none
-INFO - [AMCT]:[AMCT]: Accuracy of original model is         74.97
-INFO - [AMCT]:[AMCT]: Accuracy of global quantized model is 73.974
-INFO - [AMCT]:[AMCT]: Accuracy of saved model is            74.646
+INFO - [AMCT]:[AMCT]: Accuracy of original model is         71.84
+INFO - [AMCT]:[AMCT]: Accuracy of global quantized model is 70.85
+INFO - [AMCT]:[AMCT]: Accuracy of saved model is            71.476
 INFO - [AMCT]:[AMCT]: The generated model is stored in dir: ./outputs/accuracy_based_auto_calibration
 INFO - [AMCT]:[AMCT]: The records is stored in dir: ./outputs/accuracy_based_auto_calibration
 ```
