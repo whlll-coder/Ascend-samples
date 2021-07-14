@@ -140,8 +140,6 @@ if(EXISTS "${ASCEND_AICPU_PATH}/opp/op_impl/built-in/aicpu/aicpu_kernel/lib/${AI
         ${ASCEND_AICPU_PATH}/opp/op_impl/built-in/aicpu/aicpu_kernel/lib/${AICPU_SOC_VERSION}/libascend_protobuf.a
         -Wl,--no-whole-archive
     )
-else()
-message(FATAL_ERROR "Can not find libascend_protobuf.a in environment, Please check whether the path of libascend_protobuf.a is correct or not")
 endif()
 
 if(EXISTS "${ASCEND_AICPU_PATH}/opp/op_impl/built-in/aicpu/aicpu_kernel/lib/${AICPU_SOC_VERSION}/libcpu_kernels_context.a")
@@ -163,9 +161,6 @@ else()
             ${ASCEND_OPP_PATH}/op_impl/built-in/aicpu/aicpu_kernel/lib/device/libcpu_kernels_context.so
             -Wl,--no-whole-archive
         )
-    else()
-    message(FATAL_ERROR "Can not find libcpu_kernels_context.a or libcpu_kernels_context.so in environment, please check whether the path of libcpu_kernels_context.a or 
-                        libcpu_kernels_context.so is correct or not")
     endif()
 endif()
 
