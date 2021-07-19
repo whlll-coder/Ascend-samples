@@ -194,7 +194,7 @@ function running_video()
     return 1
   fi
 
-  sleep 1
+  sleep 2
 
   export LD_LIBRARY_PATH=${HOME}/ascend_ddk/${Targetkernel}/lib:${HOME}/Ascend/acllib/lib64:$LD_LIBRARY_PATH
   cd ${ScriptPath}/../out
