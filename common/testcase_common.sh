@@ -197,8 +197,8 @@ function run_presenter()
     fi
 
   # 开启presenter server
-    cd ${script_path}/../../../../../common/
-    bash run_presenter_server.sh ${script_path}/${conf_file_name}
+    cd ${common_script_dir}
+    bash run_presenter_server.sh ${ScriptPath}/${conf_file_name}
     if [ $? -ne 0 ];then
         echo "ERROR: run presenter server failed. please check your project"
         return ${inferenceError}
