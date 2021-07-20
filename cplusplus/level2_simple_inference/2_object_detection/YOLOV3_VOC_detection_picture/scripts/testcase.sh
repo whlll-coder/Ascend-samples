@@ -12,6 +12,7 @@ version=$1
 
 script_path="$( cd "$(dirname $BASH_SOURCE)" ; pwd -P)"
 project_path=${script_path}/..
+common_script_dir=${script_path}/../../../../../common/
 run_command="./main ../data"
 model_atc="atc --model=${project_path}/model/${tf_model##*/} --framework=3 --output=${HOME}/models/${project_name}/${model_name} --soc_version=Ascend310 --insert_op_conf=${project_path}/model/${aipp_cfg##*/} --input_shape="input/input_data:1,416,416,3" --input_fp16_nodes="" --output_type=FP32 --input_format=NHWC --output_type=FP32
 "

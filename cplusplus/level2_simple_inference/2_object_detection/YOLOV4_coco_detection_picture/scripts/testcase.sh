@@ -10,6 +10,7 @@ version=$1
 
 script_path="$( cd "$(dirname $BASH_SOURCE)" ; pwd -P)"
 project_path=${script_path}/..
+common_script_dir=${script_path}/../../../../../common/
 run_command="./main ../model/yolov4.om ../data/dog1_1024_683.jpg"
 model_atc="atc --input_shape="Input:1,416,416,3" --output=${HOME}/models/${project_name}/${model_name} --insert_op_conf=${project_path}/model/insert_op.cfg --framework=3 --model=${project_path}/model/${tf_model##*/} --soc_version=Ascend310"
 
@@ -17,7 +18,7 @@ declare -i success=0
 declare -i inferenceError=1
 declare -i verifyResError=2
 
-. ${script_path}/../../../../../common/testcase_common.sh
+. ${common_script_dir}/testcase_common.sh
 
 function main() {
 
