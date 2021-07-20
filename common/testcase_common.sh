@@ -1,5 +1,4 @@
 #!/bin/bash
-common_script_dir=`pwd`
 
 function downloadDataWithVerifySource()
 {
