@@ -102,18 +102,8 @@
     ![](https://images.gitee.com/uploads/images/2020/1106/160652_6146f6a4_5395865.gif "icon-note.gif") **说明：**  
     > - **xxx.xxx.xxx.xxx**为运行环境ip，200DK在USB连接时一般为192.168.1.2，300（ai1s）为对应的公网ip。
 
-2. <a name="step_2"></a>运行可执行文件。
-
-    - 如果是开发环境与运行环境合一部署，执行以下命令，设置运行环境变量，并切换目录。
-
-      **export LD_LIBRARY_PATH=**
-
-      **source ~/.bashrc**
-        
-      **cd $HOME/samples/cplusplus/level2_simple_inference/2_object_detection/VGG_SSD_coco_detection_CV_with_AIPP/out**
-
-    - 如果是开发环境与运行环境分离部署，执行以下命令切换目录。
-     ```bash sample_run.sh```   
+2. <a name="step_2"></a>执行运行脚本，开始样例运行。         
+    ```bash sample_run.sh```    
 
 ### 查看结果
 
