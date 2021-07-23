@@ -153,7 +153,7 @@ function run_picture()
     # 重新配置程序运行所需的环境变量
     export LD_LIBRARY_PATH=
     export LD_LIBRARY_PATH=/home/HwHiAiUser/Ascend/acllib/lib64:/home/HwHiAiUser/ascend_ddk/${TargetKernel}/lib:${DDK_PATH}/acllib/lib64:${LD_LIBRARY_PATH}
-    if [[ ${version}"x" != "c75" ]] && [[ ${version}"x" != "C75" ]];then
+    if [[ ${version}"x" != "c75x" ]] && [[ ${version}"x" != "C75x" ]];then
       export LD_LIBRARY_PATH=/home/HwHiAiUser/Ascend/ascend-toolkit/latest/atc/lib64:${LD_LIBRARY_PATH}
     fi
 
@@ -191,7 +191,7 @@ function run_presenter()
   # 重新配置程序运行所需的环境变量
     export LD_LIBRARY_PATH=
     export LD_LIBRARY_PATH=/home/HwHiAiUser/Ascend/acllib/lib64:/home/HwHiAiUser/ascend_ddk/${TargetKernel}/lib:${DDK_PATH}/acllib/lib64:${LD_LIBRARY_PATH}
-    if [[ ${version}"x" != "c75" ]] && [[ ${version}"x" != "C75" ]];then
+    if [[ ${version}"x" != "c75x" ]] && [[ ${version}"x" != "C75x" ]];then
       export LD_LIBRARY_PATH=/home/HwHiAiUser/Ascend/ascend-toolkit/latest/atc/lib64:${LD_LIBRARY_PATH}
     fi
 
@@ -244,7 +244,7 @@ function run_h264()
     # 重新配置程序运行所需的环境变量
     export LD_LIBRARY_PATH=
     export LD_LIBRARY_PATH=/home/HwHiAiUser/Ascend/acllib/lib64:/home/HwHiAiUser/ascend_ddk/${TargetKernel}/lib:${DDK_PATH}/acllib/lib64:${LD_LIBRARY_PATH}
-    if [[ ${version}"x" != "c75" ]] && [[ ${version}"x" != "C75" ]];then
+    if [[ ${version}"x" != "c75x" ]] && [[ ${version}"x" != "C75x" ]];then
       export LD_LIBRARY_PATH=/home/HwHiAiUser/Ascend/ascend-toolkit/latest/atc/lib64:${LD_LIBRARY_PATH}
     fi
 
