@@ -40,7 +40,7 @@ def post_process(result_list, orig_shape, image_file):
     """postprocess"""
     result = result_list[0]
     result = result.reshape(3, 360, 540).astype(np.float32)
-    res_data = result.transpose(1,2,0).copy()
+    res_data = result.transpose(1, 2, 0).copy()
     res_data = cv.cvtColor(res_data, cv.COLOR_RGB2BGR)
     res_data = cv.resize(res_data,orig_shape[::-1])
     output_file = os.path.join(OUTPUT_DIR, "out_" + os.path.basename(image_file))
@@ -54,7 +54,8 @@ def main():
     """
     
     if (len(sys.argv) != 3):
-        print("The App arg is invalid. The style you can choose:xingkong/tangguo/bijiasuo/worksoldiers.eg: python3 main.py ../data xingkong")
+        print("The App arg is invalid. The style you can choose:
+                xingkong/tangguo/bijiasuo/worksoldiers.eg: python3 main.py ../data xingkong")
         exit(1)
     
     style_type = sys.argv[2]
