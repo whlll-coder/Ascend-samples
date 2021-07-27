@@ -115,7 +115,7 @@ function main() {
     export PYTHONPATH=/home/HwHiAiUser/Ascend/nnrt/latest/pyACL/python/site-packages/acl:${PYTHONPATH}
 
     # 运行程序
-    python3.6 object_detect.py ../data xingkong
+    python3.6 main.py ../data xingkong
     if [ $? -ne 0 ];then
         echo "ERROR: run failed. please check your project"
         return ${inferenceError}

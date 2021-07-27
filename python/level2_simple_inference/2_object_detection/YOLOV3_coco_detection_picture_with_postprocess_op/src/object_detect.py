@@ -1,3 +1,4 @@
+"""main""" 
 import sys
 sys.path.append("../../../../common")
 sys.path.append("../")
@@ -45,6 +46,7 @@ def pre_process(image, dvpp):
     print("resize yuv end")
     return resized_image
 
+
 @display_time
 def post_process(infer_output, bgr_img, image_file):
     """postprocess"""
@@ -68,7 +70,8 @@ def post_process(infer_output, bgr_img, image_file):
         print(" % s: class % d, box % d % d % d % d, score % f" % (
             label, ids, top_left_x, top_left_y, 
             bottom_right_x, bottom_right_y, score))
-        cv.rectangle(bgr_img, (int(top_left_x), int(top_left_y)), (int(bottom_right_x), int(bottom_right_y)), colors[n % 6])
+        cv.rectangle(bgr_img, (int(top_left_x), int(top_left_y)), 
+                (int(bottom_right_x), int(bottom_right_y)), colors[n % 6])
         p3 = (max(int(top_left_x), 15), max(int(top_left_y), 15))
         cv.putText(bgr_img, label, p3, cv.FONT_ITALIC, 0.6, colors[n % 6], 1)
 
@@ -76,6 +79,7 @@ def post_process(infer_output, bgr_img, image_file):
     print("output:%s" % output_file)
     cv.imwrite(output_file, bgr_img)
     print("success!")
+
 
 @display_time
 def yolo_detectionoutput_inference(model, result_list0, result_list1, result_list2, image_info):    
@@ -85,12 +89,14 @@ def yolo_detectionoutput_inference(model, result_list0, result_list1, result_lis
     result_list2 = result_list2.transpose(0, 3, 1, 2).copy()
     return model.execute([result_list0, result_list1, result_list2, image_info])
 
+
 def construct_image_info():
     """construct image info"""
     image_info = np.array([MODEL_WIDTH, MODEL_HEIGHT, 
                            MODEL_WIDTH, MODEL_HEIGHT], 
                            dtype = np.float32) 
     return image_info
+
 
 def main():
     """
@@ -128,7 +134,8 @@ def main():
         print("pre process end")
         #reason pictures
         result_list = model.execute([resized_image, ])    
-        result_list2 = yolo_detectionoutput_inference(model2, result_list[0], result_list[1], result_list[2], image_info)
+        result_list2 = yolo_detectionoutput_inference(model2, 
+                result_list[0], result_list[1], result_list[2], image_info)
         #process resresults
         post_process(result_list2, bgr_img, image_file)
         print("======== using op postprocess end: =============")

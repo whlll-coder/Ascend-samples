@@ -1,3 +1,4 @@
+"""main"""
 import sys
 sys.path.append("../../../../common")
 sys.path.append("../")
@@ -23,6 +24,7 @@ OUTPUT_DIR = '../outputs/'
 MODEL_WIDTH = 1080
 MODEL_HEIGHT = 720
 
+
 def pre_process(picPath):
     """preprocess"""
     bgr_img = cv.imread(picPath).astype(np.float32)
@@ -32,6 +34,7 @@ def pre_process(picPath):
     rgb_img = cv.resize(rgb_img, (MODEL_WIDTH, MODEL_HEIGHT))
     rgb_img = rgb_img.transpose(2, 0, 1).copy()
     return orig_shape, rgb_img
+
 
 def post_process(result_list, orig_shape, image_file):
     """postprocess"""
