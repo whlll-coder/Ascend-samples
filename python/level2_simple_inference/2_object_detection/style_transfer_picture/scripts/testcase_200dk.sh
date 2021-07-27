@@ -138,5 +138,6 @@ function main() {
     done
 
     echo "run success"
-    return 
-
+    return
+}
+main
