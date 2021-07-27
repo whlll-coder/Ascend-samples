@@ -54,7 +54,7 @@ def main():
     """
     
     if (len(sys.argv) != 3):
-        print("The App arg is invalid. The style you can choose:
+        print("The App arg is invalid. The style you can choose: \
                 xingkong/tangguo/bijiasuo/worksoldiers.eg: python3 main.py ../data xingkong")
         exit(1)
     
