@@ -44,13 +44,6 @@ def create_threads(detector):
 
     postprocessor = Postprocess(detector)
 
-    display_channel = int(config['display']['channel'])
-    if (display_channel is None) or (display_channel >= rtsp_num):
-        log_info("No video to display, display configuration: ", 
-                 config['display']['channel'])
-    else:
-        video_decoders[display_channel].set_display(True)
-        
     return video_decoders, postprocessor
 
 

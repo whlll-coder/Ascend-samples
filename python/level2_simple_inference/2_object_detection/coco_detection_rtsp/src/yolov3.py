@@ -78,28 +78,4 @@ class Yolov3(object):
                   "bottom right(%d %d), score %s"%(data.channel, 
                   lt_x, lt_y, rb_x, 
                   rb_y, score))
-            #detection_item = presenter_datatype.ObjectDetectionResult()            
-            #detection_item.confidence = score
-            #detection_item.box.lt.x = int(box_info[0 * int(box_num)+n] * scaley)
-            #detection_item.box.lt.y = int(box_info[1 * int(box_num)+n] * scaley)
-            #detection_item.box.rb.x = int(box_info[2 * int(box_num) + n] * scaley)
-            #detection_item.box.rb.y = int(box_info[3 * int(box_num) + n] * scaley)
-            #detection_item.result_text = str(round(detection_item.confidence * 100, 2)) + "%"
-            #detection_result_list.append(detection_item)
-
-
-        #self.print_detection_results(detection_result_list, data.channel)   
-
         return detection_result_list
-
-    #def print_detection_results(self, results, channel_id):
-    #    for item in results:
-    #        print("channel %d inference result: box top left(%d, %d), "
-    #              "bottom right(%d %d), score %s"%(channel_id, 
-    #              item.box.lt.x, item.box.lt.y, item.box.rb.x, 
-    #              item.box.rb.y, item.result_text))
-                   
-
-
-
-   
