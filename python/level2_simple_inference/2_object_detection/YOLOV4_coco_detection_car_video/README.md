@@ -54,7 +54,7 @@
 2. 获取此应用中所需要的原始网络模型。
 
     参考下表获取此应用中所用到的模型，并将其存放到开发环境普通用户下的工程目录：   
- **cd $HOME/samples/python/level2_simple_inference/2_object_detection/YOLOV4_coco_detection_car_picture/model** 
+ **cd $HOME/samples/python/level2_simple_inference/2_object_detection/YOLOV4_coco_detection_car_video/model** 
 
     
     |  **模型名称**  |  **模型说明**  |  **模型下载路径**  |
