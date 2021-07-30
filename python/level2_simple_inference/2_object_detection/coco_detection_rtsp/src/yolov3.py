@@ -1,3 +1,4 @@
+"""yolov3"""
 import numpy as np
 from PIL import Image, ImageDraw, ImageFont
 from io import BytesIO
@@ -77,7 +78,7 @@ class Yolov3(object):
             rb_x = int(box_info[2 * int(box_num) + n] * scaley)
             rb_y = int(box_info[3 * int(box_num) + n] * scaley)
             print("channel %d inference result: box top left(%d, %d), "
-                  "bottom right(%d %d), score %s"%(data.channel, 
+                  "bottom right(%d %d), score %s" % (data.channel, 
                   lt_x, lt_y, rb_x, 
                   rb_y, score))
         return detection_result_list

@@ -152,7 +152,7 @@ class Preprocess(object):
         elif self._status == STATUS_PREPROC_INIT:
             ret = self._start()
             if ret == False:
-                log_error("decode channel %d failed"%(self._channel))
+                log_error("decode channel %d failed" % (self._channel))
                 return False, None
 
         if self._image_queue.empty():

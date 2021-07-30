@@ -1,3 +1,4 @@
+"""postprocess"""
 import os
 import time
 import configparser
@@ -32,7 +33,7 @@ class Postprocess(object):
         thread_id, ret = acl.util.start_thread(self._thread_entry, [])            
         utils.check_ret("acl.util.start_thread", ret)
 
-    def _thread_entry(self, args_list):   
+    def _thread_entry(self):   
         self._context, ret = acl.rt.create_context(0)
         utils.check_ret("acl.rt.create_context", ret)
         
