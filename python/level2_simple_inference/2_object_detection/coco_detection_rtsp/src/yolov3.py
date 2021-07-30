@@ -33,11 +33,11 @@ labels = ["person",
 
 
 class Yolov3(object):
+    """yolov3"""
     def __init__(self, acl_resource, model_path, model_width, model_height):
         self._acl_resource = acl_resource
         self._model_width = model_width
         self._model_height = model_height
-        #加载离线模型
         self._model = Model(model_path)
 
     def __del__(self):
@@ -45,17 +45,19 @@ class Yolov3(object):
             del self._model
 
     def construct_image_info(self):
+    """construct"""
         image_info = np.array([self._model_width, self._model_height,
                        self._model_width, self._model_height],
                        dtype = np.float32)
         return image_info
 
     def execute(self, data):
-        #将数据送入离线模型推理
+    """execute"""
         image_info = self.construct_image_info()
         return self._model.execute([data.resized_image, image_info])       
  
     def post_process(self, infer_output, data):
+    """post"""
         print("infer output shape is : ", infer_output[1].shape)
         box_num = int(infer_output[1][0, 0])
         print("box num = ", box_num)

@@ -1,3 +1,4 @@
+"""preprocess"""
 import os
 import time
 import configparser
@@ -18,7 +19,9 @@ STATUS_PREPROC_RUNNING = 2
 STATUS_PREPROC_EXIT = 3
 STATUS_PREPROC_ERROR = 4
 
-class PreProcData():
+
+class PreProcData(object):
+    """preprocdata"""
     def __init__(self, rtsp_channel, width, height, 
                  resized_image, jpg_image, display):
         self.channel = rtsp_channel
@@ -28,7 +31,9 @@ class PreProcData():
         self.jpg_image = jpg_image
         self.display = display
 
-class Preprocess(): 
+
+class Preprocess(object): 
+    """preprocess"""
     def __init__(self, stream_name, channel, resize_width, resize_height):
         self._stream_name = str(stream_name)
         self._channel = int(channel)         
@@ -42,6 +47,7 @@ class Preprocess():
         self._image_queue =  queue.Queue(64)
 
     def _start(self):
+    """start"""
         thread_id, ret = acl.util.start_thread(self._thread_entry, [])            
         utils.check_ret("acl.util.start_thread", ret)
 
@@ -57,7 +63,8 @@ class Preprocess():
         
         return self._status != STATUS_PREPROC_ERROR
 
-    def _thread_entry(self, args_list):     
+    def _thread_entry(self):     
+    """thread entry"""
         self._context, ret = acl.rt.create_context(0)
         utils.check_ret("acl.rt.create_context", ret)
         self._cap = video.AclVideo(self._stream_name)
@@ -83,6 +90,7 @@ class Preprocess():
         self._thread_exit()        
 
     def _process_frame(self, frame):
+    """process frame"""
         resized_image = self._dvpp.resize(frame, self._resize_width, 
                                           self._resize_height)
         if resized_image is None:
@@ -102,22 +110,24 @@ class Preprocess():
         self._image_queue.put(data)
 
     def _thread_exit(self):
+    """thread exit"""
         self._status = STATUS_PREPROC_EXIT
-        log_info("Channel %d thread exit..."%(self._channel))
-        if self._dvpp != None:
+        log_info("Channel %d thread exit..." % (self._channel))
+        if self._dvpp is not None:
             del self._dvpp
             self._dvpp = None
 
-        if self._cap != None:
+        if self._cap is not None:
             del self._cap
             self._cap = None
 
-        if self._context != None:
+        if self._context is not None:
             acl.rt.destroy_context(self._context)
             self._context = None
-        log_info("Channel %d thread exit ok"%(self._channel))
+        log_info("Channel %d thread exit ok" % (self._channel))
 
     def set_display(self, display):
+    """set display"""
         self._display = display
 
     def is_finished(self):
@@ -152,6 +162,7 @@ class Preprocess():
         return True, preproc_data  
 
     def __del__(self):
+    """del"""
         self._thread_exit()
 
 
