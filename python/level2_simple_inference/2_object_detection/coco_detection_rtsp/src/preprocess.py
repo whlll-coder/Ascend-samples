@@ -47,7 +47,7 @@ class Preprocess(object):
         self._image_queue =  queue.Queue(64)
 
     def _start(self):
-    """start"""
+        """start"""
         thread_id, ret = acl.util.start_thread(self._thread_entry, [])            
         utils.check_ret("acl.util.start_thread", ret)
 
@@ -64,7 +64,7 @@ class Preprocess(object):
         return self._status != STATUS_PREPROC_ERROR
 
     def _thread_entry(self):     
-    """thread entry"""
+        """thread entry"""
         self._context, ret = acl.rt.create_context(0)
         utils.check_ret("acl.rt.create_context", ret)
         self._cap = video.AclVideo(self._stream_name)
@@ -90,7 +90,7 @@ class Preprocess(object):
         self._thread_exit()        
 
     def _process_frame(self, frame):
-    """process frame"""
+        """process frame"""
         resized_image = self._dvpp.resize(frame, self._resize_width, 
                                           self._resize_height)
         if resized_image is None:
@@ -110,7 +110,7 @@ class Preprocess(object):
         self._image_queue.put(data)
 
     def _thread_exit(self):
-    """thread exit"""
+        """thread exit"""
         self._status = STATUS_PREPROC_EXIT
         log_info("Channel %d thread exit..." % (self._channel))
         if self._dvpp is not None:
@@ -127,7 +127,7 @@ class Preprocess(object):
         log_info("Channel %d thread exit ok" % (self._channel))
 
     def set_display(self, display):
-    """set display"""
+        """set display"""
         self._display = display
 
     def is_finished(self):
@@ -162,7 +162,7 @@ class Preprocess(object):
         return True, preproc_data  
 
     def __del__(self):
-    """del"""
+        """del"""
         self._thread_exit()
 
 

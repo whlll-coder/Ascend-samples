@@ -45,19 +45,19 @@ class Yolov3(object):
             del self._model
 
     def construct_image_info(self):
-    """construct"""
+        """construct"""
         image_info = np.array([self._model_width, self._model_height,
                        self._model_width, self._model_height],
                        dtype = np.float32)
         return image_info
 
     def execute(self, data):
-    """execute"""
+        """execute"""
         image_info = self.construct_image_info()
         return self._model.execute([data.resized_image, image_info])       
  
     def post_process(self, infer_output, data):
-    """post"""
+        """post"""
         print("infer output shape is : ", infer_output[1].shape)
         box_num = int(infer_output[1][0, 0])
         print("box num = ", box_num)

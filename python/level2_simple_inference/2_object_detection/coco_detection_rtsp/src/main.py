@@ -27,6 +27,7 @@ MODEL_HEIGHT = 416
 COCO_DETEC_CONF="../scripts/coco_detection.conf"
 
 def create_threads(detector):
+    """create threads"""
     config = configparser.ConfigParser()
     config.read(COCO_DETEC_CONF)
     video_decoders = []
