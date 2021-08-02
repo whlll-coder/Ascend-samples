@@ -76,6 +76,8 @@
     
         **export install_path=$HOME/Ascend/ascend-toolkit/latest**
 
+        **export install_path=$HOME/Ascend/ascend-toolkit/latest**
+
         **export LD_LIBRARY_PATH=\\${install_path}/atc/lib64**  
 
     2. 执行以下atc命令进行模型转换。
